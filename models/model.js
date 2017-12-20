@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
 
 
 
@@ -11,8 +12,12 @@ var airportsSchema = new mongoose.Schema({
 	longitude: {type: Number}
 })
 
-var routes = new mongoose.Schema({
+var routesSchema = new mongoose.Schema({
 	airlineId: {type: String},
 	origin: {type: String},
 	destination: {type: String}
 })
+
+
+mongoose.model('Airport', airportsSchema, 'Airports');
+mongoose.model('Route', routesSchema, 'Routes');
