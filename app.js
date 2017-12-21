@@ -86,14 +86,16 @@ app.get('/:origin-:dest', function(req, res) {
 	Route.find({origin: req.params.origin}, function (err, routes) {
 		if(err)
 			res.send("err" + err)
+		
+		if(routes.length < 1) {
+				res.send("No Routes Found")
+			}
 
 		forEach(routes, function(route0, i, routes) {
 			
 			
 			
-			if(routes.length < 1) {
-				res.send("No Routes Found")
-			}
+			
 			
 			if(route0.destination == req.params.dest) {
 				console.log("1stloop")
