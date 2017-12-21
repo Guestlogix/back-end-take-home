@@ -21,7 +21,9 @@
   },
   "homepage": "https://github.com/tanaythapa/back-end-take-home#readme",
   "dependencies": {
+    "async-foreach": "^0.1.3",
     "express": "^4.16.2",
+    "geolib": "^2.0.24",
     "hashmap": "^2.3.0",
     "mongoose": "^4.13.7"
   }

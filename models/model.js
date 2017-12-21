@@ -15,7 +15,8 @@ var airportsSchema = new mongoose.Schema({
 var routesSchema = new mongoose.Schema({
 	airlineId: {type: String},
 	origin: {type: String},
-	destination: {type: String}
+	destination: {type: String},
+	distance: {type: Number, default: 0}
 })
 
 

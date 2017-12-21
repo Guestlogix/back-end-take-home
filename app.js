@@ -4,62 +4,230 @@ var mongoose = require('mongoose');
 var Airport = mongoose.model('Airport');
 var Route = mongoose.model('Route');
 var HashMap = require('hashmap');
+var geolib = require('geolib');
+var forEach = require('async-foreach').forEach;
 
 
-var port = process.env.PORT || 3000;
+var port = process.env.PORT || 3001;
 
 var app = express();
 
 var configDB = require('./config/database.js');
 mongoose.connect(configDB.url,{ useMongoClient: true });
 
+
+/*app.get('/distanceOfAll', function(req, res) {
+	console.log("here");
+	distance = -1;
+
+	Route.count({"distance": {"$exists": false}}, function(err, c) {
+        console.log("count " + c);
+    })
+
+	Route.find({"distance": {"$exists": false}}, function(err, route) {
+		console.log(route.length);
+		
+		forEach(route, function(item, index, array) {
+			console.log(index);
+			
+
+		Airport.findOne({"iata3": item.origin}, function(err, airport1) {
+				if(err)
+					console.log(err)
+
+
+				Airport.findOne({"iata3": item.destination}, function(err, airport2) {
+					if(err)
+						console.log(err)
+
+					if(airport1 && airport2) {
+					 distance = geolib.getDistance(
+						{latitude: airport1.latitude, longitude: airport1.longitude},
+						{latitude: airport2.latitude, longitude: airport2.longitude}
+					)
+					}
+					console.log(distance);
+					item.distance = distance;
+					
+					item.save(function (err, route1) {
+                        if (err)
+                            console.log(err);
+                       
+
+                        console.log("distance " + index + " = " + route1.distance)
+                    })
+                
+
+
+				})
+			})
+})
+	}).limit(1000);
+
+})
+*/
+
 app.get('/:origin-:dest', function(req, res) {
-	console.log("params " + req.params);
-	res.send('hello world')
+	
 	var origin = req.params.origin;
 	var destination = req.params.destination;
 
-	console.log("origin " + req.params.origin);
-	console.log("destination " + req.params.dest);
+	
 	var wantedRoutes = []
-	var wantedRoutesHashMap1 = new HashMap();
+	var wantedRoutes1 = []
+	var wantedRoutes2 = []
+	var currenti = {};
+	var currentj= {};
+	var currentk = {};
+	var distance = 0;
+	var shortestRoute = []
+	var shortestDistance = -1;
 
 	Route.find({origin: req.params.origin}, function (err, routes) {
 		if(err)
 			console.log('err')
 
-		for(var i = 0; i < routes.length; i++) {
-			//console.log(i);
-			if(routes[i].destination == req.params.dest) {
-				console.log("1stloop")
-				console.log(routes[i].destination);
-				wantedRoutes.push(routes[i])
-
-			}	else {
-
-				Route.find({origin: routes[i].destination}, function (err, routes1){
-					for(var j = 0; j < routes1.length; j++) {
-						//console.log(routes1[j].destination)
-						if(routes1[j].destination == req.params.dest) {
-							console.log("2ndloop")
-							console.log(routes1[i].origin  + "=>" + routes1[j].destination);
-							wantedRoutesHashMap1.set(routes[i], routes1[j])
-
-
+		forEach(routes, function(route0, i, routes) {
+			console.log(routes.length)
+			currenti = route0
+			
+			if(routes.length < 1) {
+				res.send("No Routes Found")
 			}
+			
+			if(route0.destination == req.params.dest) {
+				console.log("1stloop")
+				
+						
+				if(shortestDistance == -1) {
+					shortestRoute[0] = currenti
+					shortestDistance = currenti.distance
+				} else {
+					if(currenti.distance < shortestDistance) {
+						shortestDistance = currenti.distance
+						shortestRoute[0] = currenti
 					}
+				}
+				wantedRoutes.push(currenti)
+
+				
+			}	 {
+				console.log(route0.destination)
+				Route.find({origin: route0.destination}, function (err, routes1){
+					if((i == routes.length - 1) && routes1.length == 0) {
+						if(shortestDistance == -1) {
+							res.send("No Routes Found")
+						} else {
+							res.send({"shortestRoute": shortestRoute, "shortestDistance": shortestDistance});
+						}
+					}
+					forEach(routes1, function(route1, j, routes1) {
+						
+						currentj = route1
+						
+						if(route1.destination == req.params.dest) {
+						if(shortestDistance == -1) {
+							shortestRoute[0] = currenti
+							shortestRoute[1] = currentj
+							shortestDistance = currenti.distance + currentj.distance
+						} else {
+							if((currenti.distance +currentj.distance) < shortestDistance) {
+								shortestRoute[0] = currenti
+								shortestRoute[1] = currentj
+								shortestDistance = currenti.distance + currentj.distance
+							}
+						}
+							wantedRoutes1.push([currenti, currentj])
+							
+			}  
+				//console.log("2 stop over")
+				Route.find({origin: route1.destination}, function(err, routes2){
+					if((i == routes.length - 1) && (j == routes1.length -1) && routes2.length == 0) {
+						if(shortestDistance == -1) {
+							res.send("No Routes Found")
+						} else {
+							res.send({"shortestRoute": shortestRoute, "shortestDistance": shortestDistance});
+						}
+					}
+						
+					
+					forEach(routes2, function(route2, k, routes2) {
+					
+						currentk = routes2
+						if(route2.destination = req.params.dest) {
+						if(shortestDistance == -1) {
+							shortestRoute[0] = currenti
+							shortestRoute[1] = currentj
+							shortestRoute[2] = currentk
+							shortestDistance = currenti.distance + currenti.distance + currentk.distance
+						} else {
+							if((currenti.distance +currentj.distance + currentk.distance) < shortestDistance) {
+								shortestRoute[0] = currenti
+								shortestRoute[1] = currentj
+								shortestRoute[2] = currentk
+								shortestDistance = currenti.distance + currenti.distance + currentk.distance
+							}
+						}
+							wantedRoutes2.push([currenti, currentj, currentk])
+							//console.log(wantedRoutes2[k])
+						}
+						
+						if((i == routes.length - 1) && (j == routes1.length -1) &&  (k == routes2.length -1)) {
+						if(shortestDistance == -1) {
+							res.send("No Routes Found")
+						} else {
+							res.send({"shortestRoute": shortestRoute, "shortestDistance": shortestDistance});
+						}
+					}
+
+
+					})
+					
+					
+				})
+
+
+			
+					}) //
 
 				}
 				)
 			}
-		}
+			
+			
+
+
+		}) //
+
+		
 
 
 	})
 })
 
 
+function findDistanceBetween2Airports(code1, code2) {
+	console.log('here' + code1 + " here " + code2)
+	Airport.findOne({"iata3": code1}, function(err, airport1) {
+				if(err)
+					console.log(err)
 
+				Airport.findOne({"iata3": code2}, function(err, airport2) {
+					if(err)
+						consle.log(err)
+
+					var distance = geolib.getDistance(
+						{latitude: airport1.latitude, longitude: airport1.longitude},
+						{latitude: airport2.latitude, longitude: airport2.longitude}
+					)
+					
+					return distance;
+					
+
+
+				})
+			})
+}
 
 app.listen(port);
 module.exports = app;
