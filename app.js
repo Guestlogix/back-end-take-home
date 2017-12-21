@@ -85,7 +85,7 @@ app.get('/:origin-:dest', function(req, res) {
 
 	Route.find({origin: req.params.origin}, function (err, routes) {
 		if(err)
-			console.log('err')
+			res.send("err" + err)
 
 		forEach(routes, function(route0, i, routes) {
 			
