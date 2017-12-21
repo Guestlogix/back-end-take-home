@@ -98,7 +98,8 @@ app.get('/:origin-:dest', function(req, res) {
 			if(route0.destination == req.params.dest) {
 				console.log("1stloop")
 				
-						
+				console.log(route0.origin + "->" + route0.destination)	
+				console.log(route0.distance)
 				if(shortestDistance == -1) {
 					shortestRoute[0] = route0
 					shortestDistance = route0.distance
