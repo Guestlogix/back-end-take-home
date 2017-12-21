@@ -88,8 +88,8 @@ app.get('/:origin-:dest', function(req, res) {
 			console.log('err')
 
 		forEach(routes, function(route0, i, routes) {
-			console.log(routes.length)
-			currenti = route0
+			
+			
 			
 			if(routes.length < 1) {
 				res.send("No Routes Found")
@@ -100,15 +100,15 @@ app.get('/:origin-:dest', function(req, res) {
 				
 						
 				if(shortestDistance == -1) {
-					shortestRoute[0] = currenti
-					shortestDistance = currenti.distance
+					shortestRoute[0] = route0
+					shortestDistance = route0.distance
 				} else {
 					if(currenti.distance < shortestDistance) {
-						shortestDistance = currenti.distance
-						shortestRoute[0] = currenti
+						shortestDistance = route0.distance
+						shortestRoute[0] = route0
 					}
 				}
-				wantedRoutes.push(currenti)
+				wantedRoutes.push(route0)
 
 				
 			}	 {
@@ -123,21 +123,20 @@ app.get('/:origin-:dest', function(req, res) {
 					}
 					forEach(routes1, function(route1, j, routes1) {
 						
-						currentj = route1
 						
 						if(route1.destination == req.params.dest) {
 						if(shortestDistance == -1) {
-							shortestRoute[0] = currenti
-							shortestRoute[1] = currentj
-							shortestDistance = currenti.distance + currentj.distance
+							shortestRoute[0] = route0
+							shortestRoute[1] = route1
+							shortestDistance = route0.distance + route1.distance
 						} else {
-							if((currenti.distance +currentj.distance) < shortestDistance) {
-								shortestRoute[0] = currenti
-								shortestRoute[1] = currentj
-								shortestDistance = currenti.distance + currentj.distance
+							if((route0.distance + route1.distance) < shortestDistance) {
+								shortestRoute[0] = route0
+								shortestRoute[1] = route1
+								shortestDistance = route0.distance + route1.distance
 							}
 						}
-							wantedRoutes1.push([currenti, currentj])
+							wantedRoutes1.push([route0, route1])
 							
 			}  
 				//console.log("2 stop over")
@@ -153,22 +152,22 @@ app.get('/:origin-:dest', function(req, res) {
 					
 					forEach(routes2, function(route2, k, routes2) {
 					
-						currentk = routes2
+						
 						if(route2.destination = req.params.dest) {
 						if(shortestDistance == -1) {
-							shortestRoute[0] = currenti
-							shortestRoute[1] = currentj
-							shortestRoute[2] = currentk
-							shortestDistance = currenti.distance + currenti.distance + currentk.distance
+							shortestRoute[0] = route0
+							shortestRoute[1] = route1
+							shortestRoute[2] = route2
+							shortestDistance = route0.distance + route1.distance + route2.distance
 						} else {
-							if((currenti.distance +currentj.distance + currentk.distance) < shortestDistance) {
-								shortestRoute[0] = currenti
-								shortestRoute[1] = currentj
-								shortestRoute[2] = currentk
-								shortestDistance = currenti.distance + currenti.distance + currentk.distance
+							if((route0.distance + route1.distance + route2.distance) < shortestDistance) {
+								shortestRoute[0] = route0
+								shortestRoute[1] = route1
+								shortestRoute[2] = route2
+								shortestDistance = route0.distance + route1.distance + route2.distance
 							}
 						}
-							wantedRoutes2.push([currenti, currentj, currentk])
+							wantedRoutes2.push([route0, route1, route2])
 							//console.log(wantedRoutes2[k])
 						}
 						
