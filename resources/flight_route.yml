@@ -1,0 +1,22 @@
+Generates a sales report during a given period, grouping total sales by either day, week or month
+---
+parameters:
+  - name: origin
+    in: query
+    type: string
+    required: true
+    description: Departure airport 3 letter code
+  - name: destination
+    in: query
+    type: string
+    required: true
+    description: Departure airport 3 letter code
+produces:
+  - application/json
+responses:
+  500:
+    description: Bad server
+  400:
+    description: Wrong parameters
+  200:
+    description: Returns an array of connecting flights for the shortest path
