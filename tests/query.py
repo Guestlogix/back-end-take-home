@@ -10,8 +10,6 @@ class TestShortestPathQuery(unittest.TestCase):
   def test_simple_case(self):
     query = FlightConnectionsQuery('AKL', 'GRU')
     res = query.perform()
-    for r in res:
-      print(r.__dict__)
     self.assertEqual(res[0].departs_from, 'AKL')
     self.assertEqual(res[-1].arrives_to, 'GRU')
 
