@@ -32,3 +32,31 @@ responses:
           $ref: '#/definitions/ErrorMessage'
   200:
     description: Returns an array of connecting flights for the shortest path
+    schema:
+      id: FlightRouteResult
+      properties:
+        origin:
+          type: string
+        destination:
+          type: string
+        number_of_stops:
+          type: integer
+        routes:
+          type: array
+          items:
+            type: object
+            schema:
+              id: FlightRoute
+              properties:
+                origin_code:
+                  type: string
+                origin_name:
+                  type: string
+                destination_code:
+                  type: string
+                destination_name:
+                  type: string
+                airline_code:
+                  type: string
+                airline_name:
+                  type: string

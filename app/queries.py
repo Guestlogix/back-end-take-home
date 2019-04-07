@@ -1,5 +1,6 @@
+from typing import NamedTuple
 from neomodel import db
-from .models import Airport, FlightRoute
+from .models import Airport, FlightRoute, Airline
 
 class RouteNotFound(Exception):
   pass
@@ -7,27 +8,37 @@ class RouteNotFound(Exception):
 class AirportNotFound(Exception):
   pass
 
+class BaseFlightConnectionsQueryResultItem(NamedTuple):
+  route: FlightRoute
+  airline: Airline
+  start: Airport
+  end: Airport
+
+class FlightConnectionsQueryResultItem(BaseFlightConnectionsQueryResultItem):
+  __dict__ = property(BaseFlightConnectionsQueryResultItem._asdict)
+
 class FlightConnectionsQuery:
   def __init__(self, origin_code, destination_code):
-    self._origin = Airport.nodes.get_or_none(code=origin_code)
     self._origin_code = origin_code
-    self._destination = Airport.nodes.get_or_none(code=destination_code)
     self._destination_code = destination_code
 
   def perform(self):
-    if not self._origin:
+    if not Airport.nodes.get_or_none(code=self._origin_code):
       raise AirportNotFound("Airport {0} not found".format(self._origin_code))
-    if not self._destination:
+    if not Airport.nodes.get_or_none(code=self._destination_code):
       raise AirportNotFound('Airport {0} not found'.format(self._destination_code))
     res, meta =  self._execute()
 
     if len(res) and len(res[0]):
       return [
-        {'route':FlightRoute.inflate(i),
-          'start': i.start_node, 'end': i.end_node} for i in res[0][0]
+        FlightConnectionsQueryResultItem(route=FlightRoute.inflate(i),
+          # This is ineficiente, but will work while I don't figure out how to make the relationship
+          airline=Airline.nodes.get_or_none(code2=i['airline']),
+          start=Airport.inflate(i.start_node),
+          end=Airport.inflate(i.end_node)) for i in res[0][0]
       ]
     else:
-      raise RouteNotFound('No route found')
+      raise RouteNotFound('No route available between {0} and {1}'.format(self._origin_code, self._destination_code))
 
   def _execute(self):
     query_str = "MATCH (start:Airport {code:'%s'}), (end:Airport {code:'%s'}), \

@@ -1,28 +1,27 @@
 from flask import Blueprint, request, abort, make_response, jsonify
 from flasgger import swag_from, validate
-try:
-  from http import HTTPStatus
-except ImportError:
-  import httplib as HTTPStatus
-try:
-  import simplejson as json
-except ImportError:
-  import json
+from mapper.object_mapper import ObjectMapper
 
-from .queries import AirportNotFound, RouteNotFound, FlightConnectionsQuery
+from .queries import (AirportNotFound, RouteNotFound, FlightConnectionsQuery,
+                        FlightConnectionsQueryResultItem)
+from .entities import (CompactRouteEntity, QueryResultItemToCompactRouteEntity,
+                        RouteSearchResult)
 
 bp = Blueprint('api', __name__, url_prefix='/api')
+mapper = ObjectMapper()
+mapper.create_map(FlightConnectionsQueryResultItem, CompactRouteEntity, QueryResultItemToCompactRouteEntity)
 
 @bp.route('airports/routings', methods=('GET',))
 @swag_from('resources/flight_route.yml')
 def route_flights():
-  if not request.args.get('origin'):
+  origin = request.args.get('origin')
+  destination = request.args.get('destination')
+  if not origin:
     abort(make_response(jsonify(message="Origin is required"), 400))
-  if not request.args.get('destination'):
+  if not destination:
     abort(make_response(jsonify(message="Destination is required"), 400))
 
-  query = FlightConnectionsQuery(request.args.get('origin'),
-                                  request.args.get('destination'))
+  query = FlightConnectionsQuery(origin.upper(), destination.upper())
   try:
     data = query.perform()
   except AirportNotFound as ex:
@@ -32,8 +31,12 @@ def route_flights():
   except Exception as ex:
     import traceback
     print(traceback.format_exc())
-    template = "An exception of type {0} occurred. Arguments:\n{1!r}"
+    template = "An unexpect error of type {0} occurred. Details :\n{1!r}"
     message = template.format(type(ex).__name__, ex.args)
     abort(make_response(jsonify(message=message), 500))
 
-  return make_response(jsonify([d['route'].__dict__ for d in data]), 200)
+  routes = [mapper.map(d, CompactRouteEntity) for d in data]
+  response_data = RouteSearchResult(origin=origin, destination=destination, number_of_stops=len(routes)-1,
+                                      routes=routes)
+
+  return make_response(jsonify(response_data.encode()), 200)
