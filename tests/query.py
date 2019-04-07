@@ -1,7 +1,7 @@
 import unittest
 import neomodel
 from app.models import Airport, FlightRoute
-from app.queries import FlightConnectionsQuery
+from app.queries import FlightConnectionsQuery, RouteNotFound
 
 class TestShortestPathQuery(unittest.TestCase):
   def setUp(self):
@@ -22,4 +22,9 @@ class TestShortestPathQuery(unittest.TestCase):
     for i in res[0][0]:
       self.assertEqual(i.start_node['code'], last_code)
       last_code = i.end_node['code']
+
+  def test_invalid_route(self):
+    query = FlightConnectionsQuery('DUH', 'GRU')
+    with self.assertRaises(RouteNotFound):
+      res = query.perform()
 
