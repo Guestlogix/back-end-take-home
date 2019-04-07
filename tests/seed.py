@@ -21,20 +21,20 @@ class TestSeed(unittest.TestCase):
     pass
 
   def test_seed_airlines(self):
-    commands = SeedAirlines('data/airlines.csv')
-    commands.run()
+    commands = SeedAirlines()
+    commands.run('data/airlines.csv')
 
   def test_seed_airports(self):
-    commands = SeedAirports('data/airports.csv')
-    commands.run()
+    commands = SeedAirports()
+    commands.run('data/airports.csv')
 
   def test_seed_routes(self):
-    command = SeedRoutes('data/routes.csv')
-    command.run()
+    command = SeedRoutes()
+    command.run('data/routes.csv')
 
   def test_shortes_path_query(self):
     query_str = "MATCH (start:Airport {code:'YEG'}), (end:Airport {code:'GRU'}), \
-      p = shortestPath((start)-[:DESTINATION*]-(end)) RETURN (p)"
+      p = shortestPath((start)-[:DESTINATION*]->(end)) RETURN (p)"
     res, meta = neomodel.db.cypher_query(query_str)
     relations = [i for i in res[0][0]]
     self.assertEqual(len(relations), 2)

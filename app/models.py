@@ -1,5 +1,5 @@
 from neomodel import (StructuredNode, StringProperty, FloatProperty,
-    Relationship, RelationshipTo, RelationshipFrom, StructuredRel)
+    RelationshipTo, StructuredRel)
 
 class Airline(StructuredNode):
   code2 = StringProperty(unique_index=True, required=True)
@@ -21,4 +21,4 @@ class Airport(StructuredNode):
   country = StringProperty()
   latitute = FloatProperty()
   longitude = FloatProperty()
-  destinations = Relationship('Airport', 'DESTINATION', model=FlightRoute)
+  destinations = RelationshipTo('Airport', 'DESTINATION', model=FlightRoute)
