@@ -11,7 +11,7 @@ bp = Blueprint('api', __name__, url_prefix='/api')
 mapper = ObjectMapper()
 mapper.create_map(FlightConnectionsQueryResultItem, CompactRouteEntity, QueryResultItemToCompactRouteEntity)
 
-@bp.route('airports/routings', methods=('GET',))
+@bp.route('routes', methods=('GET',))
 @swag_from('resources/flight_route.yml')
 def route_flights():
   origin = request.args.get('origin')
