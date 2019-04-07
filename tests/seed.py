@@ -4,6 +4,7 @@ import csv
 import neomodel
 
 from app.models import Airport, FlightRoute
+from app.tasks import SeedAirports, SeedRoutes, SeedAirlines
 
 class TestSeed(unittest.TestCase):
   def load_csv(self, fname):
@@ -20,29 +21,16 @@ class TestSeed(unittest.TestCase):
     pass
 
   def test_seed_airlines(self):
-    for airport in self.load_csv('data/airports.csv'):
-      ap = Airport(code=airport['IATA 3'], name=airport['Name'], city=airport['City'],
-                    country=airport['Country'], latitute=airport['Latitute '],
-                    longitude=airport['Longitude'])
-      ap.save()
+    commands = SeedAirlines('data/airlines.csv')
+    commands.run()
+
+  def test_seed_airports(self):
+    commands = SeedAirports('data/airports.csv')
+    commands.run()
 
   def test_seed_routes(self):
-    for route in self.load_csv('data/routes.csv'):
-      # flight = Flight(airport=route['Airline Id'])
-      # flight.save()
-      origin = Airport.nodes.get_or_none(code=route['Origin'])
-      if not origin:
-        origin = Airport(code=route['Origin'], name='N/A', city='N/A', country='N/A')
-        origin.save()
-      destination = Airport.nodes.get_or_none(code=route['Destination'])
-      if not destination:
-        destination = Airport(code=route['Destination'])
-        destination.save()
-      # flight.origin.connect(origin)
-      # flight.destination.connect(destination)
-      flight_route = {'airline':route['Airline Id'], 'departs_from':route['Origin'],
-                                  'arrives_to': route['Destination']}
-      origin.destinations.connect(destination, flight_route)
+    command = SeedRoutes('data/routes.csv')
+    command.run()
 
   def test_shortes_path_query(self):
     query_str = "MATCH (start:Airport {code:'YEG'}), (end:Airport {code:'GRU'}), \
