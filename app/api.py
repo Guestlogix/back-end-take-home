@@ -11,6 +11,10 @@ bp = Blueprint('api', __name__, url_prefix='/api')
 mapper = ObjectMapper()
 mapper.create_map(FlightConnectionsQueryResultItem, CompactRouteEntity, QueryResultItemToCompactRouteEntity)
 
+@bp.route('health', methods=('GET',))
+def health_check():
+  return make_response('Server is Up', 200)
+
 @bp.route('routes', methods=('GET',))
 @swag_from('resources/flight_route.yml')
 def route_flights():

@@ -3,6 +3,7 @@ import csv
 
 import neomodel
 
+from app.config import TestConfig
 from app.models import Airport, FlightRoute
 from app.tasks import SeedAirports, SeedRoutes, SeedAirlines
 
@@ -15,7 +16,7 @@ class TestSeed(unittest.TestCase):
     return lines
 
   def setUp(self):
-    neomodel.config.DATABASE_URL = 'bolt://neo4j:testpwd@localhost:7687'
+    neomodel.config.DATABASE_URL = TestConfig.DATABASE_URL
 
   def tearDown(self):
     pass

@@ -1,14 +1,9 @@
 test:
-	docker run -d \
-		--publish=7474:7474 --publish=7687:7687 \
-		--name="back-end-take-home-neo4j" \
-		--env=NEO4J_AUTH=neo4j/testpwd \
-		neo4j
-
-	while ! curl http://localhost:7474; do\
-		sleep 5; \
-	done; \
-
-	python tests.py
-	docker stop "back-end-take-home-neo4j"
-	docker rm "back-end-take-home-neo4j"
+	docker-compose up -d --build database app_test
+	docker-compose run app_test sh /flight_router/test_entrypoint.sh
+	docker-compose down
+run:
+	docker-compose up -d database app
+	sh wait_seed.sh
+stop:
+	docker-compose down
