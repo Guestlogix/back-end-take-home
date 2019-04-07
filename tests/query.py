@@ -10,8 +10,8 @@ class TestShortestPathQuery(unittest.TestCase):
   def test_simple_case(self):
     query = FlightConnectionsQuery('AKL', 'GRU')
     res = query.perform()
-    self.assertEqual(res[0].departs_from, 'AKL')
-    self.assertEqual(res[-1].arrives_to, 'GRU')
+    self.assertEqual(res[0]['route'].departs_from, 'AKL')
+    self.assertEqual(res[-1]['route'].arrives_to, 'GRU')
 
   def test_cypher_result(self):
     query = FlightConnectionsQuery('AKL', 'GRU')

@@ -13,7 +13,7 @@ from .queries import AirportNotFound, RouteNotFound, FlightConnectionsQuery
 
 bp = Blueprint('api', __name__, url_prefix='/api')
 
-@bp.route('flights/route', methods=('GET',))
+@bp.route('airports/routings', methods=('GET',))
 @swag_from('resources/flight_route.yml')
 def route_flights():
   if not request.args.get('origin'):
@@ -36,4 +36,4 @@ def route_flights():
     message = template.format(type(ex).__name__, ex.args)
     abort(make_response(jsonify(message=message), 500))
 
-  return make_response(jsonify([d.__dict__ for d in data]), 200)
+  return make_response(jsonify([d['route'].__dict__ for d in data]), 200)

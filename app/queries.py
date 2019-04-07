@@ -22,7 +22,10 @@ class FlightConnectionsQuery:
     res, meta =  self._execute()
 
     if len(res) and len(res[0]):
-      return [FlightRoute.inflate(i) for i in res[0][0]]
+      return [
+        {'route':FlightRoute.inflate(i),
+          'start': i.start_node, 'end': i.end_node} for i in res[0][0]
+      ]
     else:
       raise RouteNotFound('No route found')
 
