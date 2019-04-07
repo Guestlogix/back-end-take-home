@@ -1,5 +1,5 @@
 from flask import Blueprint, request, abort, make_response, jsonify
-from flasgger import swag_from
+from flasgger import swag_from, validate
 try:
   from http import HTTPStatus
 except ImportError:
@@ -14,8 +14,13 @@ from .queries import AirportNotFound, RouteNotFound, FlightConnectionsQuery
 bp = Blueprint('api', __name__, url_prefix='/api')
 
 @bp.route('flights/route', methods=('GET',))
-@swag_from('resources/flight_route.yml', validation=True, data= lambda: request.args)
+@swag_from('resources/flight_route.yml')
 def route_flights():
+  if not request.args.get('origin'):
+    abort(make_response(jsonify(message="Origin is required"), 400))
+  if not request.args.get('destination'):
+    abort(make_response(jsonify(message="Destination is required"), 400))
+
   query = FlightConnectionsQuery(request.args.get('origin'),
                                   request.args.get('destination'))
   try:
@@ -32,16 +37,3 @@ def route_flights():
     abort(make_response(jsonify(message=message), 500))
 
   return make_response(jsonify([d.__dict__ for d in data]), 200)
-
-
-def validation_error_inform_error(err, data, schema):
-    """
-    Custom validation error handler which produces 404 Bad Request
-    response in case validation fails and returns the error
-    """
-    abort(
-      Response(
-        json.dumps({'error': str(err), 'data': data, 'schema': schema}),
-        status=HTTPStatus.BAD_REQUEST
-      )
-    )

@@ -4,19 +4,31 @@ parameters:
   - name: origin
     in: query
     type: string
-    required: true
+    required: True
     description: Departure airport 3 letter code
   - name: destination
     in: query
     type: string
-    required: true
+    required: True
     description: Departure airport 3 letter code
 produces:
   - application/json
 responses:
   500:
-    description: Bad server
+    description: Internal Server Error
+    schema:
+      id: ErrorMessage
+      properties:
+        message:
+          type: string
+          description: Error message
+  404:
+    description: Object or route not found
+    schema:
+          $ref: '#/definitions/ErrorMessage'
   400:
     description: Wrong parameters
+    schema:
+          $ref: '#/definitions/ErrorMessage'
   200:
     description: Returns an array of connecting flights for the shortest path
