@@ -21,8 +21,10 @@ class TestApi(unittest.TestCase):
     with self.app.test_client() as client:
       result = client.get('/api/airports/routings?destination=GRU')
       self.assertEqual(result.status_code, 400)
+      self.assertTrue('Origin' in result.json['message'])
 
   def test_bad_airport(self):
     with self.app.test_client() as client:
       result = client.get('/api/airports/routings?origin=YEG&destination=GRA')
       self.assertEqual(result.status_code, 404)
+      self.assertTrue('Airport' in result.json['message'])
