@@ -1,4 +1,4 @@
-Generates a sales report during a given period, grouping total sales by either day, week or month
+Searches for the shortest route path for flighing from Origin to Destination airports
 ---
 parameters:
   - name: origin
@@ -31,7 +31,7 @@ responses:
     schema:
           $ref: '#/definitions/ErrorMessage'
   200:
-    description: Returns an array of connecting flights for the shortest path
+    description: Returns an object with the result of connecting flights with the shortest path
     schema:
       id: FlightRouteResult
       properties:
