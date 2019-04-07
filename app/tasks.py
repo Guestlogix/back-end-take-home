@@ -17,7 +17,13 @@ class BaseCommand(Command):
 
 class SeedAirlines(BaseCommand):
   def run(self, fname):
+    is_first = True
     for airline in self._load_csv(fname):
+      if is_first:
+        if Airline.nodes.get_or_none(code2=airline['2 Digit Code']):
+          return
+        is_first = False
+
       al = Airline(code2=airline['2 Digit Code'], name=airline['Name'],
                     code3=airline['3 Digit Code'],
                     country=airline['Country'])
@@ -25,7 +31,12 @@ class SeedAirlines(BaseCommand):
 
 class SeedAirports(BaseCommand):
   def run(self, fname):
+    is_first = True
     for airport in self._load_csv(fname):
+      if is_first:
+        if Airport.nodes.get_or_none(code=airport['IATA 3']):
+          return
+        is_first = False
       ap = Airport(code=airport['IATA 3'], name=airport['Name'], city=airport['City'],
                     country=airport['Country'], latitute=airport['Latitute '],
                     longitude=airport['Longitude'])
@@ -33,9 +44,15 @@ class SeedAirports(BaseCommand):
 
 class SeedRoutes(BaseCommand):
   def run(self, fname):
+    is_first = True
     for route in self._load_csv(fname):
       origin = self._get_or_create_airport(route['Origin'])
       destination = self._get_or_create_airport(route['Destination'])
+
+      if is_first:
+        if len(origin.destinations.all()):
+          return
+        is_first = False
 
       airline = self._get_or_create_airline(route['Airline Id'])
 
