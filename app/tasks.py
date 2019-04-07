@@ -1,14 +1,14 @@
 import csv
-from flask_script import Command
+from flask_script import Command, Option
 
 from .models import Airport, Airline
 
 class BaseCommand(Command):
-  def __init__(self, fname):
-    self._raw_data = self.__load_csv(fname)
-    super().__init__(func=None)
+  option_list = (
+        Option('--fname', '-n', dest='fname'),
+    )
 
-  def __load_csv(self, fname):
+  def _load_csv(self, fname):
     fh = open(fname, 'r')
     reader = csv.DictReader(fh)
     lines = [i for i in reader]
@@ -16,24 +16,24 @@ class BaseCommand(Command):
     return lines
 
 class SeedAirlines(BaseCommand):
-  def run(self):
-    for airline in self._raw_data:
+  def run(self, fname):
+    for airline in self._load_csv(fname):
       al = Airline(code2=airline['2 Digit Code'], name=airline['Name'],
                     code3=airline['3 Digit Code'],
                     country=airline['Country'])
       al.save()
 
 class SeedAirports(BaseCommand):
-  def run(self):
-    for airport in self._raw_data:
+  def run(self, fname):
+    for airport in self._load_csv(fname):
       ap = Airport(code=airport['IATA 3'], name=airport['Name'], city=airport['City'],
                     country=airport['Country'], latitute=airport['Latitute '],
                     longitude=airport['Longitude'])
       ap.save()
 
 class SeedRoutes(BaseCommand):
-  def run(self):
-    for route in self._raw_data:
+  def run(self, fname):
+    for route in self._load_csv(fname):
       origin = self._get_or_create_airport(route['Origin'])
       destination = self._get_or_create_airport(route['Destination'])
 
