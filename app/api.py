@@ -13,6 +13,14 @@ mapper.create_map(FlightConnectionsQueryResultItem, CompactRouteEntity, QueryRes
 
 @bp.route('health', methods=('GET',))
 def health_check():
+  """Checks api health
+  ---
+  produces:
+    text/html
+  responses:
+    200:
+      description: Ok
+  """
   return make_response('Server is Up', 200)
 
 @bp.route('routes', methods=('GET',))
