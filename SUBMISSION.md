@@ -6,7 +6,7 @@ First of all, thanks for the opportunity. I'm sorry I could not work on this rig
 
 ## Considerations
 
-This was a very fun challenge that hooked me up. Once I have figured out it was a Graph problem and that this was not a whiteboard-interview style, but more related to real life, I started looking for a Graph Database that had enough libraries and documentation in python. It was my first Graph project, so much of my time was learning `Neo4j` and `Cypher` query language, but I loved it.
+This was a very fun challenge that hooked me up. Once I have figured out it was a Graph problem and that this was not a whiteboard-interview style, but more related to real life, I started looking for a Graph Database that had enough libraries and documentation in python. It was my first Graph project, so much of my time was learning `Neo4j` and `Cypher` query language, but I loved it. I noticed later there are more performatic recent graph databases, but why reimplement it in the middle of a 2 days sprint ?
 
 I noticed from the interview that CI/CD is in place at Guestlogix, so I tried to cover the most important parts and focus on integration tests. The endpoints are documented with Swagger and a Swagger UI is also provided with the project at `http://localhost:5000/apidocs`.
 
