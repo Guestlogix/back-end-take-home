@@ -1,11 +1,12 @@
 import unittest
 import neomodel
+from app.config import TestConfig
 from app.models import Airport, FlightRoute
 from app.queries import FlightConnectionsQuery, RouteNotFound
 
 class TestShortestPathQuery(unittest.TestCase):
   def setUp(self):
-    neomodel.config.DATABASE_URL = 'bolt://neo4j:testpwd@localhost:7687'
+    neomodel.config.DATABASE_URL = TestConfig.DATABASE_URL
 
   def test_simple_case(self):
     query = FlightConnectionsQuery('AKL', 'GRU')

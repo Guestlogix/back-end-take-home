@@ -8,18 +8,8 @@ from app.models import Airport, FlightRoute
 from app.tasks import SeedAirports, SeedRoutes, SeedAirlines
 
 class TestSeed(unittest.TestCase):
-  def load_csv(self, fname):
-    fh = open(fname, 'r')
-    reader = csv.DictReader(fh)
-    lines = [i for i in reader]
-    fh.close()
-    return lines
-
   def setUp(self):
     neomodel.config.DATABASE_URL = TestConfig.DATABASE_URL
-
-  def tearDown(self):
-    pass
 
   def test_seed_airlines(self):
     commands = SeedAirlines()
