@@ -3,14 +3,17 @@ package com.guestlogix.resources;
 import com.guestlogix.calculators.RouteCalculator;
 import com.guestlogix.database.entities.Airport;
 import com.guestlogix.database.entities.Route;
+import com.guestlogix.resources.exceptions.AirportNotFoundException;
 import com.guestlogix.services.AirportService;
 import com.guestlogix.services.RouteService;
+import com.guestlogix.vos.KeyValueVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.swing.*;
 import java.util.List;
 
 /**
@@ -39,10 +42,44 @@ public class RouteResource {
         Airport originAirport = this.airportService.findByIataThree(originAirportIataCode);
         Airport destinationAirport = this.airportService.findByIataThree(destinationAirportIataCode);
 
+        //Whenever the exception bellow is thrown, Spring will make use of the AirportNotFoundAdvice class to return a meaningful information of what happened.
+        if(originAirport == null) throw new AirportNotFoundException(originAirportIataCode);
+        if(destinationAirport == null) throw new AirportNotFoundException(destinationAirportIataCode);
 
-        List<Route> shortestRoute = new RouteCalculator(this.routeService).calculateShortestRoute(originAirport, destinationAirport);
+        KeyValueVo<Integer, List<Route>> shortestRoute = new RouteCalculator(this.routeService).calculateShortestRoute(originAirport, destinationAirport);
 
-        return originAirportIataCode + " " + destinationAirportIataCode;
+        return this.createRouteMessage(shortestRoute);
+    }
+
+    private String createRouteMessage(KeyValueVo<Integer, List<Route>> shortestRoute) {
+        StringBuilder message = new StringBuilder();
+        //Condition for no route found.
+        if(shortestRoute.getValue().size() == 0) {
+            message.append("Dear user, we hope you're doing great today!<br /> Unfortunately we couldn't find any routes for your flight.<br />");
+            message.append("Our systems are always updated with the latest flights in the market! So please try again in some hours and maybe we can find a flight for you!<br /><br />");
+            message.append("Yours sincerely GuestLogix =}");
+        } else if(shortestRoute.getValue().size() > 1) { //Condition for route with more than one connection
+            message.append("Dear user, we hope you're doing great today! If not, then cheer up because we found a flight for you! More details bellow:<br />");
+            message.append("Number of connections: " + shortestRoute.getKey() + "<br />");
+
+            int routeIndex = 1;
+            for(Route route : shortestRoute.getValue()) {
+                message.append("Route " + routeIndex + ":<br />");
+                message.append("Airline: " + route.getAirline().getName() +
+                              ", Origin Airport: " + route.getOriginAirport().getName() +
+                              ", Destination Airport: " + route.getDestinationAirport().getName() + "<br />");
+
+                ++routeIndex;
+            }
+        } else { //If the code reached here, then the route will have no connection, straight flight!
+            Route route = shortestRoute.getValue().get(0);
+            message.append("Dear user, we hope you're doing great today! If not, then cheer up because we found a flight for you with no connection! More details bellow:<br />");
+            message.append("Airline: " + route.getAirline().getName() +
+                          ", Origin Airport: " + route.getOriginAirport().getName() +
+                          ", Destination Airport: " + route.getDestinationAirport().getName());
+        }
+
+        return message.toString();
     }
 
 }
