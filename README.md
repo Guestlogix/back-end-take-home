@@ -1,4 +1,4 @@
-# Project not finished yet! Deadline is tomorrow, 12pm, so please don't review it now! =}
+# Project not finished yet! Deadline is April 24th, 12pm, so please don't review it now! =}
 # Guestlogix Take Home Test - Backend
 
 At Guestlogix we feel that putting developers on the spot with advanced algorithmic puzzles doesn’t exactly highlight one’s true skillset. The intention of this assessment is to see how you approach and tackle a problem in the real world, not quivering in front of a whiteboard.
