@@ -7,6 +7,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
+
 /**
  * This class is the starting point of this application. This is where all the magics starts to happen! =}
  */
@@ -30,6 +32,7 @@ public class BackEndTakeHomeApplication {
 	@Bean
 	CommandLineRunner runner(IAirlineRepository airlineRepository, ICountryRepository countryRepository,
 							 ICityRepository cityRepository, IAirportRepository airportRepository, IRouteRepository routeRepository) {
+		LOGGER.info("Initializing database...");
 		return args -> new Persister(airlineRepository, countryRepository, cityRepository, airportRepository, routeRepository).persistInitialData();
 	}
 

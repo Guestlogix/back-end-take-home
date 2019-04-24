@@ -16,7 +16,7 @@ import javax.persistence.ManyToOne;
 public class Airport {
 
     @Id @GeneratedValue
-    private int id;
+    private Long id;
     private String name;
     private String iataThree;
     private double latitude;
@@ -41,12 +41,11 @@ public class Airport {
     private Country country;
 
     //getters and setters (whenever you see this comment in my code, means that bellow methods are nothing more than default getters and setters, so no need to analyze them)
-
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

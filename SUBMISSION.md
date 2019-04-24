@@ -1,1 +1,2 @@
-Tell them how to use h2db console
+Tell them how to use h2db console on the http://localhost:8080/h2-console url and setting the database to db_guestlogix
+tell them to please wait around 25 seconds for database initialization and inserts of all the necessary data...
