@@ -1,0 +1,1 @@
+Tell them how to use h2db console
