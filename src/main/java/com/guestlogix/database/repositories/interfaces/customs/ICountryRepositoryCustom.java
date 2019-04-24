@@ -4,7 +4,7 @@ import com.guestlogix.database.entities.Country;
 import org.springframework.data.jpa.repository.Query;
 
 /**
- * An interface that defines which method any country repository will have to implement.
+ * An interface that defines which methods any Country repository will have to implement. This interface exists for the sole purpose of custom methods creation.
  *
  * @author Vanderson Assis
  * @since 4/23/2019

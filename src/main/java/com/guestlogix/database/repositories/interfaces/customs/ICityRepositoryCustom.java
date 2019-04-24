@@ -4,7 +4,7 @@ import com.guestlogix.database.entities.City;
 import org.springframework.data.jpa.repository.Query;
 
 /**
- * An interface that defines which method any City repository will have to implement.
+ * An interface that defines which methods any City repository will have to implement. This interface exists for the sole purpose of custom methods creation.
  *
  * @author Vanderson Assis
  * @since 4/23/2019

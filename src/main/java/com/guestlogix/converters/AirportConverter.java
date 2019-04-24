@@ -1,8 +1,6 @@
 package com.guestlogix.converters;
 
 import com.guestlogix.database.entities.Airport;
-import com.guestlogix.database.entities.City;
-import com.guestlogix.database.entities.Country;
 import com.guestlogix.database.repositories.interfaces.ICityRepository;
 import com.guestlogix.database.repositories.interfaces.ICountryRepository;
 
@@ -14,7 +12,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
- * Please visit my GitHub page https://github.com/VandersonAssis to get more info on this or any other project I implemented.
+ * This class helps on converting any data (in this case, csv) into Airport entity
  *
  * @author Vanderson Assis
  * @since 4/23/2019
@@ -31,8 +29,8 @@ public class AirportConverter {
     }
 
     /**
-     * Loads all the Airline data from the csv file and convert it to a list of Airline entities
-     * @param filePath the path of the file to be used on loading the airlines
+     * Loads all the Airport data from the csv file and convert it to a list of Airport entities
+     * @param filePath the path of the file to be used on loading the airports
      * @return a list of the airlines fetched from the csv file
      */
     public List<Airport> createFromCsvFile(String filePath) {
@@ -53,7 +51,7 @@ public class AirportConverter {
     }
 
     /**
-     * A function to map Airport's field in a comma separated String to an Airline entity.
+     * A function to map Airport's field in a comma separated String to an Airport entity.
      */
     private Function<String, Airport> mapToAirport = (line) -> {
         String[] p = line.split(Pattern.quote("||"));

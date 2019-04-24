@@ -5,7 +5,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 /**
- * This class entities a Country structure for this application.
+ * This class models a Country for this application.
  *
  * @author Vanderson Assis
  * @since 4/22/2019

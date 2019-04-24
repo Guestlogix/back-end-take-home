@@ -10,7 +10,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
- * This class helps on converting any data (in this case, csv) into the generic entity provided
+ * This class helps on converting any data (in this case, csv) into Airline entity
  *
  * @author Vanderson Assis
  * @since 4/23/2019

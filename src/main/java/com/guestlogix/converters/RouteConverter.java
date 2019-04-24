@@ -1,7 +1,5 @@
 package com.guestlogix.converters;
 
-import com.guestlogix.database.entities.Airline;
-import com.guestlogix.database.entities.Airport;
 import com.guestlogix.database.entities.Route;
 import com.guestlogix.database.repositories.interfaces.IAirlineRepository;
 import com.guestlogix.database.repositories.interfaces.IAirportRepository;
@@ -13,7 +11,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
- * Please visit my GitHub page https://github.com/VandersonAssis to get more info on this or any other project I implemented.
+ * This class helps on converting any data (in this case, csv) into Route entity
  *
  * @author Vanderson Assis
  * @since 4/23/2019

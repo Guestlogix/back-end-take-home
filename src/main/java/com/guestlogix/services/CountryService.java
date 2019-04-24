@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
- * Please visit my GitHub page https://github.com/VandersonAssis to get more info on this or any other project I implemented.
+ * A class to interface any calls to the Country's repository class.
  *
  * @author Vanderson Assis
  * @since 4/23/2019
@@ -20,6 +20,6 @@ public class CountryService implements ICountryService {
 
     @Override
     public Country findByName(String name) {
-        return (Country) countryRepository.findByName(name);
+        return countryRepository.findByName(name);
     }
 }

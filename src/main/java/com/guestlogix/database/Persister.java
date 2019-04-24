@@ -31,6 +31,10 @@ public class Persister {
         this.routeRepository = routeRepository;
     }
 
+    /**
+     * Executes all the persisting of initial data. Calling this method is MANDATORY for this application to work.
+     * @return
+     */
     public boolean persistInitialData() {
         try {
             this.persistCountries();
@@ -45,26 +49,41 @@ public class Persister {
         }
     }
 
+    /**
+     * Persists all the airlines that are in the airlines.csv file.
+     */
     private void persistAirlines() {
         List<Airline> airlines = new AirlineConverter(this.countryRepository).createFromCsvFile("data/airlines.csv");
         airlines.forEach(a -> this.airlineRepository.save(a));
     }
 
+    /**
+     * Persists all the cities that are in the cities.csv file.
+     */
     private void persistCities() {
         List<City> cities = new CityConverter().createFromCsvFile("data/cities.csv");
         cities.forEach(c -> this.cityRepository.save(c));
     }
 
+    /**
+     * Persists all the countries that are in the countries.csv file.
+     */
     private void persistCountries() {
         List<Country> countries = new CountryConverter().createFromCsvFile("data/countries.csv");
         countries.forEach(c -> this.countryRepository.save(c));
     }
 
+    /**
+     * Persists all the airports that are in the airports.csv file.
+     */
     private void persistAirports() {
         List<Airport> airports = new AirportConverter(this.cityRepository, this.countryRepository).createFromCsvFile("data/airports_new_delimiter.csv");
         airports.forEach(a -> this.airportRepository.save(a));
     }
 
+    /**
+     * Persists all the routes that are in the routes.csv file.
+     */
     private void persistRoutes() {
         List<Route> routes = new RouteConverter(this.airlineRepository, this.airportRepository).createFromCsvFile("data/routes.csv");
         routes.forEach(r -> this.routeRepository.save(r));

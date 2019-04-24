@@ -6,7 +6,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 /**
- * This class entities an Airport structure for this application.
+ * This class models an Airport for this application.
  *
  * @author Vanderson Assis
  * @since 4/22/2019

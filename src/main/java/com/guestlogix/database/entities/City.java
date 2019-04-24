@@ -5,7 +5,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 /**
- * This class entities a City structure for this application
+ * This class models a City for this application.
  *
  * @author Vanderson Assis
  * @since 4/22/2019

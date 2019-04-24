@@ -9,7 +9,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
- * Please visit my GitHub page https://github.com/VandersonAssis to get more info on this or any other project I implemented.
+ * This class helps on converting any data (in this case, csv) into Country entity
  *
  * @author Vanderson Assis
  * @since 4/23/2019
@@ -19,7 +19,7 @@ public class CountryConverter {
     /**
      * Loads all the Country data from the csv file and convert it to a list of Country entities
      * @param filePath the path of the file to be used on loading the countries
-     * @return a list of the airlines fetched from the csv file
+     * @return a list of the countries fetched from the csv file
      */
     public List<Country> createFromCsvFile(String filePath) {
         List<Country> countries = new ArrayList<>();

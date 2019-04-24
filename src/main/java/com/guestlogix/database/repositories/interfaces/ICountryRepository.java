@@ -6,7 +6,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 /**
- * Please visit my GitHub page https://github.com/VandersonAssis to get more info on this or any other project I implemented.
+ * An interface the extends from Spring's CrudRepository class, which has all the most commons data access's methods implemented. Any custom method is to be created in the custom Interface.
  *
  * @author Vanderson Assis
  * @since 4/23/2019

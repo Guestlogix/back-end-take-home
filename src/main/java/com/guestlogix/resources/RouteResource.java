@@ -16,6 +16,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/route")
 public class RouteResource {
 
+    /**
+     * Calculates the shortest route based on the origin and destination airport parameters.
+     * @param originAirportCode the origin airport code to be used in the calculus
+     * @param destinationAirportCode the destination airport code to be used in the calculus
+     * @return
+     */
     @GetMapping("/calculate/{origin}/{destination}")
     public String calculate(@PathVariable("origin") String originAirportCode, @PathVariable("destination") String destinationAirportCode) {
         return originAirportCode + " " + destinationAirportCode;
