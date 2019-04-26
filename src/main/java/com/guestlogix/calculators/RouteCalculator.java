@@ -49,10 +49,15 @@ public class RouteCalculator {
             return routesPair;
 
         //Since there was no routes without connections on the above portion, then immediately return the bellow result.
-//        return this.calculateShortestRouteWithConnections(originAirport, destinationAirport);
         return this.calculateShortestRouteNew(routesWithOrigin, destinationAirport);
     }
 
+    /**
+     * This method calculates the shortest route to the user's requirement.
+     * @param routesWithOrigin routes that originates from the user's origin airport.
+     * @param destinationAirport the airport the user wants to arrive.
+     * @return a KeyValueVo containing the number of connections and routes
+     */
     private KeyValueVo<Integer, List<Route>> calculateShortestRouteNew(List<Route> routesWithOrigin, Airport destinationAirport) {
         KeyValueVo<Integer, List<Route>> routesFound = new KeyValueVo<>(0, new ArrayList<>());
 
@@ -138,43 +143,6 @@ public class RouteCalculator {
 
             return routesFound;
         }
-    }
-
-    /**
-     * This method calculates the shortest path with connections for the user's destination.
-     * @param destinationAirport the destination Airport (where the user wants to go)
-     * @return a KeyValueVo containing the quantity of connections and the list of routes to the destination
-     */
-    private KeyValueVo<Integer, List<Route>> calculateShortestRouteWithConnections(Airport originAirport, Airport destinationAirport) {
-        KeyValueVo<Integer, List<Route>> routesPair = new KeyValueVo<>(0, new ArrayList<>());
-
-        //A list of routes that has the same destinationAirport as the one that the user requires.
-        List<Route> routesWithUserRequiredDestination = this.routeService.findByDestinationAirportId(destinationAirport.getId());
-
-        //A list of origin airports from the above destinations' list.
-        List<Airport> originAirportsForUserRequiredDestination = routesWithUserRequiredDestination.stream().map(Route::getOriginAirport).collect(Collectors.toList());
-
-        //The bellow list will have all the routes for all the origin Airports for the list that has all the routes for the user required destination
-        List<Route> routesWithDestinationsForTheOrigins = new ArrayList<>();
-        try {
-            originAirportsForUserRequiredDestination.forEach(a -> routesWithDestinationsForTheOrigins.addAll(this.routeService.findByDestinationAirportId(a.getId())));
-        } catch(NullPointerException ex) { //Didn't want to add thi catch here, but time is running short! And I can't make it more elegant
-            ex.printStackTrace();
-            return routesPair;
-        }
-
-        for(Route route : routesWithDestinationsForTheOrigins) {
-            if(route.getOriginAirport().getId() == originAirport.getId()) {
-                //If code reached here, it means there is a 1 connection flight to the user's destination.
-                routesPair.setKey(1); //One connection
-                routesPair.getValue().add(route);
-                Route secondRoute = routesWithUserRequiredDestination.stream().filter(r -> r.getOriginAirport().getId() == route.getDestinationAirport().getId()).collect(Collectors.toList()).get(0);
-                routesPair.getValue().add(secondRoute);
-                break;
-            }
-        }
-
-        return routesPair;
     }
 
     /**
