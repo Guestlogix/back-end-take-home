@@ -74,24 +74,27 @@ public class RouteCalculator {
             for(Route destinationRoute : routesWithRequiredDestination) {
                 firstLevelRoutes.addAll(this.routeService.findByDestinationAirportId(destinationRoute.getOriginAirport().getId()));
 
-                //Going to the first level
+                //Going to first level
                 for(Route firstLevelRoute : firstLevelRoutes) {
-                    //If found, then add it to the routesFound and update the number of connections to one.
-                    if(firstLevelRoute.getOriginAirport().getId().equals(originAirport.getId())) {
-                        routesFound.getValue().add(firstLevelRoute); //Adding the destinationRoute with the same origin as the user's
-                        routesFound.getValue().add(destinationRoute);
-                        routesFound.setKey(1);
-                        break masterLoop;
+                    try {
+                        //If found, then add it to the routesFound and update the number of connections.
+                        if (firstLevelRoute.getOriginAirport().getId().equals(originAirport.getId())) {
+                            routesFound.getValue().add(firstLevelRoute); //Adding the destinationRoute with the same origin as the user's
+                            routesFound.getValue().add(destinationRoute);
+                            routesFound.setKey(1);
+                            break masterLoop;
+                        }
+                    } catch(NullPointerException ex) {
+                        //The are some routes with no airports information, so just suppress them and keep going.
                     }
                 }
 
-                //Going second level
-                List<Route> secondLevelRoutes = new ArrayList<>();
+                //Going to second level
                 for(Route firstLevelRoute : firstLevelRoutes) {
-                    secondLevelRoutes.addAll(this.routeService.findByDestinationAirportId(firstLevelRoute.getOriginAirport().getId()));
+                    List<Route> secondLevelRoutes = this.routeService.findByDestinationAirportId(firstLevelRoute.getOriginAirport().getId());
 
                     for(Route secondLevelRoute : secondLevelRoutes) {
-                        //If found, then add it to the routesFound and update the number of connections to two.
+                        //If found, then add it to the routesFound and update the number of connections.
                         try {
                             if (secondLevelRoute.getOriginAirport().getId().equals(originAirport.getId())) {
                                 routesFound.getValue().add(secondLevelRoute);
@@ -101,8 +104,33 @@ public class RouteCalculator {
                                 break masterLoop;
                             }
                         } catch(NullPointerException ex) {
-                            //suppress it for now.
-                            ex.printStackTrace();
+                            //The are some routes with no airports information, so just suppress them and keep going.
+                        }
+                    }
+                }
+
+                //Going to third level
+                List<Route> thirdLevelRoutes = new ArrayList<>();
+                for(Route firstLevelRoute : firstLevelRoutes) {
+                    List<Route> secondLevelRoutes = this.routeService.findByDestinationAirportId(firstLevelRoute.getOriginAirport().getId());
+
+                    for(Route secondLevelRoute : secondLevelRoutes) {
+                        thirdLevelRoutes.addAll(this.routeService.findByDestinationAirportId(secondLevelRoute.getOriginAirport().getId()));
+
+                        for(Route thirdLevelRoute : thirdLevelRoutes) {
+                            //If found, then add it to the routesFound and update the number of connections.
+                            try {
+                                if(thirdLevelRoute.getOriginAirport().getId().equals(originAirport.getId())) {
+                                    routesFound.getValue().add(thirdLevelRoute);
+                                    routesFound.getValue().add(secondLevelRoute);
+                                    routesFound.getValue().add(firstLevelRoute);
+                                    routesFound.getValue().add(destinationRoute);
+                                    routesFound.setKey(3);
+                                    break masterLoop;
+                                }
+                            } catch(NullPointerException ex) {
+                                //The are some routes with no airports information, so just suppress them and keep going.
+                            }
                         }
                     }
                 }

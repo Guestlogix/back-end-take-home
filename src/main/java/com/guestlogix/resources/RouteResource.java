@@ -60,11 +60,11 @@ public class RouteResource {
             message.append("Yours sincerely GuestLogix =}");
         } else if(shortestRoute.getValue().size() > 1) { //Condition for route with more than one connection
             message.append("Dear user, we hope you're doing great today! If not, then cheer up because we found a flight for you! More details bellow:<br />");
-            message.append("Number of connections: " + shortestRoute.getKey() + "<br />");
+            message.append("Number of connections: " + shortestRoute.getKey() + "<br /><br />");
 
             int routeIndex = 1;
             for(Route route : shortestRoute.getValue()) {
-                message.append("Route " + routeIndex + ":<br />");
+                message.append("Route " + routeIndex + ": ");
                 message.append("<b>Airline:</b> " + route.getAirline().getName() +
                               ", <b>Origin Airport:</b> " + route.getOriginAirport().getName() + "[" + route.getOriginAirport().getIataThree() + "]" +
                               ", <b>Destination Airport:</b> " + route.getDestinationAirport().getName() + "[" + route.getDestinationAirport().getIataThree() + "]" + "<br />");
