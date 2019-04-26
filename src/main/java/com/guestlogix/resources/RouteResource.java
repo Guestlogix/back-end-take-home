@@ -65,18 +65,18 @@ public class RouteResource {
             int routeIndex = 1;
             for(Route route : shortestRoute.getValue()) {
                 message.append("Route " + routeIndex + ":<br />");
-                message.append("Airline: " + route.getAirline().getName() +
-                              ", Origin Airport: " + route.getOriginAirport().getName() +
-                              ", Destination Airport: " + route.getDestinationAirport().getName() + "<br />");
+                message.append("<b>Airline:</b> " + route.getAirline().getName() +
+                              ", <b>Origin Airport:</b> " + route.getOriginAirport().getName() + "[" + route.getOriginAirport().getIataThree() + "]" +
+                              ", <b>Destination Airport:</b> " + route.getDestinationAirport().getName() + "[" + route.getDestinationAirport().getIataThree() + "]" + "<br />");
 
                 ++routeIndex;
             }
         } else { //If the code reached here, then the route will have no connection, straight flight!
             Route route = shortestRoute.getValue().get(0);
             message.append("Dear user, we hope you're doing great today! If not, then cheer up because we found a flight for you with no connection! More details bellow:<br />");
-            message.append("Airline: " + route.getAirline().getName() +
-                          ", Origin Airport: " + route.getOriginAirport().getName() +
-                          ", Destination Airport: " + route.getDestinationAirport().getName());
+            message.append("<b>Airline:</b> " + route.getAirline().getName() +
+                          ", <b>Origin Airport:</b> " + route.getOriginAirport().getName() + "[" + route.getOriginAirport().getIataThree() + "]" +
+                          ", <b>Destination Airport:</b> " + route.getDestinationAirport().getName() + "[" + route.getDestinationAirport().getIataThree() + "]");
         }
 
         return message.toString();

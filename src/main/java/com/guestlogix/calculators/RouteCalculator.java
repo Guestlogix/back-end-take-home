@@ -49,7 +49,67 @@ public class RouteCalculator {
             return routesPair;
 
         //Since there was no routes without connections on the above portion, then immediately return the bellow result.
-        return this.calculateShortestRouteWithConnections(originAirport, destinationAirport);
+//        return this.calculateShortestRouteWithConnections(originAirport, destinationAirport);
+        return this.calculateShortestRouteNew(routesWithOrigin, destinationAirport);
+    }
+
+    private KeyValueVo<Integer, List<Route>> calculateShortestRouteNew(List<Route> routesWithOrigin, Airport destinationAirport) {
+        KeyValueVo<Integer, List<Route>> routesFound = new KeyValueVo<>(0, new ArrayList<>());
+
+        if(routesWithOrigin == null || routesWithOrigin.size() == 0) return routesFound; //If invalid parameter, then fail fast empty routes.
+        Airport originAirport = routesWithOrigin.stream().findFirst().get().getOriginAirport();//All the routes in this array has the same origin (the user's required origin)
+
+        Optional<Route> routeWithoutConnection = routesWithOrigin.stream().filter(r -> r.getDestinationAirport().getId().equals(destinationAirport.getId())).findAny();
+        if(routeWithoutConnection.isPresent()) {
+            //Here the route without connection is calculated
+            routesFound.getValue().add(routeWithoutConnection.get());
+            return routesFound;
+        } else {
+            //In here all routes with the required destinationAirport (but not the required origin) are loaded in memory.
+            //And then, all the routes with destinations to the origins of the routesWithRequiredDestination is loaded (trying to make the first connection with where the user is departing)
+            List<Route> routesWithRequiredDestination = this.routeService.findByDestinationAirportId(destinationAirport.getId());
+            List<Route> firstLevelRoutes = new ArrayList<>(); //First level routes, are the ones that has one connection to the required destination
+
+            masterLoop: //An alias to this for loop, so we're able to break it in the inner loop
+            for(Route destinationRoute : routesWithRequiredDestination) {
+                firstLevelRoutes.addAll(this.routeService.findByDestinationAirportId(destinationRoute.getOriginAirport().getId()));
+
+                //Going to the first level
+                for(Route firstLevelRoute : firstLevelRoutes) {
+                    //If found, then add it to the routesFound and update the number of connections to one.
+                    if(firstLevelRoute.getOriginAirport().getId().equals(originAirport.getId())) {
+                        routesFound.getValue().add(firstLevelRoute); //Adding the destinationRoute with the same origin as the user's
+                        routesFound.getValue().add(destinationRoute);
+                        routesFound.setKey(1);
+                        break masterLoop;
+                    }
+                }
+
+                //Going second level
+                List<Route> secondLevelRoutes = new ArrayList<>();
+                for(Route firstLevelRoute : firstLevelRoutes) {
+                    secondLevelRoutes.addAll(this.routeService.findByDestinationAirportId(firstLevelRoute.getOriginAirport().getId()));
+
+                    for(Route secondLevelRoute : secondLevelRoutes) {
+                        //If found, then add it to the routesFound and update the number of connections to two.
+                        try {
+                            if (secondLevelRoute.getOriginAirport().getId().equals(originAirport.getId())) {
+                                routesFound.getValue().add(secondLevelRoute);
+                                routesFound.getValue().add(firstLevelRoute);
+                                routesFound.getValue().add(destinationRoute);
+                                routesFound.setKey(2);
+                                break masterLoop;
+                            }
+                        } catch(NullPointerException ex) {
+                            //suppress it for now.
+                            ex.printStackTrace();
+                        }
+                    }
+                }
+            }
+
+            return routesFound;
+        }
     }
 
     /**
