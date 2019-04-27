@@ -3,13 +3,15 @@ package com.guestlogix.calculators;
 import com.guestlogix.database.entities.Airport;
 import com.guestlogix.database.entities.Route;
 import com.guestlogix.services.RouteService;
+import com.guestlogix.utils.RouteCalculusStatus;
 import com.guestlogix.vos.KeyValueVo;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
+
+import static com.guestlogix.utils.RouteCalculusStatus.*;
 
 /**
  * This class have any methods required to do all sorts of route calculations.
@@ -34,8 +36,80 @@ public class RouteCalculator {
      * @return a KeyValueVo containing the quantity of connections (if required) and the list of routes to the destination Airport
      */
     public KeyValueVo<Integer, List<Route>> calculateShortestRoute(Airport originAirport, Airport destinationAirport) {
-        //This solution is not the best one, but with the time running short, it's the only one I could come up with. I do believe that for this problem a recursive method or a tree would be better.
-        //Even if I get rejected, I'll improve this code anyway, knowledge is never too much! =}
+        KeyValueVo<Integer, List<Route>> routesPair = new KeyValueVo<>(0, new ArrayList<>());
+        List<Route> routesWithOrigin = this.routeService.findByOriginAirportId(originAirport.getId());
+
+        if(routesWithOrigin.size() <= 0) return routesPair; //If no routes with the specified originAirport has been found, then fail fast and return an empty array of routes.
+
+        KeyValueVo<Integer, List<Route>> connectingRoutesFound = new KeyValueVo<>(-1, new ArrayList<>());
+        connectingRoutesFound.getValue().addAll(routesWithOrigin);
+
+        return this.calculateShortestRouteRecursively(destinationAirport, connectingRoutesFound);
+    }
+
+    /**
+     * Calculates the shortest route to the user's destination using a recursive approach.
+     * @param destinationAirport the airport the user wants to get to
+     * @param connectingRoutesFound the routes that was found in the previous recursive execution
+     * @return a KeyValueVo containing the number of connections and the list of routes
+     */
+    private KeyValueVo<Integer, List<Route>> calculateShortestRouteRecursively(Airport destinationAirport, KeyValueVo<Integer, List<Route>> connectingRoutesFound) {
+
+        //=================WARNING=================//
+        //Please have in mind this method hasn't been finished yet. I'm working on it... =}
+
+        KeyValueVo<Integer, List<Route>> routesFound = new KeyValueVo<>(0, new ArrayList<>());
+
+        if(connectingRoutesFound.getValue().size() == 0) return routesFound; //If invalid parameter, then fail fast empty routes.
+
+        RouteCalculusStatus routeCalculusStatus = KEEP_TRYING;
+
+        //By the end of this method the connection's number will increase (upon success of finding a route or not), so, increase it right away.
+        routesFound.setKey(routesFound.getKey() + 1);
+        List<Route> routes = new ArrayList<>();
+
+        masterLoop:
+        for(Route lastRouteFound : connectingRoutesFound.getValue()) {
+            //Loading routes with origin on the destination of this last route found (making the connections here)
+            routes.addAll(this.routeService.findByOriginAirportId(lastRouteFound.getDestinationAirport().getId()));
+
+            //If no connection whatsoever found, then break the loop and inform the user no route has been found for his flight. Then clear any previous data
+            //that may be in the connectingRoutesFound's list and stop trying to find a route.
+            if(routes.size() == 0) {
+                routesFound.getValue().clear();
+                routeCalculusStatus = NOT_FOUND;
+                break masterLoop;
+            }
+
+            for(Route route : routes) {
+                try {
+                    if(route.getDestinationAirport().getId().equals(destinationAirport.getId())) {
+                        //In this portion of the code a route has been found
+                        routesFound.getValue().add(lastRouteFound);
+                        routesFound.getValue().add(route);
+                        routeCalculusStatus = FOUND;
+                        break masterLoop;
+                    }
+                } catch(NullPointerException ex) {
+                    //There are some routes with no airports information, so just suppress them and keep trying.
+                }
+            }
+        }
+
+        //If no route found but the algorithm "thinks" there's still places to try, the do it! =}
+        if(routeCalculusStatus == KEEP_TRYING) {
+            //Even though these routes don't have the destination the user needs to go, they do have connection with from the user is departing.
+            //So add them on the lastRoutes found and recursively call this method to go one level deeper on the search.
+            connectingRoutesFound.getValue().addAll(routes);
+            return calculateShortestRouteRecursively(destinationAirport, connectingRoutesFound);
+        }
+
+        return routesFound;
+    }
+
+    public KeyValueVo<Integer, List<Route>> calculateShortestRouteBrute(Airport originAirport, Airport destinationAirport) {
+        //This solution is not the best one, but with the time running short, it's the only one I could come up with. I do believe that for this problem a recursive method or a
+        //tree would be better. Even if I get rejected, I'll keep improving this code anyways, knowledge is never too much. But please hire me! =}
 
         KeyValueVo<Integer, List<Route>> routesPair = new KeyValueVo<>(0, new ArrayList<>());
         List<Route> routesWithOrigin = this.routeService.findByOriginAirportId(originAirport.getId());
@@ -49,7 +123,11 @@ public class RouteCalculator {
             return routesPair;
 
         //Since there was no routes without connections on the above portion, then immediately return the bellow result.
-        return this.calculateShortestRouteNew(routesWithOrigin, destinationAirport);
+
+        KeyValueVo<Integer, List<Route>> lastRoutesFound = new KeyValueVo<>(-1, new ArrayList<>());
+        lastRoutesFound.getValue().addAll(routesWithOrigin);
+
+        return this.calculateShortestRoute(routesWithOrigin, destinationAirport);
     }
 
     /**
@@ -58,17 +136,18 @@ public class RouteCalculator {
      * @param destinationAirport the airport the user wants to arrive.
      * @return a KeyValueVo containing the number of connections and routes
      */
-    private KeyValueVo<Integer, List<Route>> calculateShortestRouteNew(List<Route> routesWithOrigin, Airport destinationAirport) {
+    private KeyValueVo<Integer, List<Route>> calculateShortestRoute(List<Route> routesWithOrigin, Airport destinationAirport) {
         KeyValueVo<Integer, List<Route>> routesFound = new KeyValueVo<>(0, new ArrayList<>());
 
         if(routesWithOrigin == null || routesWithOrigin.size() == 0) return routesFound; //If invalid parameter, then fail fast empty routes.
-        Airport originAirport = routesWithOrigin.stream().findFirst().get().getOriginAirport();//All the routes in this array has the same origin (the user's required origin)
+        Airport originAirport = routesWithOrigin.get(0).getOriginAirport();//All the routes in this array has the same origin (the user's required origin)
 
         Optional<Route> routeWithoutConnection = routesWithOrigin.stream().filter(r -> r.getDestinationAirport().getId().equals(destinationAirport.getId())).findAny();
         if(routeWithoutConnection.isPresent()) {
             //Here the route without connection is calculated
             routesFound.getValue().add(routeWithoutConnection.get());
             return routesFound;
+
         } else {
             //In here all routes with the required destinationAirport (but not the required origin) are loaded in memory.
             //And then, all the routes with destinations to the origins of the routesWithRequiredDestination is loaded (trying to make the first connection with where the user is departing)
@@ -90,7 +169,7 @@ public class RouteCalculator {
                             break masterLoop;
                         }
                     } catch(NullPointerException ex) {
-                        //The are some routes with no airports information, so just suppress them and keep going.
+                        //There are some routes with no airports information, so just suppress them and keep going.
                     }
                 }
 
@@ -109,7 +188,7 @@ public class RouteCalculator {
                                 break masterLoop;
                             }
                         } catch(NullPointerException ex) {
-                            //The are some routes with no airports information, so just suppress them and keep going.
+                            //There are some routes with no airports information, so just suppress them and keep going.
                         }
                     }
                 }
@@ -134,7 +213,7 @@ public class RouteCalculator {
                                     break masterLoop;
                                 }
                             } catch(NullPointerException ex) {
-                                //The are some routes with no airports information, so just suppress them and keep going.
+                                //There are some routes with no airports information, so just suppress them and keep going.
                             }
                         }
                     }

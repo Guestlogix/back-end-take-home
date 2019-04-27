@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.swing.*;
 import java.util.List;
 
 /**
@@ -32,12 +31,13 @@ public class RouteResource {
     private RouteService routeService;
 
     /**
-     * Calculates the shortest route based on the origin and destination airport parameters.
+     * This method calculates in a recursive approach the shortest route based on the origin and destination airport parameters.
+     *
      * @param originAirportIataCode the origin airport code to be used in the calculus
      * @param destinationAirportIataCode the destination airport code to be used in the calculus
-     * @return
+     * @return a String containing the message that will be displayed to the user
      */
-    @GetMapping("/calculate/{origin}/{destination}")
+    @GetMapping("/calculate-recursive/{origin}/{destination}")
     public String calculate(@PathVariable("origin") String originAirportIataCode, @PathVariable("destination") String destinationAirportIataCode) {
         Airport originAirport = this.airportService.findByIataThree(originAirportIataCode);
         Airport destinationAirport = this.airportService.findByIataThree(destinationAirportIataCode);
@@ -51,13 +51,33 @@ public class RouteResource {
         return this.createRouteMessage(shortestRoute);
     }
 
+    /**
+     * This method calculates the shortest route based on the origin and destination airport parameters.
+     * @param originAirportIataCode the origin airport code to be used in the calculus
+     * @param destinationAirportIataCode the destination airport code to be used in the calculus
+     * @return a String containing the message that will be displayed to the user
+     */
+    @GetMapping("/calculate/{origin}/{destination}")
+    public String calculateTest(@PathVariable("origin") String originAirportIataCode, @PathVariable("destination") String destinationAirportIataCode) {
+        Airport originAirport = this.airportService.findByIataThree(originAirportIataCode);
+        Airport destinationAirport = this.airportService.findByIataThree(destinationAirportIataCode);
+
+        //Whenever the exception bellow is thrown, Spring will make use of the AirportNotFoundAdvice class to return a meaningful information of what happened.
+        if(originAirport == null) throw new AirportNotFoundException(originAirportIataCode);
+        if(destinationAirport == null) throw new AirportNotFoundException(destinationAirportIataCode);
+
+        KeyValueVo<Integer, List<Route>> shortestRoute = new RouteCalculator(this.routeService).calculateShortestRouteBrute(originAirport, destinationAirport);
+
+        return this.createRouteMessage(shortestRoute);
+    }
+
     private String createRouteMessage(KeyValueVo<Integer, List<Route>> shortestRoute) {
         StringBuilder message = new StringBuilder();
         //Condition for no route found.
         if(shortestRoute.getValue().size() == 0) {
             message.append("Dear user, we hope you're doing great today!<br /> Unfortunately we couldn't find any routes for your flight.<br />");
             message.append("Our systems are always updated with the latest flights in the market! So please try again in some hours and maybe we can find a flight for you!<br /><br />");
-            message.append("Yours sincerely GuestLogix =}");
+            message.append("Yours sincerely, GuestLogix =}");
         } else if(shortestRoute.getValue().size() > 1) { //Condition for route with more than one connection
             message.append("Dear user, we hope you're doing great today! If not, then cheer up because we found a flight for you! More details bellow:<br />");
             message.append("Number of connections: " + shortestRoute.getKey() + "<br /><br />");
