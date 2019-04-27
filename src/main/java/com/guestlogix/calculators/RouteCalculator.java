@@ -54,10 +54,6 @@ public class RouteCalculator {
      * @return a KeyValueVo containing the number of connections and the list of routes
      */
     private KeyValueVo<Integer, List<Route>> calculateShortestRouteRecursively(Airport destinationAirport, KeyValueVo<Integer, List<Route>> connectingRoutesFound) {
-
-        //=================WARNING=================//
-        //Please have in mind this method hasn't been finished yet. I'm working on it... =}
-
         KeyValueVo<Integer, List<Route>> routesFound = new KeyValueVo<>(0, new ArrayList<>());
 
         if(connectingRoutesFound.getValue().size() == 0) return routesFound; //If invalid parameter, then fail fast empty routes.
@@ -69,9 +65,9 @@ public class RouteCalculator {
         List<Route> routes = new ArrayList<>();
 
         masterLoop:
-        for(Route lastRouteFound : connectingRoutesFound.getValue()) {
+        for(Route connectingRoute : connectingRoutesFound.getValue()) {
             //Loading routes with origin on the destination of this last route found (making the connections here)
-            routes.addAll(this.routeService.findByOriginAirportId(lastRouteFound.getDestinationAirport().getId()));
+            routes.addAll(this.routeService.findByOriginAirportId(connectingRoute.getDestinationAirport().getId()));
 
             //If no connection whatsoever found, then break the loop and inform the user no route has been found for his flight. Then clear any previous data
             //that may be in the connectingRoutesFound's list and stop trying to find a route.
@@ -81,12 +77,12 @@ public class RouteCalculator {
                 break masterLoop;
             }
 
-            for(Route route : routes) {
+            for(Route lastRoute : routes) {
                 try {
-                    if(route.getDestinationAirport().getId().equals(destinationAirport.getId())) {
-                        //In this portion of the code a route has been found
-                        routesFound.getValue().add(lastRouteFound);
-                        routesFound.getValue().add(route);
+                    if(lastRoute.getDestinationAirport().getId().equals(destinationAirport.getId())) {
+                        //In this portion of the code a lastRoute has been found
+                        routesFound.getValue().add(connectingRoute);
+                        routesFound.getValue().add(lastRoute);
                         routeCalculusStatus = FOUND;
                         break masterLoop;
                     }

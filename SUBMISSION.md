@@ -1,6 +1,11 @@
 # GuestLogix Challenge by Vanderson
 
-## Getting Started
+## Important Info:
+- This application already has a routes calculator using Brute Force and a pseudo solution using recursive calls.
+  Which didn't quite work, but now I'm working on it using Tree and I'm really confident it's going to work 
+  flawlessly. I'm going to push this code today (2019/04/27).
+
+## Getting Started:
 - Please clone this repository to your pc.
 - Open the project using IntelliJ IDEA.
 - Run the main method BackEndTakeHomeApplication.main. 
