@@ -31,13 +31,13 @@ public class RouteResource {
     private RouteService routeService;
 
     /**
-     * This method calculates in a recursive approach the shortest route based on the origin and destination airport parameters.
-     *
+     * This method calculates the shortest route based on the origin and destination airport parameters. It uses a Tree algorithm approach, which I think was
+     * the best approach for the problem at hand. This algorithm will calculate a possible route with no limitation of connections number.
      * @param originAirportIataCode the origin airport code to be used in the calculus
      * @param destinationAirportIataCode the destination airport code to be used in the calculus
      * @return a String containing the message that will be displayed to the user
      */
-    @GetMapping("/calculate-recursive/{origin}/{destination}")
+    @GetMapping("/calculate/{origin}/{destination}")
     public String calculate(@PathVariable("origin") String originAirportIataCode, @PathVariable("destination") String destinationAirportIataCode) {
         Airport originAirport = this.airportService.findByIataThree(originAirportIataCode);
         Airport destinationAirport = this.airportService.findByIataThree(destinationAirportIataCode);
@@ -46,19 +46,20 @@ public class RouteResource {
         if(originAirport == null) throw new AirportNotFoundException(originAirportIataCode);
         if(destinationAirport == null) throw new AirportNotFoundException(destinationAirportIataCode);
 
-        KeyValueVo<Integer, List<Route>> shortestRoute = new RouteCalculator(this.routeService).calculateShortestRoute(originAirport, destinationAirport);
+        KeyValueVo<Integer, List<Route>> shortestRoute = new RouteCalculator(this.routeService).calculateShortestRouteTree(originAirport, destinationAirport);
 
         return this.createRouteMessage(shortestRoute);
     }
 
     /**
-     * This method calculates the shortest route based on the origin and destination airport parameters.
+     * This method calculates in a recursive approach the shortest route based on the origin and destination airport parameters.
+     *
      * @param originAirportIataCode the origin airport code to be used in the calculus
      * @param destinationAirportIataCode the destination airport code to be used in the calculus
      * @return a String containing the message that will be displayed to the user
      */
-    @GetMapping("/calculate/{origin}/{destination}")
-    public String calculateTest(@PathVariable("origin") String originAirportIataCode, @PathVariable("destination") String destinationAirportIataCode) {
+    @GetMapping("/calculate-recursive/{origin}/{destination}")
+    public String calculateRecursive(@PathVariable("origin") String originAirportIataCode, @PathVariable("destination") String destinationAirportIataCode) {
         Airport originAirport = this.airportService.findByIataThree(originAirportIataCode);
         Airport destinationAirport = this.airportService.findByIataThree(destinationAirportIataCode);
 
@@ -66,7 +67,7 @@ public class RouteResource {
         if(originAirport == null) throw new AirportNotFoundException(originAirportIataCode);
         if(destinationAirport == null) throw new AirportNotFoundException(destinationAirportIataCode);
 
-        KeyValueVo<Integer, List<Route>> shortestRoute = new RouteCalculator(this.routeService).calculateShortestRouteBrute(originAirport, destinationAirport);
+        KeyValueVo<Integer, List<Route>> shortestRoute = new RouteCalculator(this.routeService).calculateShortestRouteRecursive(originAirport, destinationAirport);
 
         return this.createRouteMessage(shortestRoute);
     }

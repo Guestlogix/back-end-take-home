@@ -10,7 +10,7 @@ package com.guestlogix.resources.exceptions;
 public class AirportNotFoundException extends RuntimeException {
 
     public AirportNotFoundException(String airportIataCode) {
-        super("Could not found Airport for the " + airportIataCode + " IATA Code.");
+        super("Could not find Airport for the " + airportIataCode + " IATA Code.");
     }
 
 }
