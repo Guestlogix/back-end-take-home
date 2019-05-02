@@ -1,6 +1,7 @@
 # GuestLogix Challenge by Vanderson
 
 ## Important Info:
+<<<<<<< HEAD
 - This application has two ways of calculating the shortest route.
  
   1- A pseudo solution using recursive calls, which I didn't finish but decided to leave it in the application so 
@@ -12,7 +13,12 @@
   
   Oh! And before I forget, THANK YOU VERY MUCH for considering me for this position, it was a huge pleasure working 
   on this challenge.
-  
+=======
+- This application already has a routes calculator using Brute Force and a pseudo solution using recursive calls.
+  Which didn't quite work, but now I'm working on it using Tree and I'm really confident it's going to work 
+  flawlessly.
+>>>>>>> 44392c5befaebf803d2d8ea08a889d19e665aede
+
 ## Getting Started:
 - Please clone this repository to your pc.
 - Open the project using IntelliJ IDEA.
