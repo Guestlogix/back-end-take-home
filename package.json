@@ -1,0 +1,25 @@
+{
+  "name": "back-end-take-home",
+  "version": "1.0.0",
+  "description": "At Guestlogix we feel that putting developers on the spot with advanced algorithmic puzzles doesn’t exactly highlight one’s true skillset. The intention of this assessment is to see how you approach and tackle a problem in the real world, not quivering in front of a whiteboard.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sadelokiki/back-end-take-home.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sadelokiki/back-end-take-home/issues"
+  },
+  "homepage": "https://github.com/sadelokiki/back-end-take-home#readme",
+  "dependencies": {
+    "csv-parser": "^2.2.0",
+    "express": "^4.16.4",
+    "mongoose": "^5.5.3"
+  }
+}
