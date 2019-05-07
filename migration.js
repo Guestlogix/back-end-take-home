@@ -36,7 +36,7 @@ function runMigration() {
       throw err;
     }
     if(airports.length > 0) {
-      console.log('Airport data exists')
+      console.log('Airport data exists');
     } else {
       migrate();
     }
