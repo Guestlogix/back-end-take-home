@@ -1,4 +1,3 @@
-### Introduction
 ### GuestLogix Flight API 
 
 ## Introduction
@@ -8,7 +7,7 @@ This solution was built using the BFS(Breath First Search Algorithm) to:
 - Give user feedback when no route is found between a given origin and destination.
 
 ## Getting Started
-To run this application successfully, simply follow the following steps:
+To run this application locally, simply follow the following steps:
 - Clone the repo
 - Run `node migration.js` to seed your local db
 - Wait for about 30 seconds for the above process to complete
@@ -17,7 +16,7 @@ To run this application successfully, simply follow the following steps:
 
 ## Testing the API
 - Go to Postman or your browser and pass in the url: `localhost:3000/api/routes?origin=XXX&destination=YYY`
-- XXX and YYY represent the 'IATA 3' code for your source and destination respectively.
+- XXX and YYY represent the 'IATA 3' code for your origin and destination respectively.
 - A sample test with `http://localhost:3000/api/routes?origin=ABJ&destination=IST` will return:
 
 {
