@@ -1,4 +1,4 @@
-### GuestLogix Flight API 
+# GuestLogix Flight API 
 
 ## Introduction
 This solution was built using the BFS(Breath First Search Algorithm) to:
