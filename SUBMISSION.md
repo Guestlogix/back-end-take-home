@@ -1,6 +1,6 @@
 # Assumptions
 
-1. The target machine has node version 10.15 or docker installed and running.
+1. The target machine has node version 8.15 or docker installed and running.
 
 
 # Decisions
