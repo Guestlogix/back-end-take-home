@@ -1,0 +1,15 @@
+version: '3.7'
+
+services:
+
+  service:
+    build: .
+    container_name: shortest-path-service
+    environment:
+      - NODE_ENV=development
+      - SERVICE_PORT=4100
+    ports:
+      - '4100:4100'
+    volumes:
+      - './:/usr/src/app'
+      - '/usr/src/app/node_modules'
