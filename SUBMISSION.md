@@ -107,6 +107,8 @@ To run this application locally, simply follow the following steps:
 }
 ```
 
+## Testing the API online
+To run the test, simply run `npm test`
 
 ### Few things to Note:
 There were some incomplete data set. E.g BKG is a route but has no corresponding airport in the airports.csv file.
