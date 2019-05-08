@@ -1,7 +1,3 @@
-const csv = require('csv-parser');
-const fs = require('fs');
-const results = [];
-
 function Stack(){
   this.stack = [];
 }
@@ -145,7 +141,7 @@ Graph.prototype = {
     } 
     
     var previousVertex = bfs.preceding[destination];
-    //Perform backtracking
+
     while (previousVertex !== null && previousVertex !== source) {
       path.push(previousVertex);
       previousVertex = bfs.preceding[previousVertex];
@@ -156,7 +152,7 @@ Graph.prototype = {
     } else { 
         path.push(source);
     }
-    //print final results
+
     finalString = path.pop();
     while(!path.isEmpty()) {
         finalString += '-' + path.pop();

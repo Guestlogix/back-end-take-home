@@ -36,21 +36,27 @@ module.exports = {
     .then(getAirportData)
     .then(airports => {
       if(airports && airports.length > 1) {
-        res.status(200).json({
+        return res.status(200).json({
           message: 'Found shortest route',
           airports  
         })
-      } else {
-        res.status(200).json({
+      } 
+      if(airports && airports.length == 1) {
+        return res.status(200).json({
           message: `No route found between ${origin} and ${destination}`,
+        })
+      }
+      else {
+        return res.status(400).json({
+          message: `Source or destination not found`,
         })
       }
     })
     .catch(error =>{
       res.status(400).json({
-        message: 'Source or destination not found',
+        message: 'An error occured when searching for the routes',
         error
       })
-    });
+    })
   }) 
 }
