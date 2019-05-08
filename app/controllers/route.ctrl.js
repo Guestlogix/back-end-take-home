@@ -41,11 +41,6 @@ module.exports = {
           airports  
         })
       } 
-      if(airports && airports.length == 1) {
-        return res.status(200).json({
-          message: `No route found between ${origin} and ${destination}`,
-        })
-      }
       else {
         return res.status(400).json({
           message: `Source or destination not found`,
