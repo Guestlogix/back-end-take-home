@@ -50,3 +50,6 @@ To run this application locally, simply follow the following steps:
 }
 ```
 
+### Few things to Note:
+There were some incomplete data set. E.g BKG is a route but has no corresponding airport in the airports.csv file.
+
