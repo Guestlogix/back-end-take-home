@@ -107,7 +107,7 @@ To run this application locally, simply follow the following steps:
 }
 ```
 
-## Testing the API online
+## Run tests
 To run the test, simply run `npm test`
 
 ### Few things to Note:
