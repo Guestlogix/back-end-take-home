@@ -9,6 +9,7 @@ This solution was built using the BFS(Breath First Search Algorithm) to:
 ## Getting Started
 To run this application locally, simply follow the following steps:
 - Clone the repo
+- Install dependencies by running `npm install --save`
 - Run `node migration.js` to seed your local db
 - Wait for about 30 seconds for the above process to complete
 - Clear your terminal and run `npm start`
@@ -19,6 +20,7 @@ To run this application locally, simply follow the following steps:
 - XXX and YYY represent the 'IATA 3' code for your origin and destination respectively.
 - A sample test with `http://localhost:3000/api/routes?origin=ABJ&destination=IST` will return:
 
+```
 {
   "message": "Found shortest route",
   "airports": [
@@ -46,4 +48,5 @@ To run this application locally, simply follow the following steps:
       ]
   ]
 }
+```
 

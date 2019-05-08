@@ -26,7 +26,7 @@ function migrate() {
     });
   })
   .on('error', (err) => console.log(err))
-  .on('end', () => console.log('done populating cache'));
+  .on('end', () => console.log('CSV read complete'));
 };
 
 function runMigration() {
