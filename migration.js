@@ -30,7 +30,6 @@ function migrate() {
 };
 
 function runMigration() {
-  let result;
   Airport.find({}, (err, airports) => {
     if(err) {
       throw err;

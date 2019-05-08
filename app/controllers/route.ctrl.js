@@ -23,7 +23,7 @@ function getShortestRoute(source, destination) {
 function getAirportData(arr) {
   if(arr) {
     return Promise.all(arr.map((iata) => {
-      return Airports.find({iata3: iata });
+      return Airports.find({ iata3: iata });
     }))
   }
 }
