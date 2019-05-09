@@ -8,7 +8,7 @@ namespace Guestlogix.Controllers
     {
         [Route("api/route/getshortestroute")]
         [HttpGet]
-        public RouteModel GetShortestRoute(string origin, string destination)
+        public IHttpActionResult GetShortestRoute(string origin, string destination)
         {
             RouteModel rm = new RouteModel();
             rm.Flights = new List<FlightModel>();
@@ -18,7 +18,8 @@ namespace Guestlogix.Controllers
                 Origin = "o",
                 Destination = "d"
             });
-            return rm;
+            //return BadRequest("error");
+            return Ok(rm);
         }
     }
 }
