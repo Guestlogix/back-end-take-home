@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25123.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Guestlogix", "Guestlogix\Guestlogix.csproj", "{56681C03-6CBB-4EAD-943F-81AC617A50F7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Guestlogix.Tests", "Guestlogix.Tests\Guestlogix.Tests.csproj", "{B21A6EEF-CA3E-4F57-9C40-A2FF100BA501}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{56681C03-6CBB-4EAD-943F-81AC617A50F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{56681C03-6CBB-4EAD-943F-81AC617A50F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{56681C03-6CBB-4EAD-943F-81AC617A50F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{56681C03-6CBB-4EAD-943F-81AC617A50F7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B21A6EEF-CA3E-4F57-9C40-A2FF100BA501}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B21A6EEF-CA3E-4F57-9C40-A2FF100BA501}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B21A6EEF-CA3E-4F57-9C40-A2FF100BA501}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B21A6EEF-CA3E-4F57-9C40-A2FF100BA501}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
