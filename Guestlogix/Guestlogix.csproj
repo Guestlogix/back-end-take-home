@@ -249,6 +249,12 @@
     <Compile Include="Models\RouteModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\ApplicationOAuthProvider.cs" />
+    <Compile Include="repositories\classes\AirlineRepository.cs" />
+    <Compile Include="repositories\classes\AirportRepository.cs" />
+    <Compile Include="repositories\classes\FlightRepository.cs" />
+    <Compile Include="repositories\interfaces\IAirlineRepository.cs" />
+    <Compile Include="repositories\interfaces\IAirportRepository.cs" />
+    <Compile Include="repositories\interfaces\IFlightRepository.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
