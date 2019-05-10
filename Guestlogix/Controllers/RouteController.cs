@@ -18,8 +18,8 @@ namespace Guestlogix.Controllers
                 Origin = "o",
                 Destination = "d"
             });
-            //return BadRequest("error");
-            return Ok(rm);
+            return BadRequest("error");
+            //return Ok(rm);
         }
     }
 }

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using Guestlogix.resources;
 using System.Web.Mvc;
 
 namespace Guestlogix.Controllers
@@ -10,8 +7,8 @@ namespace Guestlogix.Controllers
     {
         public ActionResult Index()
         {
-            ViewBag.Title = "Home Page";
-
+            ViewBag.Title = Resource.STR_GET_SHORTEST_ROUTE_TITLE;
+            ViewBag.BtnLabel = Resource.STR_GET_SHORTEST_ROUTE_LABEL;
             return View();
         }
     }
