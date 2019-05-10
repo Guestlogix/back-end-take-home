@@ -19,14 +19,23 @@ To run the unit tests, go to Guestlogix.Tests/Models/AirNetworkTests.cs, right c
 Because I used Visual Studio to create a default MVC project, a lot of the files I committed to Git are not related to the solution of the exercise. The important files to read through are as follows:
 
 Guestlogix/Controllers/HomeController.cs: the index page endpoint
+
 Guestlogix/Controllers/RouteController.cs: api endpoint
+
 Guestlogix/data/DataLoader.cs: where data is loaded; somewhat mimics a dbcontext which connects to the database
+
 Guestlogix/exceptions: custom exceptions
+
 Guestlogix/Models: data models
+
 Guestlogix/Models/AirNetwork.cs: where the actual logic of GetShortestRoute is
+
 Guestlogix/repositories: interfaces and implementations of various repositories
+
 Guestlogix/resources: the string table, which can be localized
+
 Guestlogix/Views/Home/Index.cshtml, Guestlogix/Views/Shared/_Layout.cshtml, Guestlogix/Content/Site.css: frontend code
+
 Guestlogix.Tests/Models/AirNetworkTests.cs: unit tests for GetShortestRoute
 
 You'll notice that there's pretty much no documentation in the code. I believe in letting the code speak for itself, instead of writing excessive documentation.
