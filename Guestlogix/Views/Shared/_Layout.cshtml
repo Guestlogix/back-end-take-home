@@ -22,7 +22,9 @@
                 data: { origin: origin, destination: destination }
             }).done(function (data) {
                 $('#results').empty();
-                console.log(data);
+                $.each(data.Flights, function (i, f) {
+                    $('#results').append('<div>' + f.AirlineId + ': ' + f.Origin + '->' + f.Destination + '</div>');
+                });
             }).fail(function (error) {
                 var errorMsg = error.responseJSON.ExceptionMessage || error.responseJSON;
                 $('#results').empty().text(errorMsg);

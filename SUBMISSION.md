@@ -38,4 +38,4 @@ Guestlogix/Views/Home/Index.cshtml, Guestlogix/Views/Shared/_Layout.cshtml, Gues
 
 Guestlogix.Tests/Models/AirNetworkTests.cs: unit tests for GetShortestRoute
 
-You'll notice that there's pretty much no documentation in the code. I believe in letting the code speak for itself, instead of writing excessive documentation.
+You'll notice that there's almost no documentation in the code. I believe in letting the code speak for itself, instead of writing excessive documentation.
