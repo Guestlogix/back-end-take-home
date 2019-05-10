@@ -1,8 +1,8 @@
 ﻿using Guestlogix.Models;
+using Microsoft.VisualBasic.FileIO;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+using System.Web;
 
 namespace Guestlogix.data
 {
@@ -22,48 +22,74 @@ namespace Guestlogix.data
 
         private static IEnumerable<AirlineModel> GetAllAirlines()
         {
-            return File.ReadAllLines(AirlinesFile).Select(a =>
+            TextFieldParser parser = new TextFieldParser(GetActualPath(AirlinesFile));
+            List<AirlineModel> airlines = new List<AirlineModel>();
+            parser.HasFieldsEnclosedInQuotes = true;
+            parser.SetDelimiters(",");
+            parser.ReadLine();
+            while (!parser.EndOfData)
             {
-                string[] split = a.Split(',');
-                return new AirlineModel
+                string[] fields = parser.ReadFields();
+                airlines.Add(new AirlineModel
                 {
-                    Name = split[0].Trim(),
-                    TwoDigitCode = split[1].Trim(),
-                    ThreeDigitCode = split[2].Trim(),
-                    Country = split[3].Trim()
-                };
-            });
+                    Name = fields[0].Trim(),
+                    TwoDigitCode = fields[1].Trim(),
+                    ThreeDigitCode = fields[2].Trim(),
+                    Country = fields[3].Trim()
+                });
+            }
+            parser.Close();
+            return airlines;
         }
 
         private static IEnumerable<AirportModel> GetAllAirports()
         {
-            return File.ReadAllLines(AirportsFile).Select(a =>
+            TextFieldParser parser = new TextFieldParser(GetActualPath(AirportsFile));
+            List<AirportModel> airports = new List<AirportModel>();
+            parser.HasFieldsEnclosedInQuotes = true;
+            parser.SetDelimiters(",");
+            parser.ReadLine();
+            while (!parser.EndOfData)
             {
-                string[] split = a.Split(',');
-                return new AirportModel
+                string[] fields = parser.ReadFields();
+                airports.Add(new AirportModel
                 {
-                    Name = split[0].Trim(),
-                    City = split[1].Trim(),
-                    Country = split[2].Trim(),
-                    IATA3 = split[3].Trim(),
-                    Latitude = double.Parse(split[4].Trim()),
-                    Longitude = double.Parse(split[5].Trim())
-                };
-            });
+                    Name = fields[0].Trim(),
+                    City = fields[1].Trim(),
+                    Country = fields[2].Trim(),
+                    IATA3 = fields[3].Trim(),
+                    Latitude = double.Parse(fields[4].Trim()),
+                    Longitude = double.Parse(fields[5].Trim())
+                });
+            }
+            parser.Close();
+            return airports;
         }
 
         private static IEnumerable<FlightModel> GetAllFlights()
         {
-            return File.ReadAllLines(FlightsFile).Select(f =>
+            TextFieldParser parser = new TextFieldParser(GetActualPath(FlightsFile));
+            List<FlightModel> flights = new List<FlightModel>();
+            parser.HasFieldsEnclosedInQuotes = true;
+            parser.SetDelimiters(",");
+            parser.ReadLine();
+            while (!parser.EndOfData)
             {
-                string[] split = f.Split(',');
-                return new FlightModel
+                string[] fields = parser.ReadFields();
+                flights.Add(new FlightModel
                 {
-                    AirlineId = split[0].Trim(),
-                    Origin = split[1].Trim(),
-                    Destination = split[2].Trim()
-                };
-            });
+                    AirlineId = fields[0].Trim(),
+                    Origin = fields[1].Trim(),
+                    Destination = fields[2].Trim()
+                });
+            }
+            parser.Close();
+            return flights;
+        }
+
+        private static string GetActualPath(string filename)
+        {
+            return HttpContext.Current.Server.MapPath("~/bin/") + filename;
         }
     }
 }

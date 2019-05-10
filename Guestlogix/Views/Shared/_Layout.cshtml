@@ -21,9 +21,10 @@
                 url: 'api/route/getshortestroute',
                 data: { origin: origin, destination: destination }
             }).done(function (data) {
+                $('#results').empty();
                 console.log(data);
             }).fail(function (error) {
-                $('#results').text(error.responseJSON.Message);
+                $('#results').empty().text(error.responseJSON);
             });
         }
     </script>
