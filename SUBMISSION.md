@@ -16,7 +16,7 @@ To run the unit tests, go to Guestlogix.Tests/Models/AirNetworkTests.cs, right c
 
 ### About the code
 
-Because I used Visual Studio to create a default MVC project, a lot of the files I committed to Git are not related to the solution of the exercise. The important files to read through are as follows:
+The project is written in C#. Because I used Visual Studio to create a default MVC project, a lot of the files I committed to Git are not related to the solution of the exercise. The important files to go through are as follows:
 
 Guestlogix/Controllers/HomeController.cs: the index page endpoint
 
