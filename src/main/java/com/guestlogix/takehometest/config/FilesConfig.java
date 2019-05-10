@@ -5,10 +5,12 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.guestlogix.takehometest.algorithm.filter.DataFilter;
 import com.guestlogix.takehometest.model.Airline;
 import com.guestlogix.takehometest.model.Airport;
 import com.guestlogix.takehometest.model.Route;
@@ -22,7 +24,7 @@ public class FilesConfig {
 	public List<Airport> loadAirports() throws IOException {
 		List<Airport> airportList = new ArrayList<>();
 		BufferedReader csvReader = new BufferedReader(new FileReader(basePath.concat("airports.csv")));
-		String row = null;
+		String row = csvReader.readLine();
 		while ((row = csvReader.readLine()) != null) {  
 			String[] data = row.split(",");
 			String name = data[0];
@@ -41,7 +43,7 @@ public class FilesConfig {
 	public List<Airline> loadAirlines() throws IOException {
 		List<Airline> airlinetList = new ArrayList<>();
 		BufferedReader csvReader = new BufferedReader(new FileReader(basePath.concat("airlines.csv")));
-		String row = null;
+		String row = csvReader.readLine();
 		while ((row = csvReader.readLine()) != null) {  
 			String[] data = row.split(",");
 			String name = data[0];
@@ -55,18 +57,25 @@ public class FilesConfig {
 	}
 
 	@Bean
-	public List<Route> loadRoutes() throws IOException {
+	public List<Route> loadRoutes(List<Airline> airlineList, List<Airport> airportList) throws IOException {
 		List<Route> routeList = new ArrayList<>();
 		BufferedReader csvReader = new BufferedReader(new FileReader(basePath.concat("routes.csv")));
-		String row = null;
+		String row = csvReader.readLine();
 		while ((row = csvReader.readLine()) != null) {  
 			String[] data = row.split(",");
 			String airlineId = data[0];
 			String origin = data[1];
 			String destination = data[2];
-			routeList.add(Route.create(airlineId, origin, destination));
+			Airline airline = DataFilter.filterAirline(airlineId, airlineList);
+			Airport airportOrigin = DataFilter.filterAirport(origin, airportList);
+			Airport airportDest = DataFilter.filterAirport(destination, airportList);
+			if (Objects.nonNull(airline) &&
+					Objects.nonNull(airportOrigin) &&
+					Objects.nonNull(airportDest))
+			routeList.add(Route.create(airline, airportOrigin, airportDest));
 		}
 		csvReader.close();
 		return routeList;
 	}
+
 }
