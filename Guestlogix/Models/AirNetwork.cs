@@ -1,5 +1,4 @@
-﻿using Guestlogix.resources;
-using System;
+﻿using Guestlogix.exceptions;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -22,11 +21,11 @@ namespace Guestlogix.Models
         {
             if (!airports.Any(a => a.IATA3 == origin))
             {
-                throw new Exception(Resource.ERR_ORIGIN_NOT_FOUND);
+                throw new OriginNotFoundException();
             }
             if (!airports.Any(a => a.IATA3 == destination))
             {
-                throw new Exception(Resource.ERR_DESTINATION_NOT_FOUND);
+                throw new DestinationNotFoundException();
             }
             return new RouteModel { Flights = new List<FlightModel>() };
         }

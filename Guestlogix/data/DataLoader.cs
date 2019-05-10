@@ -89,7 +89,7 @@ namespace Guestlogix.data
 
         private static string GetActualPath(string filename)
         {
-            return HttpContext.Current.Server.MapPath("~/bin/") + filename;
+            return HttpContext.Current.Server.MapPath("~/bin/data/") + filename;
         }
     }
 }

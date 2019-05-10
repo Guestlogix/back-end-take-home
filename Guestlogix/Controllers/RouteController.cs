@@ -1,4 +1,5 @@
-﻿using Guestlogix.Models;
+﻿using Guestlogix.exceptions;
+using Guestlogix.Models;
 using Guestlogix.repositories.classes;
 using Guestlogix.repositories.interfaces;
 using System;
@@ -22,9 +23,13 @@ namespace Guestlogix.Controllers
                 AirNetwork airNetwork = new AirNetwork(airlineRepo.GetAllAirlines(), airportRepo.GetAllAirports(), flightRepo.GetAllFlights());
                 return Ok(airNetwork.GetShortestRoute(origin, destination));
             }
+            catch (CustomException ce)
+            {
+                return Content(HttpStatusCode.NotFound, ce.Message);
+            }
             catch (Exception e)
             {
-                return Content(HttpStatusCode.NotFound, e.Message);
+                return InternalServerError(e);
             }
         }
     }
