@@ -10,10 +10,10 @@ import java.util.Objects;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.guestlogix.takehometest.algorithm.filter.DataFilter;
 import com.guestlogix.takehometest.model.Airline;
 import com.guestlogix.takehometest.model.Airport;
 import com.guestlogix.takehometest.model.Route;
+import com.guestlogix.takehometest.utils.DataUtils;
 
 @Configuration
 public class FilesConfig {
@@ -66,9 +66,9 @@ public class FilesConfig {
 			String airlineId = data[0];
 			String origin = data[1];
 			String destination = data[2];
-			Airline airline = DataFilter.filterAirline(airlineId, airlineList);
-			Airport airportOrigin = DataFilter.filterAirport(origin, airportList);
-			Airport airportDest = DataFilter.filterAirport(destination, airportList);
+			Airline airline = DataUtils.retrieveAirline(airlineId, airlineList);
+			Airport airportOrigin = DataUtils.retrieveAirport(origin, airportList);
+			Airport airportDest = DataUtils.retrieveAirport(destination, airportList);
 			if (Objects.nonNull(airline) &&
 					Objects.nonNull(airportOrigin) &&
 					Objects.nonNull(airportDest))

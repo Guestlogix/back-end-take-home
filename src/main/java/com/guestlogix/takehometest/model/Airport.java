@@ -1,6 +1,6 @@
 package com.guestlogix.takehometest.model;
 
-public class Airport {
+public class Airport implements Comparable<Airport> {
 
 	private String name;
 	private String city;
@@ -82,6 +82,11 @@ public class Airport {
 		} else if (!iata_3.equals(other.iata_3))
 			return false;
 		return true;
+	}
+
+	@Override
+	public int compareTo(Airport o) {
+		return o.getIata_3().equals(this.iata_3) ? 0 : o.getIata_3().compareTo(this.iata_3);
 	}
 
 }
