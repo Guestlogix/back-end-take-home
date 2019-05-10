@@ -12,6 +12,8 @@ The project includes a simple frontend for convenience.
 
 I used Visual Studio 2015 Community, but I'm sure any version of VS will work. Simply double click Guestlogix.sln to open it in Visual Studio, and click the green triangle near the top that says Google Chrome to run the website. The frontend should automatically pop up.
 
+To run the unit tests, go to Guestlogix.Tests/Models/AirNetworkTests.cs, right click on the class name, and click Run Tests.
+
 ### About the code
 
 Because I used Visual Studio to create a default MVC project, a lot of the files I committed to Git are not related to the solution of the exercise. The important files to read through are as follows:
