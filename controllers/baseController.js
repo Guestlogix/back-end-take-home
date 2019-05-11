@@ -1,7 +1,4 @@
-const halson = require('halson');
 const { ERROR_CODES } = require('../lib/contants');
-const mongoose = require('mongoose');
-const helpers = require('../lib/helpers');
 
 class BaseController {
     constructor(){
@@ -33,28 +30,6 @@ class BaseController {
             message: message,
             data: data
         })
-    }
-
-    writeHAL(obj){
-        if(Array.isArray(obj)){
-            let newArr = obj.map(item => {
-                if (typeof(item._id) === 'string'){
-                    item._id = mongoose.Types.ObjectId(item._id);
-                    let json = JSON.stringify(item)               
-                    return helpers.makeHAL(json);  
-                }
-                return item.toHAL();
-            });
-            obj = halson(newArr);
-        }else {
-            if (obj && obj.toHAL){
-                obj = obj.toHAL();
-            }
-        }
-        if (!obj){
-             obj = {}
-        }
-        return obj;
     }
 }
 

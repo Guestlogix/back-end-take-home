@@ -1,3 +1,3 @@
 module.exports = (lib, app) => {
-    require('./route')(lib,app)
+    require('./routes')(lib,app)
 }
