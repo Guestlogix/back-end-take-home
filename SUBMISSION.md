@@ -17,4 +17,4 @@ To run project locally
 . You can change value for the query parameters origin and destination
 
 Observation
-I noticed some data are not valid but I didn't want to edit the data provided to me for the project,therefore, I handled the anomalities in the solution.
+I noticed some data are not correct/available but I didn't want to edit the data provided to me for the project,therefore, I handled the anomalities in the solution.

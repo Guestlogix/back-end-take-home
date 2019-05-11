@@ -31,11 +31,13 @@ class Routes extends BaseController {
             for (let path of routes){
                 graph.addEdge(path.from, path.to, path.weight)
             }
-            const shortest = graph.dijkstra(origin, destination)
-            if(shortest.length < 1){
-                return this.transformResponse(res, true, shortest, `Sorry, there are currently no available routes from ${origin} to ${destination}. Please check back later.`)
-            }  
-            return this.transformResponse(res, true, shortest, 'Operation successful')         
+            const shortestRoutes = graph.dijkstra(origin, destination)
+            if(shortestRoutes.length < 1){
+                return this.transformResponse(res, true, shortestRoutes, `Sorry, there are currently no available routes from ${origin} to ${destination}. Please check back later.`)
+            }
+            const searchDetails = this.responseDetails(shortestRoutes)
+            console.log(searchDetails)
+            return this.transformResponse(res, true, searchDetails, 'Operation successful')         
 
         }catch(err){
             next(this.transformResponse(res, false, 'InternalServerError', err.message))
@@ -49,6 +51,9 @@ class Routes extends BaseController {
                 theMap.push({
                     Id: i,
                     IATA_3: theItem['IATA 3'],
+                    Name:theItem.Name,
+                    City: theItem.City,
+                    Country: theItem.Country,
                     Latitude: theItem.Latitute,
                     Longitude: theItem.Longitude
                 })
@@ -89,6 +94,21 @@ class Routes extends BaseController {
         return arryPlaceHolder
     }
 
+    responseDetails(data){
+        let resMap = data.reduce((theMap, theItem, i) => {
+            const details = this.mapdata.allvertex.filter(x => x.IATA_3 === theItem)[0]
+            theMap[i] = {
+                Airport: details.Name,
+                City: details.City,
+                Country: details.Country,
+                IATA_3: details.IATA_3,
+                Latitude: details.Latitude,
+                Longitude: details.Longitude
+            }
+            return theMap
+        }, {})
+        return resMap
+    }
 }
 
 
