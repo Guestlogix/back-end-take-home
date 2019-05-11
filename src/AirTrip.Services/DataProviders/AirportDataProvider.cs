@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using AirTrip.Core;
 using CsvHelper;
@@ -7,13 +8,24 @@ using JetBrains.Annotations;
 
 namespace AirTrip.Services.DataProviders
 {
-    public class AirportDataProvider : DataProvider
+    public class AirportDataProvider : DataProvider<Airport>
     {
-        protected override IReadOnlyCollection<TResult> ParseData<TResult>(CsvReader reader)
+        private readonly string _location;
+
+        internal AirportDataProvider(string location)
+        {
+            _location = location;
+        }
+
+        protected override string Location => string.IsNullOrEmpty(_location)
+            ? Path.Combine(typeof(AirlineDataProvider).Assembly.Location, @"Data\airports.csv")
+            : _location;
+
+        protected override IReadOnlyCollection<Airport> ParseData(CsvReader reader)
         {
             reader.Configuration.RegisterClassMap<AirlineMapper>();
             var records = reader.GetRecords<AirportDataHolder>();
-            return (IReadOnlyCollection<TResult>)records.Select(Map).ToList();
+            return records.Select(Map).ToList();
         }
 
         private static Airport Map(AirportDataHolder dataHolder)

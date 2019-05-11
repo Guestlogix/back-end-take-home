@@ -15,13 +15,13 @@ namespace AirTrip.Services.Tests.DataProviders
         public void ShouldReturnAirportData()
         {
             // arrange
-            var service = new AirportDataProvider();
-
             var basePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             var location = Path.Combine(basePath, @"TestData\airports.csv");
 
+            var service = new AirportDataProvider(location);
+
             // act
-            var result = service.LoadData<Airport>(location);
+            var result = service.GetData();
 
             // assert
             result.Count.Should().Be(2);

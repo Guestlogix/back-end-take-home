@@ -5,24 +5,27 @@ using CsvHelper;
 
 namespace AirTrip.Services.DataProviders
 {
-    public abstract class DataProvider
+    public abstract class DataProvider<TResult> : IDataProvider<TResult>
     {
-        public IReadOnlyCollection<TResult> LoadData<TResult>(string path)
+        public IReadOnlyCollection<TResult> GetData()
         {
-            if (string.IsNullOrEmpty(path))
+            if (string.IsNullOrEmpty(Location))
             {
-                throw new ArgumentException("Value cannot be null or empty.", nameof(path));
+                throw new ArgumentException("Value cannot be null or empty.", nameof(Location));
             }
 
-            using (var reader = new StreamReader(path))
+            using (var reader = new StreamReader(Location))
             {
                 using (var csvReader = new CsvReader(reader))
                 {
-                    return ParseData<TResult>(csvReader);
+                    return ParseData(csvReader);
                 }
             }
         }
 
-        protected abstract IReadOnlyCollection<TResult> ParseData<TResult>(CsvReader reader);
+        protected abstract string Location { get; }
+
+        protected abstract IReadOnlyCollection<TResult> ParseData(CsvReader reader);
+        
     }
 }

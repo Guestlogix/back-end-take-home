@@ -13,23 +13,16 @@ namespace AirTrip.Services.Tests.DataProviders
     public class AirlineDataProviderTests
     {
         [Fact]
-        public void ShouldThrowIfNoPath()
-        {
-            // arrange, act, assert
-            Assert.Throws<ArgumentException>(() => new AirlineDataProvider().LoadData<Airline>(""));
-        }
-
-        [Fact]
         public void ShouldReturnAirlineData()
         {
             // arrange
-            var service = new AirlineDataProvider();
-
             var basePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             var location = Path.Combine(basePath, @"TestData\airlines.csv");
 
+            var service = new AirlineDataProvider(location);
+
             // act
-            var result = service.LoadData<Airline>(location);
+            var result = service.GetData();
 
             // assert
             result.Count.Should().Be(2);

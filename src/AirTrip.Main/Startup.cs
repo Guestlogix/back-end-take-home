@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using AirTrip.Services.DependencyInjection;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -10,6 +11,8 @@ namespace AirTrip.Main
         {
             services.AddMvc();
             services.AddLogging();
+
+            services.AddDataProviders();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
