@@ -10,15 +10,14 @@ class Routes extends BaseController {
         super();
         this.lib = lib;
         this.mapdata = {
-            allvertex: [],
-            paths: []
+            allvertex: []
         }
     }
 
     async index(req, res, next) {
         const { origin, destination } = req.query
         if(typeof(origin) !== 'string' && typeof(destination) !== 'string'){
-            next(this.transformResponse(res, false, 'BadRequest', `Invalid origin or destination`) 
+            next(this.transformResponse(res, false, 'BadRequest', `Invalid origin or destination`))
         }
         try{
             // populate airport
