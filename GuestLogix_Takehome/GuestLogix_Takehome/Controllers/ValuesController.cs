@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using System.IO;
 
 namespace GuestLogix_Takehome.Controllers
 {
@@ -11,9 +12,20 @@ namespace GuestLogix_Takehome.Controllers
     {
         // GET api/values
         [HttpGet]
-        public IEnumerable<string> Get()
+        public string Get()
         {
-            return new string[] { "value1", "value2" };
+            string filePath = @"data\airlines.csv";
+
+            string[] test = System.IO.File.ReadAllLines(filePath);
+
+            string result = "";
+
+            foreach (string airline in test)
+            {
+                result += airline + "\n";
+            }
+
+            return result;
         }
 
         // GET api/values/5
