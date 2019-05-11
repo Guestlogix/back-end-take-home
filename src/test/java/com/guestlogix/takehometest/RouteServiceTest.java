@@ -13,6 +13,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import com.guestlogix.takehometest.exception.ParametersNotFoundException;
 import com.guestlogix.takehometest.model.Airline;
 import com.guestlogix.takehometest.model.Airport;
 import com.guestlogix.takehometest.service.DataService;
@@ -43,7 +44,7 @@ public class RouteServiceTest {
 	}
 
 	@Test
-	public void shouldRetrieveBestRouteWhenNotRouteFound() {
+	public void shouldRetrieveBestRouteWhenNotRouteFound() throws ParametersNotFoundException {
 		Node node = Node.create(airport);
 
 		when(dataService.generatePath(anyString(), anyString())).thenReturn(node);
@@ -56,7 +57,7 @@ public class RouteServiceTest {
 	}
 
 	@Test
-	public void shouldRetrieveBestRouteWhenRouteFound() {
+	public void shouldRetrieveBestRouteWhenRouteFound() throws ParametersNotFoundException {
 		Node node = Node.create(airport);
 		Node node2 = Node.create(node, airport2, airline, 1);
 

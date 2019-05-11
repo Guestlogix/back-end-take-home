@@ -1,14 +1,17 @@
 package com.guestlogix.takehometest.config;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.ClassPathResource;
 
 import com.guestlogix.takehometest.model.Airline;
 import com.guestlogix.takehometest.model.Airport;
@@ -18,12 +21,12 @@ import com.guestlogix.takehometest.utils.DataUtils;
 @Configuration
 public class FilesConfig {
 
-	private String basePath = System.getProperty("user.dir") + "//data//";
+	private String basePath = "data/";
 
 	@Bean
 	public List<Airport> loadAirports() throws IOException {
 		List<Airport> airportList = new ArrayList<>();
-		BufferedReader csvReader = new BufferedReader(new FileReader(basePath.concat("airports.csv")));
+		BufferedReader csvReader = getCsvBufferedReader("airports.csv");
 		String row = csvReader.readLine();
 		while ((row = csvReader.readLine()) != null) {  
 			String[] data = row.split(",");
@@ -42,7 +45,7 @@ public class FilesConfig {
 	@Bean
 	public List<Airline> loadAirlines() throws IOException {
 		List<Airline> airlinetList = new ArrayList<>();
-		BufferedReader csvReader = new BufferedReader(new FileReader(basePath.concat("airlines.csv")));
+		BufferedReader csvReader = getCsvBufferedReader("airlines.csv");
 		String row = csvReader.readLine();
 		while ((row = csvReader.readLine()) != null) {  
 			String[] data = row.split(",");
@@ -59,7 +62,7 @@ public class FilesConfig {
 	@Bean
 	public List<Route> loadRoutes(List<Airline> airlineList, List<Airport> airportList) throws IOException {
 		List<Route> routeList = new ArrayList<>();
-		BufferedReader csvReader = new BufferedReader(new FileReader(basePath.concat("routes.csv")));
+		BufferedReader csvReader = getCsvBufferedReader("routes.csv");
 		String row = csvReader.readLine();
 		while ((row = csvReader.readLine()) != null) {  
 			String[] data = row.split(",");
@@ -76,6 +79,14 @@ public class FilesConfig {
 		}
 		csvReader.close();
 		return routeList;
+	}
+
+	private BufferedReader getCsvBufferedReader(final String file) throws IOException {
+		ClassPathResource resource = new ClassPathResource(basePath.concat(file));
+		InputStream inputStream = resource.getInputStream();
+		InputStreamReader streamReader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
+		BufferedReader csvReader = new BufferedReader(streamReader);
+		return csvReader;
 	}
 
 }

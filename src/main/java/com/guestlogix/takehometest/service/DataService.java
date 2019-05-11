@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.guestlogix.takehometest.exception.ParametersNotFoundException;
 import com.guestlogix.takehometest.model.Airport;
 import com.guestlogix.takehometest.model.Route;
 import com.guestlogix.takehometest.utils.DataUtils;
@@ -29,9 +30,12 @@ public class DataService {
 	private PriorityQueue<Airport> airportTaken = new PriorityQueue<>();
 	private Node shorterPath;
 
-	public Node generatePath(String origin, String dest) {
-		Airport airportDest = DataUtils.retrieveAirport(dest, airportList);
+	public Node generatePath(String origin, String dest) throws ParametersNotFoundException {
 		Airport airportOrigin = DataUtils.retrieveAirport(origin, airportList);
+		Airport airportDest = DataUtils.retrieveAirport(dest, airportList);
+
+		validateAirports(airportOrigin, airportDest);
+
 		logger.info("### SEARCHING PATH FROM [{}] TO [{}]", airportOrigin.getIata_3(), airportDest.getIata_3());
 		routesFound = 0;
 		airportTaken.clear();
@@ -41,6 +45,13 @@ public class DataService {
 		findFewerFlightsUntilDest(shorterPath, airportDest);
 		logger.info("### FINAL FEWER PATH - {}", DataUtils.showPath(shorterPath));
 		return shorterPath;
+	}
+
+	private void validateAirports(Airport airportOrigin, Airport airportDest) throws ParametersNotFoundException {
+		if (null == airportOrigin)
+			throw new ParametersNotFoundException("Origin airport not found!");
+		if (null == airportDest)
+			throw new ParametersNotFoundException("Destine airport not found!");
 	}
 
 	private void findFewerFlightsUntilDest(Node node, Airport dest) {
