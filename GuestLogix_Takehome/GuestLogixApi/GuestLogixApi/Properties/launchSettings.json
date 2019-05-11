@@ -3,7 +3,7 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:52182/",
+      "applicationUrl": "http://localhost:50230/",
       "sslPort": 0
     }
   },
@@ -16,14 +16,14 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "GuestLogix_Takehome": {
+    "GuestLogixApi": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "api/values",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "applicationUrl": "http://localhost:52183"
+      "applicationUrl": "http://localhost:50231"
     }
   }
 }

@@ -1,9 +1,0 @@
-C:\Users\Nathaniel\back-end-take-home\GuestLogix_Takehome\GuestLogix_Takehome\bin\Debug\netcoreapp1.1\GuestLogix_Takehome.deps.json
-C:\Users\Nathaniel\back-end-take-home\GuestLogix_Takehome\GuestLogix_Takehome\bin\Debug\netcoreapp1.1\GuestLogix_Takehome.runtimeconfig.json
-C:\Users\Nathaniel\back-end-take-home\GuestLogix_Takehome\GuestLogix_Takehome\bin\Debug\netcoreapp1.1\GuestLogix_Takehome.runtimeconfig.dev.json
-C:\Users\Nathaniel\back-end-take-home\GuestLogix_Takehome\GuestLogix_Takehome\bin\Debug\netcoreapp1.1\GuestLogix_Takehome.dll
-C:\Users\Nathaniel\back-end-take-home\GuestLogix_Takehome\GuestLogix_Takehome\bin\Debug\netcoreapp1.1\GuestLogix_Takehome.pdb
-C:\Users\Nathaniel\back-end-take-home\GuestLogix_Takehome\GuestLogix_Takehome\obj\Debug\netcoreapp1.1\GuestLogix_Takehome.csprojResolveAssemblyReference.cache
-C:\Users\Nathaniel\back-end-take-home\GuestLogix_Takehome\GuestLogix_Takehome\obj\Debug\netcoreapp1.1\GuestLogix_Takehome.AssemblyInfo.cs
-C:\Users\Nathaniel\back-end-take-home\GuestLogix_Takehome\GuestLogix_Takehome\obj\Debug\netcoreapp1.1\GuestLogix_Takehome.dll
-C:\Users\Nathaniel\back-end-take-home\GuestLogix_Takehome\GuestLogix_Takehome\obj\Debug\netcoreapp1.1\GuestLogix_Takehome.pdb

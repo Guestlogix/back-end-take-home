@@ -8,7 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace GuestLogix_Takehome
+namespace GuestLogixApi
 {
     public class Startup
     {
@@ -20,6 +20,7 @@ namespace GuestLogix_Takehome
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
                 .AddEnvironmentVariables();
             Configuration = builder.Build();
+
         }
 
         public IConfigurationRoot Configuration { get; }
