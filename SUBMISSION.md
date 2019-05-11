@@ -1,4 +1,4 @@
-Information
+# Information
 
 Built solution using nodejs using Dijkstra's algorithm 
 
@@ -7,7 +7,7 @@ The solution handled inconsistent/Invalid data by
 . Ensuring only valid routes (Origin / Destination) are added to the edges
 . ensuring there are available airline associated with a route
 
-To run project locally
+## To run project locally
 . Clone the project
 . Install project's dependencies using npm install
 . Run project using node index.js or nodemon index.js
@@ -16,5 +16,5 @@ To run project locally
 . Make a call to http://localhost:9000/routes/?origin=YZF&destination=YEG
 . You can change value for the query parameters origin and destination
 
-Observation
+## Observation
 I noticed some data are not correct/available but I didn't want to edit the data provided to me for the project,therefore, I handled the anomalities in the solution.
