@@ -45,6 +45,10 @@ namespace AirTrip.Main.Endpoints
                 Console.WriteLine(e);
                 return Ok("A Task Was Cancelled");
             }
+            catch (RouteNotSupportedException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

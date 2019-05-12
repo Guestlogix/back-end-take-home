@@ -28,17 +28,8 @@ namespace AirTrip.Services.Tests.DataProviders
 
             // assert
             result.Count.Should().Be(2);
-            AssertAirline(result.ElementAt(0), "United Airlines", "UA", "UAL", "United States");
-            AssertAirline(result.ElementAt(1), "WestJet", "WS", "WJA", "Canada");
-        }
-
-        [AssertionMethod]
-        private static void AssertAirline(Airline airline, string name, string twoDigitCode, string threeDigitCode, string country)
-        {
-            airline.Name.Should().Be(name);
-            airline.TwoDigitCode.Should().Be(twoDigitCode);
-            airline.ThreeDigitCode.Should().Be(threeDigitCode);
-            airline.Country.Should().Be(country);
+            result.ElementAt(0).Code.Should().Be("UA");
+            result.ElementAt(1).Code.Should().Be("WS");
         }
     }
 }

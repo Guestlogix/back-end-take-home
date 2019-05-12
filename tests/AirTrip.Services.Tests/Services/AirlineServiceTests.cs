@@ -37,8 +37,8 @@ namespace AirTrip.Services.Tests.Services
             // assert
             result.Should().NotBeEmpty();
             result.Count.Should().Be(2);
-            result.ElementAt(0).TwoDigitCode.Should().Be("AC");
-            result.ElementAt(1).TwoDigitCode.Should().Be("PD");
+            result.ElementAt(0).Code.Should().Be("AC");
+            result.ElementAt(1).Code.Should().Be("PD");
         }
 
         private sealed class MockDataProvider : IDataProvider<Airline>
@@ -47,8 +47,8 @@ namespace AirTrip.Services.Tests.Services
             {
                 var airlines = new[]
                 {
-                    new Airline("Air Canada", "AC", "ACC", "Canada"),
-                    new Airline("Porter", "PD", "PDD", "Canada"),
+                    new Airline("AC"),
+                    new Airline("PD")
                 };
 
                 return Task.FromResult( (IReadOnlyCollection<Airline>) airlines);

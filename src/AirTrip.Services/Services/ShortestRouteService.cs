@@ -35,15 +35,31 @@ namespace AirTrip.Services.Services
             var routes = await _routeService.GetAllRoutesAsync(cancellationToken);
 
             var origins = routes.Where(i => i.Origin == origin);
+            if (!origins.Any())
+            {
+                throw new RouteNotSupportedException($"Airport '{origin.Code}' is not supported");
+            }
+
             var destinations = routes.Where(i => i.Destination == destination);
+            if (!destinations.Any())
+            {
+                throw new RouteNotSupportedException($"Airport '{destination.Code}' is not supported");
+            }
 
             return new []
             {
                 new ShortestRoute(new List<Leg>
                 {
-                    
-                }), 
+                    new Leg(new Airline("AC"), origin, destination)
+                })
             };
+        }
+    }
+
+    public class RouteNotSupportedException : Exception
+    {
+        public RouteNotSupportedException(string message) : base(message)
+        {
         }
     }
 

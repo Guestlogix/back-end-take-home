@@ -38,11 +38,7 @@ namespace AirTrip.Services.DataProviders
 
         private static Airline Map(AirlineDataHolder dataHolder)
         {
-            return new Airline(
-                dataHolder.Name,
-                dataHolder.TwoDigitCode,
-                dataHolder.ThreeDigitCode,
-                dataHolder.Country);
+            return new Airline(dataHolder.TwoDigitCode);
         }
 
         [UsedImplicitly]

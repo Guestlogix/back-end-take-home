@@ -49,6 +49,8 @@ namespace AirTrip.Services.DataProviders
                 Map(m => m.City).Name("City");
                 Map(m => m.Country).Name("Country");
                 Map(m => m.Code).Name("IATA 3");
+                Map(m => m.Latitude).Name("Latitute");
+                Map(m => m.Longitude).Name("Longitude");
             }
         }
 
@@ -62,6 +64,10 @@ namespace AirTrip.Services.DataProviders
             public string Country { get; [UsedImplicitly] set; }
 
             public string Code { get; [UsedImplicitly] set; }
+
+            public double Latitude { get; [UsedImplicitly] set; }
+
+            public double Longitude { get; [UsedImplicitly] set; }
         }
     }
 }
