@@ -1,5 +1,6 @@
 ﻿namespace GuestLogixApi.Models
 {
+    using GuestLogixApi.Exceptions;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -8,32 +9,35 @@
     {
         //Airline information not actually used by the algorithm.
         //private static List<Airline> airlines = new List<Airline>();
-        private static List<Airport> airports = new List<Airport>();
-        private static List<Route> routes = new List<Route>();
+        private List<Airport> airports = new List<Airport>();
+        private List<Route> routes = new List<Route>();
 
         public AirRouteGraph()
         {
             ModelConstructor.BuildModels(out routes, out airports);
         }
 
+        public AirRouteGraph(List<Route> routes, List<Airport> airports)
+        {
+            this.routes = routes;
+            this.airports = airports;
+        }
+
         public List<Route> ShortestPath(string origin, string destination)
         {
             if (origin == destination)
             {
-                //TODO: better exception
-                throw new Exception("Please enter a destination that is different from your origin");
+                throw new OriginDestinationAreSameException("Please enter a destination that is different from your origin");
             }
             Airport start = airports.FirstOrDefault(x => x.IATA3 == origin);
             //TODO: Allow user to input city or airport name. Currently only accepts airport code.
             if (start == null)
             {
-                //TODO: better exception
-                throw new Exception("Origin not found");
+                throw new OriginNotFoundException("Origin not found");
             }
             if (!airports.Any(x => x.IATA3 == destination))
             {
-                //TODO: better exception
-                throw new Exception("Destination not found");
+                throw new DestinationNotFoundException("Destination not found");
             }
 
             //Initialize collections for tracking progress through BFS
@@ -81,7 +85,7 @@
                 }
             }
             //If we exit the loop without returning, we've exhausted the search without finding a route
-            throw new Exception("No route found");
+            throw new RouteNotFoundException("No route found");
         }
     }
 }
