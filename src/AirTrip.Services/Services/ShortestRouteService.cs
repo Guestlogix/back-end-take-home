@@ -46,12 +46,19 @@ namespace AirTrip.Services.Services
                 throw new RouteNotSupportedException($"Airport '{destination.Code}' is not supported");
             }
 
-            return new []
+            var directRoute = new Route(new Airline("AC"), origin, destination);
+
+            if (routes.Any(route => directRoute == route))
             {
-                new ShortestRoute(new List<Leg>
+                return new[]
                 {
-                    new Leg(new Airline("AC"), origin, destination)
-                })
+                    new ShortestRoute(new[] {origin, destination})
+                };
+            }
+
+            return new[]
+            {
+                new ShortestRoute(new[] {origin, destination})
             };
         }
     }
@@ -63,27 +70,13 @@ namespace AirTrip.Services.Services
         }
     }
 
-    public sealed class Leg
-    {
-        public Airline Airline { get; }
-        public Airport Origin { get; }
-        public Airport Destination { get; }
-
-        public Leg([NotNull] Airline airline, [NotNull] Airport origin, [NotNull] Airport destination)
-        {
-            Airline = airline ?? throw new ArgumentNullException(nameof(airline));
-            Origin = origin ?? throw new ArgumentNullException(nameof(origin));
-            Destination = destination ?? throw new ArgumentNullException(nameof(destination));
-        }
-    }
-
     public sealed class ShortestRoute
     {
-        public IReadOnlyCollection<Leg> Legs { get; }
+        public IReadOnlyCollection<Airport> Airports { get; }
 
-        public ShortestRoute([NotNull] IReadOnlyCollection<Leg> legs)
+        public ShortestRoute([NotNull] IReadOnlyCollection<Airport> airports)
         {
-            Legs = legs ?? throw new ArgumentNullException(nameof(legs));
+            this.Airports = airports ?? throw new ArgumentNullException(nameof(airports));
         }
     }
 }

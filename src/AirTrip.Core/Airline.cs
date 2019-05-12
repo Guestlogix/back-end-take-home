@@ -21,6 +21,36 @@ namespace AirTrip.Core
             }
         }
 
+        private bool Equals(Airline other)
+        {
+            return string.Equals(Code, other.Code);
+        }
+
+        public override string ToString()
+        {
+            return Code;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return ReferenceEquals(this, obj) || obj is Airline other && Equals(other);
+        }
+
+        public override int GetHashCode()
+        {
+            return Code.GetHashCode();
+        }
+
+        public static bool operator ==(Airline left, Airline right)
+        {
+            return Equals(left, right);
+        }
+
+        public static bool operator !=(Airline left, Airline right)
+        {
+            return !Equals(left, right);
+        }
+
         public string Code { get; }
     }
 }

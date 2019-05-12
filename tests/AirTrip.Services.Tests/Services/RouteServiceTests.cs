@@ -50,8 +50,8 @@ namespace AirTrip.Services.Tests.Services
             {
                 var routes = new[]
                 {
-                    new Route("AC", new Airport("YYZ"), new Airport("YOW")),
-                    new Route("AC", new Airport("YOW"), new Airport("YUL"))
+                    new Route(new Airline("AC"), new Airport("YYZ"), new Airport("YOW")),
+                    new Route(new Airline("AC"), new Airport("YOW"), new Airport("YUL"))
                 };
 
                 return Task.FromResult((IReadOnlyCollection<Route>) routes);

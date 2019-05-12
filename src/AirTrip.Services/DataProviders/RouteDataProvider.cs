@@ -42,7 +42,7 @@ namespace AirTrip.Services.DataProviders
         private static Route Map(RouteDataHolder dataHolder)
         {
             return new Route(
-                dataHolder.AirlineId,
+                new Airline(dataHolder.AirlineId), 
                 new Airport(dataHolder.Origin), 
                 new Airport(dataHolder.Destination));
         }

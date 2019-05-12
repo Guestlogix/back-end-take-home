@@ -2,16 +2,15 @@ using System;
 
 namespace AirTrip.Core
 {
-    // TODO: Remove stringly types
     public sealed class Route
     {
-        public string Airline { get; }
+        public Airline Airline { get; }
 
         public Airport Origin { get; }
 
         public Airport Destination { get; }
 
-        public Route(string airline, Airport origin, Airport destination)
+        public Route(Airline airline, Airport origin, Airport destination)
         {
             Airline = airline ?? throw new ArgumentNullException(nameof(airline));
             Origin = origin ?? throw new ArgumentNullException(nameof(origin));
