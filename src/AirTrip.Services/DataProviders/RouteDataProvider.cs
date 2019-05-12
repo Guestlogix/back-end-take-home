@@ -1,10 +1,11 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using AirTrip.Core;
+using AirTrip.Services.Services;
 using CsvHelper;
 using CsvHelper.Configuration;
 using JetBrains.Annotations;
@@ -14,10 +15,12 @@ namespace AirTrip.Services.DataProviders
     internal sealed class RouteDataProvider : DataProvider<Route>
     {
         private readonly string _location;
+        private readonly IAirportService _airportService;
 
         [UsedImplicitly]
-        public RouteDataProvider()
+        public RouteDataProvider([NotNull] IAirportService airlineService)
         {
+            _airportService = airlineService ?? throw new ArgumentNullException(nameof(airlineService));
         }
 
         internal RouteDataProvider(string location)
@@ -32,8 +35,8 @@ namespace AirTrip.Services.DataProviders
         protected override async Task<IReadOnlyCollection<Route>> LoadDataAsync(CsvReader reader, CancellationToken token)
         {
             reader.Configuration.RegisterClassMap<RouteMapper>();
-            var result = reader.GetRecords<RouteDataHolder>();
-            return await Task.FromResult(result.Select(Map).ToList());
+            var someTask = Task.Run(reader.GetRecords<RouteDataHolder>, token).GetAwaiter().GetResult();
+            return someTask.Select(Map).ToList();
         }
 
         private static Route Map(RouteDataHolder dataHolder)

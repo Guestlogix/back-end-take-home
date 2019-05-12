@@ -10,7 +10,7 @@ namespace AirTrip.Main.Endpoints
 {
     public class RouteSearchController : Controller
     {
-        private static readonly TimeSpan Timeout = TimeSpan.FromSeconds(3);
+        private static readonly TimeSpan Timeout = TimeSpan.FromSeconds(5);
         private readonly IShortestRouteService _shortestRouteService;
 
         public RouteSearchController([NotNull] IShortestRouteService shortestRouteService)
@@ -18,6 +18,12 @@ namespace AirTrip.Main.Endpoints
             _shortestRouteService = shortestRouteService ?? throw new ArgumentNullException(nameof(shortestRouteService));
         }
 
+        /// <summary>
+        /// Returns shortest route between Origin and Destination Airport
+        /// </summary>
+        /// <param name="origin"></param>
+        /// <param name="destination"></param>
+        /// <returns></returns>
         [HttpGet]
         [Route("/routeSearch")]
         public async Task<IActionResult> GetRoutes([FromQuery] string origin,[FromQuery] string destination)
@@ -34,10 +40,10 @@ namespace AirTrip.Main.Endpoints
                     return Ok(routes);
                 }
             }
-            catch (Exception e)
+            catch (TaskCanceledException e)
             {
                 Console.WriteLine(e);
-                throw;
+                return Ok("A Task Was Cancelled");
             }
         }
     }

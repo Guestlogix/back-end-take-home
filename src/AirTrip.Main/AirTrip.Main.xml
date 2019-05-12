@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>AirTrip.Main</name>
+    </assembly>
+    <members>
+        <member name="M:AirTrip.Main.Endpoints.HealthController.CheckHealth">
+            <summary>
+            Endpoint to check the health of the application
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:AirTrip.Main.Endpoints.RouteSearchController.GetRoutes(System.String,System.String)">
+            <summary>
+            Returns shortest route between Origin and Destination Airport
+            </summary>
+            <param name="origin"></param>
+            <param name="destination"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

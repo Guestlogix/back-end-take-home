@@ -37,7 +37,13 @@ namespace AirTrip.Services.Services
             var origins = routes.Where(i => i.Origin == origin);
             var destinations = routes.Where(i => i.Destination == destination);
 
-            return null;
+            return new []
+            {
+                new ShortestRoute(new List<Leg>
+                {
+                    
+                }), 
+            };
         }
     }
 

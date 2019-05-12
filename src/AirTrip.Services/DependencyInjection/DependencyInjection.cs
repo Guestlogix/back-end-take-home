@@ -30,8 +30,10 @@ namespace AirTrip.Services.DependencyInjection
                 throw new ArgumentNullException(nameof(services));
             }
 
-            services.AddSingleton<IRouteService, RouteService>();
             services.AddSingleton<IAirlineService, AirlineService>();
+            services.AddSingleton<IAirportService, AirportService>();
+            services.AddSingleton<IRouteService, RouteService>();
+
             services.AddSingleton<IShortestRouteService, ShortestRouteService>();
 
             return services;
