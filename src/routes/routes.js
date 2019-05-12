@@ -1,15 +1,21 @@
-import { getShortestRoutes } from '../controllers/routes';
+import { getShortestRoutes, getAllRoutes } from '../controllers/routes';
 
 module.exports = (app) => {
-    app.get('/', (req, res) => {
-        res.json({ info: 'Guestlogix Technical Assessment' });
+
+    app.get('/routes', async (req, res) => {
+        try {
+            const allRoutes = await getAllRoutes();
+            res.send(allRoutes);
+        } catch (error) {
+            res.status(500);
+        }
     });
 
     app.get('/routes/:origin&:destination', async (req, res) => {
         try {
             const shortestRoutes = await getShortestRoutes(req.params.origin, req.params.destination);
             res.send(shortestRoutes);
-        } catch (err) {
+        } catch (error) {
             res.status(500);
         }
     });

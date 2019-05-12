@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/pauladbol/back-end-take-home#readme",
   "dependencies": {
+    "csvtojson": "^2.0.8",
     "express": "^4.16.4"
   },
   "devDependencies": {
