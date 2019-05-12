@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace AirTrip.Services.DataProviders
 {
-    public interface IDataProvider<out TResult>
+    public interface IDataProvider<TResult>
     {
-        IReadOnlyCollection<TResult> GetData();
+        Task<IReadOnlyCollection<TResult>> GetDataAsync(CancellationToken token);
     }
 }

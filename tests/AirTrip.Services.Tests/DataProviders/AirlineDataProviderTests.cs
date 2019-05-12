@@ -2,6 +2,8 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
+using System.Threading.Tasks;
 using AirTrip.Core;
 using AirTrip.Services.DataProviders;
 using FluentAssertions;
@@ -13,7 +15,7 @@ namespace AirTrip.Services.Tests.DataProviders
     public class AirlineDataProviderTests
     {
         [Fact]
-        public void ShouldReturnAirlineData()
+        public async Task ShouldReturnAirlineData()
         {
             // arrange
             var basePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
@@ -22,7 +24,7 @@ namespace AirTrip.Services.Tests.DataProviders
             var service = new AirlineDataProvider(location);
 
             // act
-            var result = service.GetData();
+            var result = await service.GetDataAsync(CancellationToken.None);
 
             // assert
             result.Count.Should().Be(2);

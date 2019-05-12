@@ -5,33 +5,10 @@ namespace AirTrip.Core
 {
     public sealed class Airport
     {
-        public string Name { get; }
-        public string City { get; }
-        public string Country { get; }
-        public string Code { get; }
-
         private readonly Regex _threeCharacterRegex = new Regex("^[a-zA-Z]{3}$", RegexOptions.Compiled);
 
-        public Airport(string name, string city, string country, string code)
+        public Airport(string code)
         {
-            if (string.IsNullOrEmpty(name))
-            {
-                throw new ArgumentException("Value cannot be null or empty.", nameof(name));
-            }
-            Name = name;
-
-            if (string.IsNullOrEmpty(city))
-            {
-                throw new ArgumentException("Value cannot be null or empty.", nameof(city));
-            }
-            City = city;
-
-            if (string.IsNullOrEmpty(country))
-            {
-                throw new ArgumentException("Value cannot be null or empty.", nameof(country));
-            }
-            Country = country;
-
             if (string.IsNullOrEmpty(code))
             {
                 throw new ArgumentException("Value cannot be null or empty.", nameof(code));
@@ -43,8 +20,35 @@ namespace AirTrip.Core
             }
             else
             {
-                throw new InvalidOperationException($"{nameof(code)} is not 3 digit alpha characters");
+                throw new InvalidOperationException($"{nameof(code)} is not a valid Airport Code");
             }
+        }
+
+        public string Code { get; }
+
+        private bool Equals(Airport other)
+        {
+            return string.Equals(Code, other.Code);
+        }
+
+        public override bool Equals(object obj)
+        {
+            return ReferenceEquals(this, obj) || obj is Airport other && Equals(other);
+        }
+
+        public override int GetHashCode()
+        {
+            return (Code != null ? Code.GetHashCode() : 0);
+        }
+
+        public static bool operator ==(Airport left, Airport right)
+        {
+            return Equals(left, right);
+        }
+
+        public static bool operator !=(Airport left, Airport right)
+        {
+            return !Equals(left, right);
         }
     }
 }

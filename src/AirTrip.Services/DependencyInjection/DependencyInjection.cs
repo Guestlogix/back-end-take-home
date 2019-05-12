@@ -32,6 +32,7 @@ namespace AirTrip.Services.DependencyInjection
 
             services.AddSingleton<IRouteService, RouteService>();
             services.AddSingleton<IAirlineService, AirlineService>();
+            services.AddSingleton<IShortestRouteService, ShortestRouteService>();
 
             return services;
         }

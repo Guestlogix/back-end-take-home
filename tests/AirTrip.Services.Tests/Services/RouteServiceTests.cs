@@ -37,30 +37,32 @@ namespace AirTrip.Services.Tests.Services
             // assert
             result.Should().NotBeEmpty();
             result.Count.Should().Be(2);
-            result.ElementAt(0).Origin.Should().Be("YYZ");
-            result.ElementAt(0).Destination.Should().Be("YOW");
+            result.ElementAt(0).Origin.Should().Be(new Airport("YYZ"));
+            result.ElementAt(0).Destination.Should().Be(new Airport("YOW"));
 
-            result.ElementAt(1).Origin.Should().Be("YOW");
-            result.ElementAt(1).Destination.Should().Be("YUL");
+            result.ElementAt(1).Origin.Should().Be(new Airport("YOW"));
+            result.ElementAt(1).Destination.Should().Be(new Airport("YUL"));
         }
 
         private sealed class MockDataProvider : IDataProvider<Route>
         {
-            public IReadOnlyCollection<Route> GetData()
+            public Task<IReadOnlyCollection<Route>> GetDataAsync(CancellationToken token)
             {
-                return new[]
+                var routes = new[]
                 {
-                    new Route("AC", "YYZ", "YOW"),
-                    new Route("AC", "YOW", "YUL")
+                    new Route("AC", new Airport("YYZ"), new Airport("YOW")),
+                    new Route("AC", new Airport("YOW"), new Airport("YUL"))
                 };
+
+                return Task.FromResult((IReadOnlyCollection<Route>) routes);
             }
         }
 
         private sealed class EmptyDataProvider : IDataProvider<Route>
         {
-            public IReadOnlyCollection<Route> GetData()
+            public Task<IReadOnlyCollection<Route>> GetDataAsync(CancellationToken token)
             {
-                return null;
+                return Task.FromResult((IReadOnlyCollection<Route>) null);
             }
         }
     }

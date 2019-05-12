@@ -8,7 +8,7 @@ using JetBrains.Annotations;
 
 namespace AirTrip.Services.Services
 {
-    public sealed class AirlineService : IAirlineService
+    internal sealed class AirlineService : IAirlineService
     {
         private IReadOnlyCollection<Airline> _airlines;
         private readonly IDataProvider<Airline> _airlineDataProvider;
@@ -20,9 +20,20 @@ namespace AirTrip.Services.Services
 
         public async Task<IReadOnlyCollection<Airline>> GetAllAirlinesAsync(CancellationToken cancellationToken)
         {
-            _airlines = _airlineDataProvider.GetData() ?? Array.Empty<Airline>();
+            if (_airlines == null)
+            {
+                var airlines = await _airlineDataProvider.GetDataAsync(cancellationToken);
 
-            return await Task.FromResult(_airlines);
+                if (airlines != null)
+                {
+                    _airlines = airlines;
+                    return _airlines;
+                }
+
+                return Array.Empty<Airline>();
+            }
+
+            return Array.Empty<Airline>();
         }
     }
 }

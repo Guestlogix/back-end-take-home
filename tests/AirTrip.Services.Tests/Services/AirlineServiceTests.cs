@@ -43,21 +43,23 @@ namespace AirTrip.Services.Tests.Services
 
         private sealed class MockDataProvider : IDataProvider<Airline>
         {
-            public IReadOnlyCollection<Airline> GetData()
+            public Task<IReadOnlyCollection<Airline>> GetDataAsync(CancellationToken token)
             {
-                return new[]
+                var airlines = new[]
                 {
                     new Airline("Air Canada", "AC", "ACC", "Canada"),
                     new Airline("Porter", "PD", "PDD", "Canada"),
                 };
+
+                return Task.FromResult( (IReadOnlyCollection<Airline>) airlines);
             }
         }
 
         private sealed class EmptyDataProvider : IDataProvider<Airline>
         {
-            public IReadOnlyCollection<Airline> GetData()
+            public Task<IReadOnlyCollection<Airline>> GetDataAsync(CancellationToken token)
             {
-                return null;
+                return Task.FromResult((IReadOnlyCollection<Airline>) null);
             }
         }
     }

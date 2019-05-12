@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using AirTrip.Core;
 using AirTrip.Services.Services;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Mvc;
@@ -9,16 +10,17 @@ namespace AirTrip.Main.Endpoints
 {
     public class RouteSearchController : Controller
     {
-        private readonly IRouteService _routeService;
-        private static readonly TimeSpan Timeout = TimeSpan.FromMilliseconds(3);
+        private static readonly TimeSpan Timeout = TimeSpan.FromSeconds(3);
+        private readonly IShortestRouteService _shortestRouteService;
 
-        public RouteSearchController([NotNull] IRouteService routeService)
+        public RouteSearchController([NotNull] IShortestRouteService shortestRouteService)
         {
-            _routeService = routeService ?? throw new ArgumentNullException(nameof(routeService));
+            _shortestRouteService = shortestRouteService ?? throw new ArgumentNullException(nameof(shortestRouteService));
         }
 
+        [HttpGet]
         [Route("/routeSearch")]
-        public async Task<IActionResult> GetRoutes()
+        public async Task<IActionResult> GetRoutes([FromQuery] string origin,[FromQuery] string destination)
         {
             try
             {
@@ -26,7 +28,8 @@ namespace AirTrip.Main.Endpoints
                 {
                     cts.CancelAfter(Timeout);
 
-                    var routes = await _routeService.GetAllRoutesAsync(cts.Token);
+                    var routes = await _shortestRouteService
+                        .GetShortestRouteAsync(new Airport(origin), new Airport(destination), cts.Token);
 
                     return Ok(routes);
                 }

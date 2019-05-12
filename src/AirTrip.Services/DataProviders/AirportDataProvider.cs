@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using AirTrip.Core;
 using CsvHelper;
 using CsvHelper.Configuration;
@@ -26,26 +28,22 @@ namespace AirTrip.Services.DataProviders
             ? Path.Combine(Path.GetDirectoryName(GetType().Assembly.Location), @"Data\airports.csv")
             : _location;
 
-        protected override IReadOnlyCollection<Airport> ParseData(CsvReader reader)
+        protected override async Task<IReadOnlyCollection<Airport>> LoadDataAsync(CsvReader reader, CancellationToken token)
         {
-            reader.Configuration.RegisterClassMap<AirlineMapper>();
-            var records = reader.GetRecords<AirportDataHolder>();
-            return records.Select(Map).ToList();
+            reader.Configuration.RegisterClassMap<AirportMapper>();
+            var result = reader.GetRecords<AirportDataHolder>();
+            return await Task.FromResult(result.Select(Map).ToList());
         }
 
         private static Airport Map(AirportDataHolder dataHolder)
         {
-            return new Airport(
-                dataHolder.Name,
-                dataHolder.City,
-                dataHolder.Country,
-                dataHolder.Code);
+            return new Airport(dataHolder.Code);
         }
 
         [UsedImplicitly]
-        private sealed class AirlineMapper : ClassMap<AirportDataHolder>
+        private sealed class AirportMapper : ClassMap<AirportDataHolder>
         {
-            public AirlineMapper()
+            public AirportMapper()
             {
                 Map(m => m.Name).Name("Name");
                 Map(m => m.City).Name("City");

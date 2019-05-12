@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using AirTrip.Core;
 using CsvHelper;
 using CsvHelper.Configuration;
@@ -26,12 +28,12 @@ namespace AirTrip.Services.DataProviders
             ? Path.Combine(Path.GetDirectoryName(GetType().Assembly.Location), @"Data\airlines.csv")
             : _location;
 
-
-        protected override IReadOnlyCollection<Airline> ParseData(CsvReader reader)
+        protected override async Task<IReadOnlyCollection<Airline>> LoadDataAsync(
+            CsvReader reader, CancellationToken token)
         {
             reader.Configuration.RegisterClassMap<AirlineMapper>();
-            var records = reader.GetRecords<AirlineDataHolder>();
-            return records.Select(Map).ToList();
+            var result = reader.GetRecords<AirlineDataHolder>();
+            return await Task.FromResult(result.Select(Map).ToList());
         }
 
         private static Airline Map(AirlineDataHolder dataHolder)

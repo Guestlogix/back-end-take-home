@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
 using CsvHelper;
 
 namespace AirTrip.Services.DataProviders
 {
     public abstract class DataProvider<TResult> : IDataProvider<TResult>
     {
-        public IReadOnlyCollection<TResult> GetData()
+        public Task<IReadOnlyCollection<TResult>> GetDataAsync(CancellationToken token)
         {
             if (string.IsNullOrEmpty(Location))
             {
@@ -18,14 +20,14 @@ namespace AirTrip.Services.DataProviders
             {
                 using (var csvReader = new CsvReader(reader))
                 {
-                    return ParseData(csvReader);
+                    return LoadDataAsync(csvReader, token);
                 }
             }
         }
 
         protected abstract string Location { get; }
 
-        protected abstract IReadOnlyCollection<TResult> ParseData(CsvReader reader);
+        protected abstract Task<IReadOnlyCollection<TResult>> LoadDataAsync(CsvReader reader, CancellationToken token);
         
     }
 }
