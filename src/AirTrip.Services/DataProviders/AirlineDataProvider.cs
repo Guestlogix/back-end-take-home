@@ -10,7 +10,12 @@ namespace AirTrip.Services.DataProviders
 {
     internal sealed class AirlineDataProvider : DataProvider<Airline>
     {
-        private readonly string _location; 
+        private readonly string _location;
+
+        [UsedImplicitly]
+        public AirlineDataProvider()
+        {
+        }
 
         internal AirlineDataProvider(string location)
         {
@@ -18,8 +23,9 @@ namespace AirTrip.Services.DataProviders
         }
 
         protected override string Location => string.IsNullOrEmpty(_location)
-            ? Path.Combine(typeof(AirlineDataProvider).Assembly.Location, @"Data\airlines.csv")
+            ? Path.Combine(Path.GetDirectoryName(GetType().Assembly.Location), @"Data\airlines.csv")
             : _location;
+
 
         protected override IReadOnlyCollection<Airline> ParseData(CsvReader reader)
         {

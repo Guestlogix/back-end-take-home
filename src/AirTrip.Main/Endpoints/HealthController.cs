@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Collections.Generic;
+using AirTrip.Core;
+using Microsoft.AspNetCore.Mvc;
 
 namespace AirTrip.Main.Endpoints
 {

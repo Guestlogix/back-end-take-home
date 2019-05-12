@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using AirTrip.Core;
 using CsvHelper;
 using CsvHelper.Configuration;
@@ -12,14 +13,19 @@ namespace AirTrip.Services.DataProviders
     {
         private readonly string _location;
 
+        [UsedImplicitly]
+        public RouteDataProvider()
+        {
+        }
+
         internal RouteDataProvider(string location)
         {
             _location = location;
         }
 
-        protected override string Location => string.IsNullOrEmpty(_location)
-            ? Path.Combine(typeof(AirlineDataProvider).Assembly.Location, @"Data\routes.csv")
-            : _location;
+        protected override string Location => string.IsNullOrEmpty(_location) 
+                ? Path.Combine(Path.GetDirectoryName(GetType().Assembly.Location), @"Data\routes.csv") 
+                : _location;
 
         protected override IReadOnlyCollection<Route> ParseData(CsvReader reader)
         {

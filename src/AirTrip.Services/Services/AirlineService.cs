@@ -1,34 +1,28 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using AirTrip.Core;
 using AirTrip.Services.DataProviders;
+using JetBrains.Annotations;
 
 namespace AirTrip.Services.Services
 {
-    public sealed class AirlineService
+    public sealed class AirlineService : IAirlineService
     {
         private IReadOnlyCollection<Airline> _airlines;
         private readonly IDataProvider<Airline> _airlineDataProvider;
 
-        private readonly object _lockInstance = new object();
-
-        public AirlineService(IDataProvider<Airline> airlineDataProvider)
+        public AirlineService([NotNull] IDataProvider<Airline> airlineDataProvider)
         {
-            _airlineDataProvider = airlineDataProvider;
+            _airlineDataProvider = airlineDataProvider ?? throw new ArgumentNullException(nameof(airlineDataProvider));
         }
 
-        public IReadOnlyCollection<Airline> GetAllAirlines()
+        public async Task<IReadOnlyCollection<Airline>> GetAllAirlinesAsync(CancellationToken cancellationToken)
         {
-            lock (_lockInstance)
-            {
-                var airlines = _airlineDataProvider.GetData();
+            _airlines = _airlineDataProvider.GetData() ?? Array.Empty<Airline>();
 
-                if (airlines != null)
-                {
-                    _airlines = airlines;
-                }
-            }
-
-            return _airlines;
+            return await Task.FromResult(_airlines);
         }
     }
 }

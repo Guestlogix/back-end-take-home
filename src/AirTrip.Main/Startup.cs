@@ -13,6 +13,7 @@ namespace AirTrip.Main
             services.AddLogging();
 
             services.AddDataProviders();
+            services.AddAirlineServices();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

@@ -10,16 +10,16 @@ using Xunit;
 
 namespace AirTrip.Services.Tests.Services
 {
-    public sealed class AirlineServiceTests
+    public sealed class RouteServiceTests
     {
         [Fact]
         public async Task ShouldReturnNoData_WhenProviderReturnsNoData()
         {
             // arrange
-            var service = new AirlineService(new EmptyDataProvider());
+            var service = new RouteService(new EmptyDataProvider());
 
             // act
-            var result = await service.GetAllAirlinesAsync(CancellationToken.None);
+            var result = await service.GetAllRoutesAsync(CancellationToken.None);
 
             // assert
             result.Should().BeEmpty();
@@ -29,33 +29,36 @@ namespace AirTrip.Services.Tests.Services
         public async Task ShouldReturnData_WhenProviderReturnsData()
         {
             // arrange
-            var service = new AirlineService(new MockDataProvider());
+            var service = new RouteService(new MockDataProvider());
 
             // act
-            var result = await service.GetAllAirlinesAsync(CancellationToken.None);
+            var result = await service.GetAllRoutesAsync(CancellationToken.None);
 
             // assert
             result.Should().NotBeEmpty();
             result.Count.Should().Be(2);
-            result.ElementAt(0).TwoDigitCode.Should().Be("AC");
-            result.ElementAt(1).TwoDigitCode.Should().Be("PD");
+            result.ElementAt(0).Origin.Should().Be("YYZ");
+            result.ElementAt(0).Destination.Should().Be("YOW");
+
+            result.ElementAt(1).Origin.Should().Be("YOW");
+            result.ElementAt(1).Destination.Should().Be("YUL");
         }
 
-        private sealed class MockDataProvider : IDataProvider<Airline>
+        private sealed class MockDataProvider : IDataProvider<Route>
         {
-            public IReadOnlyCollection<Airline> GetData()
+            public IReadOnlyCollection<Route> GetData()
             {
                 return new[]
                 {
-                    new Airline("Air Canada", "AC", "ACC", "Canada"),
-                    new Airline("Porter", "PD", "PDD", "Canada"),
+                    new Route("AC", "YYZ", "YOW"),
+                    new Route("AC", "YOW", "YUL")
                 };
             }
         }
 
-        private sealed class EmptyDataProvider : IDataProvider<Airline>
+        private sealed class EmptyDataProvider : IDataProvider<Route>
         {
-            public IReadOnlyCollection<Airline> GetData()
+            public IReadOnlyCollection<Route> GetData()
             {
                 return null;
             }
