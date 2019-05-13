@@ -16,7 +16,6 @@ namespace AirTrip.Main.Tests.Endpoints
 {
     public class RouteSearchControllerTests
     {
-
         [Theory]
         [InlineData(null, "AAA")]
         [InlineData("AAA", null)]

@@ -10,6 +10,16 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="P:AirTrip.Main.Endpoints.Models.ErrorResponse.Error">
+            <summary>
+            Error Message When Something Bad Happens
+            </summary>
+        </member>
+        <member name="P:AirTrip.Main.Endpoints.Models.SuccessResponse.ShortestRoute">
+            <summary>
+            Shortest route between origin and destination as an array of airports
+            </summary>
+        </member>
         <member name="M:AirTrip.Main.Endpoints.RouteSearchController.GetShortestRouteAsync(System.String,System.String)">
             <summary>
             Returns shortest route between Origin and Destination Airport

@@ -1,16 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
-using AirTrip.Core;
 using AirTrip.Core.Exceptions;
 using AirTrip.Core.Models;
+using AirTrip.Main.Endpoints.Examples;
 using AirTrip.Main.Endpoints.Models;
 using AirTrip.Services.Services;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Swashbuckle.Examples;
 
 namespace AirTrip.Main.Endpoints
 {
@@ -36,6 +38,8 @@ namespace AirTrip.Main.Endpoints
         /// <returns></returns>
         [HttpGet]
         [Route("/routeSearch")]
+        [SwaggerResponseExample(HttpStatusCode.OK, typeof(SuccessfulResponseExample))]
+        [ProducesResponseType(typeof(SuccessResponse), 200)]
         public async Task<IActionResult> GetShortestRouteAsync([FromQuery] [NotNull] string origin,[FromQuery] [NotNull] string destination)
         {
             if (string.IsNullOrEmpty(origin))
@@ -71,12 +75,9 @@ namespace AirTrip.Main.Endpoints
                     var routes = await _shortestRouteService
                         .GetShortestRouteAsync(new Airport(origin), new Airport(destination), cts.Token);
 
-                    if (!routes.Any())
-                    {
-                        return Ok(new ErrorResponse {Error = $"No Route found from {origin} to {destination}"});
-                    }
-
-                    return Ok(Map(routes));
+                    return !routes.Any() 
+                        ? Ok(new ErrorResponse {Error = $"No Route found from {origin} to {destination}"}) 
+                        : Ok(Map(routes));
                 }
             }
             catch (TaskCanceledException ex)
