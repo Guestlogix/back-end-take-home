@@ -19,7 +19,8 @@
   "homepage": "https://github.com/pauladbol/back-end-take-home#readme",
   "dependencies": {
     "csvtojson": "^2.0.8",
-    "express": "^4.16.4"
+    "express": "^4.16.4",
+    "graph-data-structure": "^1.8.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.4.4",

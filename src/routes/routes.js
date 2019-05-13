@@ -5,7 +5,9 @@ module.exports = (app) => {
     app.get('/routes', async (req, res) => {
         try {
             const allRoutes = await getAllRoutes();
+
             res.send(allRoutes);
+
         } catch (error) {
             res.status(500);
         }
@@ -13,7 +15,8 @@ module.exports = (app) => {
 
     app.get('/routes/:origin&:destination', async (req, res) => {
         try {
-            const shortestRoutes = await getShortestRoutes(req.params.origin, req.params.destination);
+            const allRoutes = await getAllRoutes();
+            const shortestRoutes = await getShortestRoutes(req.params.origin, req.params.destination, allRoutes);
             res.send(shortestRoutes);
         } catch (error) {
             res.status(500);
