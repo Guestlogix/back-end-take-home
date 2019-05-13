@@ -16,7 +16,8 @@
         {
             ModelConstructor.BuildModels(out routes, out airports);
         }
-
+        
+        //This constructor is only for unit tests
         public AirRouteGraph(List<Route> routes, List<Airport> airports)
         {
             this.routes = routes;

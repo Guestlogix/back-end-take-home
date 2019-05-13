@@ -11,5 +11,4 @@
   <ItemGroup>
     <ProjectReference Include="..\GuestLogixApi\GuestLogixApi.csproj" />
   </ItemGroup>
-
 </Project>
