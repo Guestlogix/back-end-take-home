@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text.RegularExpressions;
 
-namespace AirTrip.Core
+namespace AirTrip.Core.Models
 {
     public sealed class Airline
     {

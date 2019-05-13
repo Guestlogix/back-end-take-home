@@ -10,7 +10,7 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:AirTrip.Main.Endpoints.RouteSearchController.GetRoutes(System.String,System.String)">
+        <member name="M:AirTrip.Main.Endpoints.RouteSearchController.GetShortestRouteAsync(System.String,System.String)">
             <summary>
             Returns shortest route between Origin and Destination Airport
             </summary>

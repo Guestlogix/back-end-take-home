@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AirTrip.Core;
+using AirTrip.Core.Models;
 using CsvHelper;
 using CsvHelper.Configuration;
 using JetBrains.Annotations;

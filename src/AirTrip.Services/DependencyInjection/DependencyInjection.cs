@@ -1,5 +1,6 @@
 ﻿using System;
 using AirTrip.Core;
+using AirTrip.Core.Models;
 using AirTrip.Services.DataProviders;
 using AirTrip.Services.Services;
 using JetBrains.Annotations;

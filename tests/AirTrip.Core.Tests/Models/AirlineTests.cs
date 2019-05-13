@@ -1,8 +1,9 @@
 using System;
+using AirTrip.Core.Models;
 using FluentAssertions;
 using Xunit;
 
-namespace AirTrip.Core.Tests
+namespace AirTrip.Core.Tests.Models
 {
     public sealed class AirlineTests
     {

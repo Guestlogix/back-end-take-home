@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using AirTrip.Core;
+using AirTrip.Core.Models;
 using AirTrip.Services.DataProviders;
 using FluentAssertions;
 using JetBrains.Annotations;

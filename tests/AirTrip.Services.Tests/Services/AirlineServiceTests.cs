@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AirTrip.Core;
+using AirTrip.Core.Models;
 using AirTrip.Services.DataProviders;
 using AirTrip.Services.Services;
 using FluentAssertions;
