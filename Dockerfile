@@ -1,16 +1,15 @@
 FROM microsoft/dotnet:2.2-sdk AS build-env
 
-WORKDIR /build
-COPY . /build
+WORKDIR /app
+COPY ./src ./src
 
-#Restore
-RUN dotnet restore ./airtrip.sln
-
-RUN dotnet publish ./src/AirTrip.Main/ -o /build/publish --configuration Release
+RUN dotnet publish ./src/AirTrip.Main/ --output /app/build
 
 # Build runtime image
 FROM microsoft/dotnet:2.2-runtime
+
 WORKDIR /app
-COPY --from=build-env /build/publish/ .
+
+COPY --from=build-env /app/build ./
 
 ENTRYPOINT ["dotnet", "AirTrip.Main.dll"]
