@@ -1,5 +1,4 @@
 ﻿using System;
-using AirTrip.Core;
 using AirTrip.Core.Models;
 using AirTrip.Services.DataProviders;
 using AirTrip.Services.Services;
@@ -17,7 +16,6 @@ namespace AirTrip.Services.DependencyInjection
                 throw new ArgumentNullException(nameof(services));
             }
 
-            services.AddSingleton<IDataProvider<Airport>, AirportDataProvider>();
             services.AddSingleton<IDataProvider<Route>, RouteDataProvider>();
 
             return services;
@@ -30,9 +28,7 @@ namespace AirTrip.Services.DependencyInjection
                 throw new ArgumentNullException(nameof(services));
             }
 
-            services.AddSingleton<IAirportService, AirportService>();
             services.AddSingleton<IRouteService, RouteService>();
-
             services.AddSingleton<IShortestRouteService, ShortestRouteService>();
 
             return services;

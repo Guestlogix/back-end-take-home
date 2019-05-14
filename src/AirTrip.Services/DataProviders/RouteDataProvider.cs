@@ -1,12 +1,9 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using AirTrip.Core;
 using AirTrip.Core.Models;
-using AirTrip.Services.Services;
 using CsvHelper;
 using CsvHelper.Configuration;
 using JetBrains.Annotations;
@@ -16,12 +13,10 @@ namespace AirTrip.Services.DataProviders
     internal sealed class RouteDataProvider : DataProvider<Route>
     {
         private readonly string _location;
-        private readonly IAirportService _airportService;
 
         [UsedImplicitly]
-        public RouteDataProvider([NotNull] IAirportService airlineService)
+        public RouteDataProvider()
         {
-            _airportService = airlineService ?? throw new ArgumentNullException(nameof(airlineService));
         }
 
         internal RouteDataProvider(string location)
@@ -29,11 +24,12 @@ namespace AirTrip.Services.DataProviders
             _location = location;
         }
 
-        protected override string Location => string.IsNullOrEmpty(_location) 
-                ? Path.Combine(Path.GetDirectoryName(GetType().Assembly.Location), @"Data\routes.csv") 
-                : _location;
+        protected override string Location => string.IsNullOrEmpty(_location)
+            ? Path.Combine(Path.GetDirectoryName(GetType().Assembly.Location), @"Data\routes.csv")
+            : _location;
 
-        protected override async Task<IReadOnlyCollection<Route>> LoadDataAsync(CsvReader reader, CancellationToken token)
+        protected override async Task<IReadOnlyCollection<Route>> LoadDataAsync(CsvReader reader,
+            CancellationToken token)
         {
             reader.Configuration.RegisterClassMap<RouteMapper>();
             var someTask = Task.Run(reader.GetRecords<RouteDataHolder>, token).GetAwaiter().GetResult();
@@ -43,7 +39,7 @@ namespace AirTrip.Services.DataProviders
         private static Route Map(RouteDataHolder dataHolder)
         {
             return new Route(
-                new Airport(dataHolder.Origin), 
+                new Airport(dataHolder.Origin),
                 new Airport(dataHolder.Destination));
         }
 

@@ -18,7 +18,7 @@ namespace AirTrip.Main.Endpoints
 {
     public class RouteSearchController : Controller
     {
-        private static readonly TimeSpan Timeout = TimeSpan.FromSeconds(5);
+        private static readonly TimeSpan Timeout = TimeSpan.FromSeconds(10);
         private readonly IShortestRouteService _shortestRouteService;
         private readonly ILogger<RouteSearchController> _logger;
 
@@ -92,7 +92,7 @@ namespace AirTrip.Main.Endpoints
             {
                 return BadRequest(ex.Message);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return Ok(new ErrorResponse { Error = "It's not you. Its Us. Something went down. Try again after sometime" });
             }

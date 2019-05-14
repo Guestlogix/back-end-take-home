@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AirTrip.Core.Exceptions;
@@ -8,7 +7,6 @@ using AirTrip.Core.Models;
 using AirTrip.Services.Services;
 using FluentAssertions;
 using JetBrains.Annotations;
-using Microsoft.Extensions.Logging.Abstractions;
 using Xunit;
 
 namespace AirTrip.Services.Tests.Services
