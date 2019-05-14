@@ -25,7 +25,7 @@ namespace AirTrip.Services.DataProviders
         }
 
         protected override string Location => string.IsNullOrEmpty(_location)
-            ? Path.Combine(Path.GetDirectoryName(GetType().Assembly.Location), @"Data\routes.csv")
+            ? Path.Combine(Path.GetDirectoryName(GetType().Assembly.Location), "Data", "routes.csv")
             : _location;
 
         protected override async Task<IReadOnlyCollection<Route>> LoadDataAsync(CsvReader reader,

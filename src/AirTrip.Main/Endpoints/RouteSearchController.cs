@@ -95,6 +95,8 @@ namespace AirTrip.Main.Endpoints
                     return BadRequest(ex.Message);
                 }
 
+                _logger.LogInformation(ex, ex.Message);
+
                 return Ok(new ErrorResponse { Error = "It's not you. Its Us. Something went down. Try again after sometime" });
             }
         }
