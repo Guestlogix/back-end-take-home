@@ -7,7 +7,7 @@ module.exports = (app) => {
             const allAirlines = await getAllAirlines();
             res.send(allAirlines);
         } catch (error) {
-            res.status(500);
+            res.status(500).send(error.message);
         }
     });
 
