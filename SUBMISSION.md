@@ -1,4 +1,4 @@
-#Running Instructions
+## Running Instructions
 
 **Install dependencies:**
 
@@ -14,16 +14,12 @@
 
 **Endpoints:**
 
-*GET /routes*
-List of all routes
+*GET /routes* -> List of all routes
 
-*GET /airports*
-List of all airports
+*GET /airports* -> List of all airports
 
-*GET /airlines*
-List of all airlines
+*GET /airlines* -> List of all airlines
 
-*GET /routes/:origin&:destination*
-Shortest Path between origin and destination
+*GET /routes/:origin&:destination* -> Shortest Path between origin and destination
 
 
