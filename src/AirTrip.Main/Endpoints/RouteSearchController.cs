@@ -40,7 +40,9 @@ namespace AirTrip.Main.Endpoints
         [Route("/routeSearch")]
         [SwaggerResponseExample(HttpStatusCode.OK, typeof(SuccessfulResponseExample))]
         [ProducesResponseType(typeof(SuccessResponse), 200)]
-        public async Task<IActionResult> GetShortestRouteAsync([FromQuery] [NotNull] string origin,[FromQuery] [NotNull] string destination)
+        public async Task<IActionResult> GetShortestRouteAsync(
+            [FromQuery] [NotNull] string origin,
+            [FromQuery] [NotNull] string destination)
         {
             if (string.IsNullOrEmpty(origin))
             {

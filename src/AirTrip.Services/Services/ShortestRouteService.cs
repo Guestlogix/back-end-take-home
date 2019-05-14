@@ -6,19 +6,16 @@ using System.Threading.Tasks;
 using AirTrip.Core.Exceptions;
 using AirTrip.Core.Models;
 using JetBrains.Annotations;
-using Microsoft.Extensions.Logging;
 
 namespace AirTrip.Services.Services
 {
     public sealed class ShortestRouteService : IShortestRouteService
     {
         private readonly IRouteService _routeService;
-        private ILogger<ShortestRouteService> _logger;
 
-        public ShortestRouteService([NotNull] IRouteService routeService, [NotNull] ILogger<ShortestRouteService> logger)
+        public ShortestRouteService([NotNull] IRouteService routeService)
         {
             _routeService = routeService ?? throw new ArgumentNullException(nameof(routeService));
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         public async Task<IReadOnlyCollection<Airport>> GetShortestRouteAsync(
@@ -38,47 +35,70 @@ namespace AirTrip.Services.Services
 
             var routes = await _routeService.GetAllRoutesAsync(token);
 
-            var origins = routes.Where(i => i.Origin == origin);
-            if (!origins.Any())
+            var airportLookup = routes.ToLookup(i => i.Origin, route => route.Destination);
+
+            if (!airportLookup.Contains(origin))
             {
                 throw new RouteNotSupportedException($"Airport '{origin.Code}' is not supported");
             }
 
-            var destinations = routes.Where(i => i.Destination == destination);
-            if (!destinations.Any())
+            return airportLookup[origin].Contains(destination) ? 
+                new[] { origin, destination } 
+                : FindShortestRoute(origin, destination, airportLookup);
+        }
+
+        private static IReadOnlyCollection<Airport> FindShortestRoute(
+            Airport origin, Airport destination, ILookup<Airport, Airport> lookUp)
+        {
+            var tracer = TraceRoute(origin, destination, lookUp);
+
+            return !tracer.ContainsKey(destination) 
+                ? Array.Empty<Airport>() 
+                : ConstructShortestRoute(tracer, destination);
+        }
+
+        private static IReadOnlyCollection<Airport> ConstructShortestRoute(
+            IReadOnlyDictionary<Airport, Airport> tracker,
+            Airport destination)
+        {
+            var shortestRoute = new Stack<Airport>();
+            var terminal = destination;
+
+            while (terminal != null)
             {
-                throw new RouteNotSupportedException($"Airport '{destination.Code}' is not supported");
+                shortestRoute.Push(terminal);
+                terminal = tracker[terminal];
             }
 
-            var directRoute = new Route(new Airline("AC"), origin, destination);
+            return shortestRoute;
+        }
 
-            if (routes.Any(route => directRoute == route))
-            {
-                return new[] { origin, destination };
-            }
-
-            var originLookup = routes.ToLookup(i => i.Origin, route => route.Destination);
-            
-            var hashSet = new HashSet<Airport>{origin};
+        private static IReadOnlyDictionary<Airport, Airport> TraceRoute(Airport origin, Airport destination, ILookup<Airport, Airport> airportLookup)
+        {
+            var routeTracer = new Dictionary<Airport, Airport> {{origin, null}};
             var queue = new Queue<Airport>(new[] {origin});
 
-            while (queue.Count > 0)
+            while (queue.Any())
             {
                 var currentAirport = queue.Dequeue();
 
-                var hubs = originLookup[currentAirport];
-                foreach (var hub in hubs)
+                if (currentAirport == destination)
                 {
-                    hashSet.Add(currentAirport);
+                    break;
+                }
 
-                    if (!hashSet.Contains(hub))
+                var connections = airportLookup[currentAirport];
+                foreach (var connection in connections)
+                {
+                    queue.Enqueue(connection);
+                    if (!routeTracer.ContainsKey(connection))
                     {
-                        queue.Enqueue(hub);
+                        routeTracer.Add(connection, currentAirport);
                     }
-                }   
+                }
             }
 
-            return hashSet;
+            return routeTracer;
         }
     }
 }

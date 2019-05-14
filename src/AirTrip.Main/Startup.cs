@@ -20,7 +20,7 @@ namespace AirTrip.Main
             services.AddSwaggerGen(ConfigureSwagger);
 
             services.AddDataProviders();
-            services.AddAirlineServices();
+            services.AddCustomServices();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

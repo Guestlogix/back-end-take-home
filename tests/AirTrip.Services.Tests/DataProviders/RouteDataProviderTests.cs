@@ -3,7 +3,6 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
-using AirTrip.Core;
 using AirTrip.Core.Models;
 using AirTrip.Services.DataProviders;
 using FluentAssertions;
@@ -28,14 +27,13 @@ namespace AirTrip.Services.Tests.DataProviders
 
             // assert
             result.Count.Should().Be(2);
-            AssertRoute(result.ElementAt(0), new Airline("AC"), new Airport("ABJ"), new Airport("BRU"));
-            AssertRoute(result.ElementAt(1), new Airline("AC"), new Airport("ABJ"), new Airport("OUA"));
+            AssertRoute(result.ElementAt(0), new Airport("ABJ"), new Airport("BRU"));
+            AssertRoute(result.ElementAt(1), new Airport("ABJ"), new Airport("OUA"));
         }
 
         [AssertionMethod]
-        private static void AssertRoute(Route route, Airline airline, Airport origin, Airport destination)
+        private static void AssertRoute(Route route, Airport origin, Airport destination)
         {
-            route.Airline.Should().Be(airline);
             route.Origin.Should().Be(origin);
             route.Destination.Should().Be(destination);
         }

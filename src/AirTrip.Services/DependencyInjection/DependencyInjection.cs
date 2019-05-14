@@ -17,21 +17,19 @@ namespace AirTrip.Services.DependencyInjection
                 throw new ArgumentNullException(nameof(services));
             }
 
-            services.AddSingleton<IDataProvider<Airline>, AirlineDataProvider>();
             services.AddSingleton<IDataProvider<Airport>, AirportDataProvider>();
             services.AddSingleton<IDataProvider<Route>, RouteDataProvider>();
 
             return services;
         }
 
-        public static IServiceCollection AddAirlineServices([NotNull] this IServiceCollection services)
+        public static IServiceCollection AddCustomServices([NotNull] this IServiceCollection services)
         {
             if (services == null)
             {
                 throw new ArgumentNullException(nameof(services));
             }
 
-            services.AddSingleton<IAirlineService, AirlineService>();
             services.AddSingleton<IAirportService, AirportService>();
             services.AddSingleton<IRouteService, RouteService>();
 

@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using AirTrip.Core;
 using AirTrip.Core.Models;
 using AirTrip.Services.DataProviders;
 using JetBrains.Annotations;
+using NeoSmart.AsyncLock;
 
 namespace AirTrip.Services.Services
 {
@@ -13,18 +13,23 @@ namespace AirTrip.Services.Services
     {
         private IReadOnlyCollection<Route> _routeCache;
         private readonly IDataProvider<Route> _routeDataProvider;
-        private readonly object _lockObject = new object();
+        private readonly AsyncLock _lockObject = new AsyncLock();
 
         public RouteService([NotNull] IDataProvider<Route> routeDataProvider)
         {
             _routeDataProvider = routeDataProvider ?? throw new ArgumentNullException(nameof(routeDataProvider));
         }
 
-        public async Task<IReadOnlyCollection<Route>> GetAllRoutesAsync(CancellationToken cancellationToken)
+        public async Task<IReadOnlyCollection<Route>> GetAllRoutesAsync(CancellationToken token)
         {
-            if (_routeCache == null)
+            if (_routeCache != null)
             {
-                var routes = await _routeDataProvider.GetDataAsync(cancellationToken);
+                return _routeCache;
+            }
+
+            using (await _lockObject.LockAsync())
+            {
+                var routes = await _routeDataProvider.GetDataAsync(token);
 
                 if (routes == null)
                 {
@@ -35,7 +40,6 @@ namespace AirTrip.Services.Services
                 return _routeCache;
             }
 
-            return _routeCache;
         }
     }
 }
