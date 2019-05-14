@@ -88,12 +88,13 @@ namespace AirTrip.Main.Endpoints
 
                 return Ok("The Task Was Cancelled");
             }
-            catch (RouteNotSupportedException ex)
-            {
-                return BadRequest(ex.Message);
-            }
             catch (Exception ex)
             {
+                if (ex is RouteNotSupportedException || ex is BadAirportException)
+                {
+                    return BadRequest(ex.Message);
+                }
+
                 return Ok(new ErrorResponse { Error = "It's not you. Its Us. Something went down. Try again after sometime" });
             }
         }

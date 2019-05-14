@@ -1,5 +1,6 @@
 using System;
 using System.Text.RegularExpressions;
+using AirTrip.Core.Exceptions;
 
 namespace AirTrip.Core.Models
 {
@@ -20,7 +21,7 @@ namespace AirTrip.Core.Models
             }
             else
             {
-                throw new InvalidOperationException($"{nameof(code)} is not a valid Airport Code");
+                throw new BadAirportException($"'{code}' is not a valid Airport Code");
             }
         }
 
