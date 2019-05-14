@@ -16,6 +16,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <WarningLevel>2</WarningLevel>
     <DocumentationFile>C:\Users\Vivian\Documents\CodeRepo\guestLogix\src\AirTrip.Main\AirTrip.Main.xml</DocumentationFile>
+    <NoWarn>1701;1702;1591</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
