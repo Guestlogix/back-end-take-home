@@ -1,0 +1,35 @@
+{
+  "name": "back-end-take-home",
+  "version": "1.0.0",
+  "description": "Submission by Syed Shahzeb Hasnain",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon ./bin/www",
+    "lint-fix": "node_modules/.bin/eslint --fix . ./"
+  },
+  "dependencies": {
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "express": "~4.16.1",
+    "http-errors": "~1.6.3",
+    "morgan": "~1.9.1"
+  },
+  "devDependencies": {
+    "eslint": "^5.16.0",
+    "eslint-config-standard": "^11.0.0-beta.0",
+    "eslint-plugin-standard": "^3.0.1",
+    "eslint-plugin-node": "^5.2.1",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-promise": "^3.6.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Guestlogix/back-end-take-home.git"
+  },
+  "author": "Syed Shahzeb Hasnain",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Guestlogix/back-end-take-home/issues"
+  },
+  "homepage": "https://github.com/Guestlogix/back-end-take-home#readme"
+}
