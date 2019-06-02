@@ -7,7 +7,7 @@ var travelRoutes = require('./routes/travelRoutes')
 
 var app = express()
 
-const errorMessagesHandler = require('./services/errorMessagesHandler')
+const errorMessagesHandler = require('./utils/errorMessagesHandler')
 app.use(logger('dev'))
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))

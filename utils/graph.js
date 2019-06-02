@@ -1,15 +1,15 @@
+const graphDS = require('graph-data-structure')
 class Graph {
-  constructor (vertexCount) {
-    this.vertexCount = vertexCount
-    this.adjuctList = new Map()
-  }
-
-  addVertex (vertice) {
-    this.adjuctList.set(vertice, [])
+  constructor () {
+    this.graphObj = graphDS()
   }
 
   addEdge (source, destination) {
-    this.AdjList.get(source).push(destination)
-    this.AdjList.get(source).push(destination)
+    this.graphObj.addEdge(source, destination)
+  }
+
+  findShortestPath (source, destination) {
+    return this.graphObj.shortestPath(source, destination)
   }
 }
+module.exports = Graph
