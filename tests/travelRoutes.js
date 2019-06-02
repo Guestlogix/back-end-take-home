@@ -1,0 +1,53 @@
+const request = require('supertest')
+const app = require('../app')
+
+describe('Input Validations', function () {
+  it('should fail if Origin and Destination are not provided', function (done) {
+    request(app)
+      .get('/')
+      .set('Accept', 'application/json')
+      .expect(400, done)
+  })
+  it('should fail if Origin is not provided', function (done) {
+    request(app)
+      .get('/')
+      .query({ destination: 'ABC' })
+      .set('Accept', 'application/json')
+      .expect(400, done)
+  })
+  it('should fail if destination is not provided', function (done) {
+    request(app)
+      .get('/')
+      .query({ origin: 'ABC' })
+      .set('Accept', 'application/json')
+      .expect(400, done)
+  })
+  it('should fail if destination is not 3 characters', function (done) {
+    request(app)
+      .get('/')
+      .query({ origin: 'ABC', destination: 'ABC123' })
+      .set('Accept', 'application/json')
+      .expect(400, done)
+  })
+  it('should fail if destination is not 3 characters', function (done) {
+    request(app)
+      .get('/')
+      .query({ origin: 'ABC123', destination: 'CBC' })
+      .set('Accept', 'application/json')
+      .expect(400, done)
+  })
+  it('should fail if destination is same as origin', function (done) {
+    request(app)
+      .get('/')
+      .query({ origin: 'ABC', destination: 'ABC' })
+      .set('Accept', 'application/json')
+      .expect(400, done)
+  })
+  it('should pass if proper data is provided', function (done) {
+    request(app)
+      .get('/')
+      .query({ origin: 'ABC', destination: 'CBC' })
+      .set('Accept', 'application/json')
+      .expect(200, done)
+  })
+})

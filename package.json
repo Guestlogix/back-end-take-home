@@ -5,10 +5,12 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon ./bin/www",
-    "lint-fix": "node_modules/.bin/eslint --fix . ./"
+    "lint-fix": "node_modules/.bin/eslint --fix . ./",
+    "test": "node_modules/.bin/mocha --timeout 150000 tests/*.js"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
+    "csvtojson": "^2.0.8",
     "debug": "~2.6.9",
     "express": "~4.16.1",
     "express-validation": "^1.0.2",
@@ -20,10 +22,12 @@
   "devDependencies": {
     "eslint": "^5.16.0",
     "eslint-config-standard": "^11.0.0-beta.0",
-    "eslint-plugin-standard": "^3.0.1",
-    "eslint-plugin-node": "^5.2.1",
     "eslint-plugin-import": "^2.8.0",
-    "eslint-plugin-promise": "^3.6.0"
+    "eslint-plugin-node": "^5.2.1",
+    "eslint-plugin-promise": "^3.6.0",
+    "eslint-plugin-standard": "^3.0.1",
+    "mocha": "^6.1.4",
+    "supertest": "^4.0.2"
   },
   "repository": {
     "type": "git",
