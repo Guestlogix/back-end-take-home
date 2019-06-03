@@ -65,6 +65,8 @@ describe('Test Get / routes', function () {
     assert(results.body.errors[0] === 'Cannot find the destination provided')
   })
 
+  // Test mentioned in the submission.md file
+
   // it('should fail if no path is found.', async () => {
   //   const results = await request(app)
   //     .get('/')
@@ -73,8 +75,8 @@ describe('Test Get / routes', function () {
   //     .expect(404)
   //   assert(results.body.errors[0] === 'No path found')
   // })
-  
-  it('should pass if valid destination and inputs are provided.', (done) => {
+
+  it('should pass if valid origin/destination and inputs are provided.', (done) => {
     request(app)
       .get('/')
       .query({ origin: 'YYZ', destination: 'JFK' })
