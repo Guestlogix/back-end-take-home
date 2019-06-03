@@ -1,70 +1,80 @@
 const request = require('supertest')
 const app = require('../app')
-
+const assert = require('assert')
 describe('Test Get / routes', function () {
-  it('should fail if Origin and Destination are not provided.', function (done) {
-    request(app)
-      .get('/')
-      .set('Accept', 'application/json')
-      .expect(400, done)
+  it('should fail if Origin and Destination are not provided.', async () => {
+    const results = await request(app).get('/').set('Accept', 'application/json').expect(400)
+    assert(results.body.errors[0][1] === '"origin" is required')
+    assert(results.body.errors[1][1] === '"destination" is required')
   })
-  it('should fail if Origin is not provided.', function (done) {
-    request(app)
+  it('should fail if Origin is not provided.', async () => {
+    const results = await request(app)
       .get('/')
       .query({ destination: 'ABC' })
       .set('Accept', 'application/json')
-      .expect(400, done)
+      .expect(400)
+    assert(results.body.errors[0][1] === '"origin" is required')
   })
-  it('should fail if destination is not provided.', function (done) {
-    request(app)
+
+  it('should fail if destination is not provided.', async () => {
+    const results = await request(app)
       .get('/')
       .query({ origin: 'ABC' })
       .set('Accept', 'application/json')
-      .expect(400, done)
+      .expect(400)
+    assert(results.body.errors[0][1] === '"destination" is required')
   })
-  it('should fail if destination is not 3 characters.', function (done) {
-    request(app)
+  it('should fail if destination is not 3 characters.', async () => {
+    const results = await request(app)
       .get('/')
       .query({ origin: 'ABC', destination: 'ABC123' })
       .set('Accept', 'application/json')
-      .expect(400, done)
+      .expect(400)
+    assert(results.body.errors[0][1] === '"destination" length must be 3 characters long')
   })
-  it('should fail if destination is not 3 characters.', function (done) {
-    request(app)
+  it('should fail if origin is not 3 characters.', async () => {
+    const results = await request(app)
       .get('/')
       .query({ origin: 'ABC123', destination: 'CBC' })
       .set('Accept', 'application/json')
-      .expect(400, done)
+      .expect(400)
+    assert(results.body.errors[0][1] === '"origin" length must be 3 characters long')
   })
-  it('should fail if destination is same as origin.', function (done) {
-    request(app)
+  it('should fail if destination is same as origin.', async () => {
+    const results = await request(app)
       .get('/')
       .query({ origin: 'ABC', destination: 'ABC' })
       .set('Accept', 'application/json')
-      .expect(400, done)
+      .expect(400)
+    assert(results.body.errors[0][1] === 'origin and destination cannot be same')
   })
-  it('should fail if invalid origin is provided.', function (done) {
-    request(app)
+  it('should fail if invalid origin is provided.', async () => {
+    const results = await request(app)
       .get('/')
       .query({ origin: 'AB1', destination: 'YQZ' })
       .set('Accept', 'application/json')
-      .expect(404, done)
+      .expect(404)
+    assert(results.body.errors[0] === 'Cannot find the origin provided')
   })
-  it('should fail if invalid destination is provided.', function (done) {
-    request(app)
+  it('should fail if invalid destination is provided.', async () => {
+    const results = await request(app)
       .get('/')
       .query({ origin: 'DEN', destination: 'CBC' })
       .set('Accept', 'application/json')
-      .expect(404, done)
+      .expect(404)
+    assert(results.body.errors[0] === 'Cannot find the destination provided')
   })
-  it('should pass if valid destination and inputs are provided.', function (done) {
-    request(app)
+
+  it('should fail if no path is found.', async () => {
+    const results = await request(app)
       .get('/')
-      .query({ origin: 'DEN', destination: 'YQZ' })
+      .query({ origin: 'DEN', destination: 'CB1' })
       .set('Accept', 'application/json')
-      .expect(200, done)
+      .expect(404)
+    console.log(results.body)
+    assert(results.body.errors[0] === 'No path found')
   })
-  it('should pass if valid destination and inputs are provided.', function (done) {
+  it('should pass if valid destination and inputs are provided.', (done) => {
     request(app)
       .get('/')
       .query({ origin: 'DEN', destination: 'YQZ' })

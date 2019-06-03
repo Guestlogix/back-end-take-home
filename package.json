@@ -9,6 +9,7 @@
     "test": "node_modules/.bin/mocha --timeout 150000 tests/*.js"
   },
   "dependencies": {
+    "assert": "^2.0.0",
     "cookie-parser": "~1.4.4",
     "csvtojson": "^2.0.8",
     "debug": "~2.6.9",
