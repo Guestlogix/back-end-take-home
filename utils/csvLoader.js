@@ -3,7 +3,7 @@ const path = require('path')
 module.exports = {
 
   async loadCSVToJSON (filePath) {
-    let result = await csv().fromFile(path.join(__dirname, filePath))
+    const result = await csv().fromFile(path.join(__dirname, filePath))
     return result
   }
 }

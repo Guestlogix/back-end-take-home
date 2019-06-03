@@ -129,5 +129,4 @@ describe('Test Get /details routes', function () {
       .set('Accept', 'application/json')
       .expect(200, done)
   })
-  
 })

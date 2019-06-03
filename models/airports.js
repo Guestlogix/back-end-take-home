@@ -10,11 +10,11 @@ module.exports = {
   },
 
   getAirportDetails (data) {
-    for (let details in data) {
-      let airportLocations = data[details].path
-      let airportDetails = []
-      for (let airportDetailsIterator in airportLocations) {
-        let results = _.filter(fileToJSON, {'IATA 3': airportLocations[airportDetailsIterator]})
+    for (const details in data) {
+      const airportLocations = data[details].path
+      const airportDetails = []
+      for (const airportDetailsIterator in airportLocations) {
+        const results = _.filter(fileToJSON, {'IATA 3': airportLocations[airportDetailsIterator]})
         airportDetails.push(results)
       }
       data[details].AirportDetails = airportDetails

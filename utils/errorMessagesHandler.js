@@ -1,8 +1,8 @@
 module.exports = {
 
   transformJoiErrorToMeaningfull (err) {
-    let errorMessage = []
-    for (let errorDetail of err.errors) {
+    const errorMessage = []
+    for (const errorDetail of err.errors) {
       if (errorDetail.messages[0] === '"destination" contains an invalid value') {
         errorMessage.push([`location: ${errorDetail.location}`, 'origin and destination cannot be same'])
       } else {

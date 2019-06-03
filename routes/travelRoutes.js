@@ -30,24 +30,24 @@ Airports.loadItems()
  */
 router.get('/', validator(modelValidation.getRoute), async (req, res, next) => {
   try {
-    let results = Routes.findShortestPath(req.query.origin, req.query.destination)
+    const results = Routes.findShortestPath(req.query.origin, req.query.destination)
     return res.json(results.join('=>'))
   } catch (err) {
-    let result = errorMessagesHandler.transformRouteErrorToMeaningfull(err.message)
+    const result = errorMessagesHandler.transformRouteErrorToMeaningfull(err.message)
     return res.status(result.status).send(result)
   }
 },
 router.get('/details', validator(modelValidation.getRoute), async (req, res, next) => {
   try {
     // Find shortest Path
-    let summary = Routes.findShortestPath(req.query.origin, req.query.destination)
+    const summary = Routes.findShortestPath(req.query.origin, req.query.destination)
     // Unitize Routes
     let responseDetails = Routes.splitMultipleRoutesToUnits(summary)
     // Add Airline Details
     responseDetails = Airlines.getAirlineDetails(responseDetails)
     // Add Airport Details
     responseDetails = Airports.getAirportDetails(responseDetails)
-    let finalResponse = { summary: summary.join('=>'), details: responseDetails }
+    const finalResponse = { summary: summary.join('=>'), details: responseDetails }
     res.send(finalResponse)
   } catch (err) {
     console.log(err)

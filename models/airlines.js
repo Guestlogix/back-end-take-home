@@ -10,10 +10,10 @@ module.exports = {
   },
 
   getAirlineDetails (data) {
-    for (let details in data) {
-      let detailsInner = data[details].AirlineDetails
-      for (let airlineDetails in detailsInner) {
-        let results = _.filter(fileToJSON, {'2 Digit Code': detailsInner[airlineDetails]['Airline Id']})
+    for (const details in data) {
+      const detailsInner = data[details].AirlineDetails
+      for (const airlineDetails in detailsInner) {
+        const results = _.filter(fileToJSON, {'2 Digit Code': detailsInner[airlineDetails]['Airline Id']})
         detailsInner[airlineDetails].details = results
       }
     }
