@@ -29,7 +29,7 @@ app.use(function (err, req, res, next) {
   res.status(err.status || 500)
   // build better error messages from JOI validations of Input
   if (err.status === 400) {
-    const errToUser = errorMessagesHandler.transformErrorToMeaningfull(err)
+    const errToUser = errorMessagesHandler.transformJoiErrorToMeaningfull(err)
     res.send(errToUser)
   } else {
     res.send(err)

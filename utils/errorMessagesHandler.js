@@ -1,6 +1,6 @@
 module.exports = {
 
-  transformErrorToMeaningfull (err) {
+  transformJoiErrorToMeaningfull (err) {
     let errorMessage = []
     for (let errorDetail of err.errors) {
       if (errorDetail.messages[0] === '"destination" contains an invalid value') {
@@ -10,6 +10,17 @@ module.exports = {
       }
     }
     err.errors = errorMessage
+    delete err.statusText
     return err
+  },
+
+  transformRouteErrorToMeaningfull (err) {
+    if (err === 'Destination node is not in the graph') {
+      return ({ status: '404', errors: ['Cannot find the destination provided'] })
+    }
+
+    if (err === 'Source node is not in the graph') {
+      return ({ status: '404', errors: ['Cannot find the origin provided'] })
+    }
   }
 }
