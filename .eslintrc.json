@@ -1,3 +1,7 @@
 {
-    "extends": "standard"
+    "extends": "standard",
+    "rules": {
+        "no-template-curly-in-string": 0,
+        "prefer-const": "error"
+    }
 }

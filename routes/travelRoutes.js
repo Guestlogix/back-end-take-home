@@ -24,20 +24,11 @@ Airports.loadItems()
  * @apiParam (url) {String}   destination
  *                               3 character code for the destination. E.g YYZ
  *
- * @apiSuccess {String}       The shortest path with no details E.g "DEN=>YVR=>YQZ"
+ * @apiSuccess {JSON}       The shortest path summary and details
  * @apiError   {String}       The error in human readable format
  *
  */
 router.get('/', validator(modelValidation.getRoute), async (req, res, next) => {
-  try {
-    const results = Routes.findShortestPath(req.query.origin, req.query.destination)
-    return res.json(results.join('=>'))
-  } catch (err) {
-    const result = errorMessagesHandler.transformRouteErrorToMeaningfull(err.message)
-    return res.status(result.status).send(result)
-  }
-},
-router.get('/details', validator(modelValidation.getRoute), async (req, res, next) => {
   try {
     // Find shortest Path
     const summary = Routes.findShortestPath(req.query.origin, req.query.destination)
@@ -50,11 +41,9 @@ router.get('/details', validator(modelValidation.getRoute), async (req, res, nex
     const finalResponse = { summary: summary.join('=>'), details: responseDetails }
     res.send(finalResponse)
   } catch (err) {
-    console.log(err)
-    // let result = errorMessagesHandler.transformRouteErrorToMeaningfull(err)
-    // return res.status(result.status).send(errorMessagesHandler.message)
+    const result = errorMessagesHandler.transformRouteErrorToMeaningfull(err.message)
+    return res.status(result.status).send(result)
   }
 })
-)
 
 module.exports = router
