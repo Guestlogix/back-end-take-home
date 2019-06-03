@@ -1,5 +1,8 @@
 const Graph = require('../utils/graph')
-const filePath = '../data/full/routes.csv'
+
+let filePath
+process.env.MODE === 'TEST' ? filePath = '../data/test/routes.csv' : filePath = '../data/full/routes.csv'
+
 const csvLoader = require('../utils/csvLoader.js')
 const _ = require('lodash')
 const routesGraphObj = new Graph()

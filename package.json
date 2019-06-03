@@ -4,9 +4,9 @@
   "description": "Submission by Syed Shahzeb Hasnain",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon ./bin/www",
+    "start": "MODE=DEV nodemon ./bin/www",
     "lint-fix": "node_modules/.bin/eslint --fix . ./",
-    "test": "node_modules/.bin/mocha --timeout 150000 tests/*.js"
+    "test": "MODE=TEST node_modules/.bin/mocha --timeout 150000 tests/*.js"
   },
   "dependencies": {
     "assert": "^2.0.0",

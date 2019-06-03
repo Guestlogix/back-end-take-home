@@ -15,6 +15,8 @@
 1- npm install
 2- npm test
 
+SideNote : I noticed in the test/routes.csv, All the locations are interconnected. The example given in readme about YYZ -> ORD should actually provide a 'invalid destination' rather than 'no route' error. I have a test commented out which should handle the 'No route' scenario provided being allowed to change the test/routes.csv accordingly.
+
 # Endpoint
 
 GET /?origin={orgin}&destination={destination} => Get the shortest path summary and details of airlines and airports involved

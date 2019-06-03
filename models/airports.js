@@ -1,4 +1,6 @@
-const filePath = '../data/full/airports.csv'
+let filePath
+process.env.MODE === 'TEST' ? filePath = '../data/test/airports.csv' : filePath = '../data/full/airports.csv'
+
 const csvLoader = require('../utils/csvLoader.js')
 const _ = require('lodash')
 let fileToJSON
