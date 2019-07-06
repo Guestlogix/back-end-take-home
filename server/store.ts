@@ -1,11 +1,10 @@
 import * as fs from 'fs';
+import * as _ from 'lodash';
 // Assumption: we're trusting the csv is well formatted.
 function readLines(filePath: string): string[] {
 	return fs.readFileSync(filePath, 'utf8').split(/\r?\n/g);
 }
 function recordConstructor<T extends object>(headerLine: string) {
-	// Note: wrote this after realizing Object.fromEntries exists now.
-	// Also, reduce is probably overkill.
 	const fields = headerLine.split(',');
 	return function (dataLine: string) {
 		const values = dataLine.split(',');
@@ -16,6 +15,14 @@ function recordConstructor<T extends object>(headerLine: string) {
 			};
 		}, {}) as T;
 	};
+}
+function asRecord<T extends object>(values: T[], key: string): Record<string, T> {
+	let result = {};
+	values.forEach(value => {
+		result[value[key]] = value;
+	});
+	console.log(result);
+	return result;
 }
 
 function createCollection<T extends object>(filePath: string): T[] {
@@ -63,8 +70,14 @@ export interface IAirline {
 }
 
 export interface IStore {
-	airlines: IAirline[];
-	airports: IAirport[];
+	/**
+	 * Airlines, keyed by 2 Digit Code
+	 */
+	airlines: Record<string, IAirline>;
+	/**
+	 * Airports, keyed by IATA 3
+	 */
+	airports: Record<string, IAirport>;
 	routes: IRoute[];
 }
 export interface StoreOptions {
@@ -95,6 +108,7 @@ export function Store(options: StoreOptions): IStore {
 				Longitude: parseFloat(Longitude)
 			};
 		});
+	
 	const routes: IRoute[] = createCollection<IRawRoute>(routesCsv)
 		.map(route => {
 			const { Origin, Destination } = route;
@@ -104,6 +118,8 @@ export function Store(options: StoreOptions): IStore {
 			};
 		});
 	return {
-		airlines, airports, routes
+		airlines: _.keyBy(airlines, 'TwoDigitCode'), 
+		airports: _.keyBy(airports, 'IATA3'), 
+		routes
 	};
 }

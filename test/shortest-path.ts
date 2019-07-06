@@ -24,7 +24,7 @@ describe('shortest path', () => {
 		let i;
 		for (i = 0; i < results.length; ++i) {
 			const result = results[i];
-			expect(result).to.equal(expected, `expected ${result} to match ShortestPathError.InvalidOrigin (${expected})`);
+			expect(result).to.equal(expected, `expected results[${i}] (${result}) to match ShortestPathError.InvalidOrigin (${expected})`);
 		}
 		
 	});
@@ -40,7 +40,7 @@ describe('shortest path', () => {
 		let i;
 		for (i = 0; i < results.length; ++i) {
 			const result = results[i];
-			expect(result).to.equal(expected, `expected ${result} to match ShortestPathError.InvalidDestination (${expected})`);
+			expect(result).to.equal(expected, `expected results[${i}] (${result}) to match ShortestPathError.InvalidDestination (${expected})`);
 		}
 	});
 	it('is expected to detect if both origin and destination are invalid', () => {
@@ -50,12 +50,12 @@ describe('shortest path', () => {
 			{ origin: 'JFK', destination: 'JFK' },
 			{ origin: 'XXX', destination: 'XXX' },
 		];
-		const expected = ShortestPathError.InvalidDestination;
+		const expected = ShortestPathError.Invalid;
 		const results = invalidParams.map(pathCalculator.calculate);
 		let i;
 		for (i = 0; i < results.length; ++i) {
 			const result = results[i];
-			expect(result).to.equal(expected, `expected ${result}[${i}] to match ShortestPathError.Invalid (${expected})`);
+			expect(result).to.equal(expected, `expected results[${i}] (${result}) to match ShortestPathError.Invalid (${expected})`);
 		}
 	});
 	it.skip('is expected to calculate the route', () => {

@@ -4,6 +4,7 @@ import * as express from 'express';
 import { AddressInfo } from 'net';
 import { ShortestPathCalculator } from '../shared/shortest-path';
 import { formatResult } from './format-result';
+import { Store } from './store';
 
 const app = express();
 const viewPath = PATH.normalize(PATH.join(__dirname, '..', 'browser'));
@@ -13,7 +14,12 @@ app.get('/', (req, res) => {
 });
 
 // Inlining the route calculation endpoint here
-const pathCalculator = ShortestPathCalculator({});
+const store = Store({
+	airlinesCsv: './data/test/airlines.csv',
+	airportsCsv: './data/test/airports.csv',
+	routesCsv: './data/test/routes.csv'
+});
+const pathCalculator = ShortestPathCalculator({ store });
 app.get('/route', (req, res) => {
 	const results = pathCalculator.calculate(req.query);
 	const message = formatResult(results);
