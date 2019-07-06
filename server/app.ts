@@ -14,10 +14,12 @@ app.get('/', (req, res) => {
 });
 
 // Inlining the route calculation endpoint here
+const folder = 'test';
+// const folder = 'full';
 const store = Store({
-	airlinesCsv: './data/test/airlines.csv',
-	airportsCsv: './data/test/airports.csv',
-	routesCsv: './data/test/routes.csv'
+	airlinesCsv: `./data/${folder}/airlines.csv`,
+	airportsCsv: `./data/${folder}/airports.csv`,
+	routesCsv: `./data/${folder}/routes.csv`
 });
 const pathCalculator = ShortestPathCalculator({ store });
 app.get('/route', (req, res) => {

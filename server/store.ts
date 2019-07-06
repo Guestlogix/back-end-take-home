@@ -16,14 +16,6 @@ function recordConstructor<T extends object>(headerLine: string) {
 		}, {}) as T;
 	};
 }
-function asRecord<T extends object>(values: T[], key: string): Record<string, T> {
-	let result = {};
-	values.forEach(value => {
-		result[value[key]] = value;
-	});
-	console.log(result);
-	return result;
-}
 
 function createCollection<T extends object>(filePath: string): T[] {
 	const [header, ...data] = readLines(filePath);

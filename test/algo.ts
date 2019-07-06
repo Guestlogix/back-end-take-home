@@ -5,10 +5,12 @@ import { IStore, Store, IAirport } from "../server/store";
 describe('shortest path algorithms', () => {
 	let store: IStore;
 	before(() => {
+		const folder = 'test';
+		// const folder = 'full';
 		store = Store({
-			airlinesCsv: './data/test/airlines.csv',
-			airportsCsv: './data/test/airports.csv',
-			routesCsv: './data/test/routes.csv'
+			airlinesCsv: `./data/${folder}/airlines.csv`,
+			airportsCsv: `./data/${folder}/airports.csv`,
+			routesCsv: `./data/${folder}/routes.csv`
 		});
 	});
 	it('should work with the examples in the README', () => {
