@@ -66,7 +66,7 @@ describe('shortest path', () => {
 		const validate = ([origin, destination, expectedNodes]) => {
 			const results = pathCalculator.calculate({ origin, destination });
 			if (!isShortestPathNodes(results)) {
-				throw new Error(`${origin}>${destination} did not produce a route.`);
+				throw new Error(`${origin} > ${destination} did not produce a route.`);
 			}
 			expect(results.nodes).to.deep.equal(expectedNodes);
 		};

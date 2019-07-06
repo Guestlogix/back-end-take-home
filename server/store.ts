@@ -59,7 +59,7 @@ export interface IAirport {
 	City: string;
 	Country: string;
 	IATA3: string;
-	Latitute: number;
+	Latitude: number;
 	Longitude: number;
 }
 export interface IAirline {
@@ -104,7 +104,7 @@ export function Store(options: StoreOptions): IStore {
 			return {
 				Name, City, Country,
 				IATA3: airport['IATA 3'],
-				Latitute: parseFloat(Latitute),
+				Latitude: parseFloat(Latitute),
 				Longitude: parseFloat(Longitude)
 			};
 		});

@@ -14,7 +14,7 @@ describe('store', () => {
 		expect(store.airlines['AC']).to.deep.equal(expectedAirline);
 	});
 	it('is expected that a store parses airport.csv correctly', () => {
-		const expectedAirport = { Name: 'John F Kennedy International Airport', City: 'New York', Country: 'United States', IATA3: 'JFK', Latitute: 40.63980103, Longitude: -73.77890015 };
+		const expectedAirport = { Name: 'John F Kennedy International Airport', City: 'New York', Country: 'United States', IATA3: 'JFK', Latitude: 40.63980103, Longitude: -73.77890015 };
 		expect(store.airports['JFK']).to.deep.equal(expectedAirport);
 	});
 	it('is expected that a store parses routes.csv correctly', () => {

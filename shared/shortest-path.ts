@@ -35,7 +35,10 @@ export function isShortestPathNodes(value): value is ShortestPathNodes {
  */
 export function ShortestPathCalculator(options: ShortestPathCalculatorOptions): IShortestPathCalculator {
 	const { store } = options;
-	function calculate(param: ShortestPathParameters): ShortestPathResults {
+
+	
+
+	function sanitize(param: ShortestPathParameters) {
 		const { 
 			origin: rawOrigin, 
 			destination: rawDestination 
@@ -54,6 +57,14 @@ export function ShortestPathCalculator(options: ShortestPathCalculatorOptions): 
 		if (origin.IATA3 === destination.IATA3) {
 			return ShortestPathError.Invalid;
 		}
+		return { origin, destination };
+	}
+	function calculate(param: ShortestPathParameters): ShortestPathResults {
+		const result = sanitize(param);
+		if (typeof result === 'number') {
+			return result; // is an error enum
+		} 
+		const { origin, destination } = result;
 	}
 
 	return {
