@@ -39,18 +39,22 @@ export function execute(store: IStore, origin: IAirport, destination: IAirport) 
 
 	function visit(from: IAirport): Journey<string>[] {
 		// get net new locations to check
-		const netNew = edges(from)
+		const newEdges = edges(from)
 			.filter(edge => isNewLocation(edge.to));
-		if (netNew.length === 0) {
+		if (newEdges.length === 0) {
 			// when no more connections can be made, 
 			// we should still cap it off properly
 			return [createJourney(from)];
 		}
 
+		return processEdges(from, newEdges);
+	}
+
+	function processEdges(from: IAirport, newEdges: Edge[]) {
 		// two things can happen, either:
 		// - one of the netNew locations is the destination
 		// - or it's not, so continue looking
-		const branches = netNew.map(edge => {
+		const branches = newEdges.map(edge => {
 			if (isDestination(edge.to)) {
 				// netNew location is the destination.
 				// cap off the journey.

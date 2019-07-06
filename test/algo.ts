@@ -1,5 +1,6 @@
-import { execute } from "../shared/algos/bfs";
-import { IStore, Store } from "../server/store";
+import { expect } from 'chai';
+import { execute } from "../shared/algo";
+import { IStore, Store, IAirport } from "../server/store";
 
 describe('shortest path algorithms', () => {
 	let store: IStore;
@@ -10,14 +11,20 @@ describe('shortest path algorithms', () => {
 			routesCsv: './data/test/routes.csv'
 		});
 	});
-	describe('bfs', () => {
-		it.only('should work', () => {
-			const { airports } = store;
-			const YYZ = airports['YYZ'];
-			const JFK = airports['JFK'];
-			const YVR = airports['YVR'];
-			const results = execute(store, YYZ, JFK);
-			console.log(results);
+	it.only('should work with the examples in the README', () => {
+		const { airports } = store;
+		const YYZ = airports['YYZ'];
+		const JFK = airports['JFK'];
+		const YVR = airports['YVR'];
+		const ORD = airports['ORD'];
+		const matrix: [IAirport, IAirport, string[]][] = [
+			[YYZ, JFK, ['YYZ', 'JFK']],
+			[YYZ, YVR, ['YYZ', 'JFK', 'LAX', 'YVR']],
+			[YYZ, ORD, []]
+		];
+		matrix.forEach(([origin, destination, expectedNodes]) => {
+			const results = execute(store, origin, destination);
+			expect(results).to.deep.equal(expectedNodes);
 		});
 	});
 });
