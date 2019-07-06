@@ -2,9 +2,9 @@ import * as PATH from 'path';
 import * as http from 'http';
 import * as express from 'express';
 import { AddressInfo } from 'net';
-import { ShortestPathCalculator } from '../shared/shortest-path';
+import { ShortestPathCalculator, IShortestPathCalculator } from '../shared/shortest-path';
 import { formatResult } from './format-result';
-import { Store } from './store';
+import { createStore } from './store';
 
 const app = express();
 const viewPath = PATH.normalize(PATH.join(__dirname, '..', 'browser'));
@@ -16,13 +16,17 @@ app.get('/', (req, res) => {
 // Inlining the route calculation endpoint here
 const folder = 'test';
 // const folder = 'full';
-const store = Store({
-	airlinesCsv: `./data/${folder}/airlines.csv`,
-	airportsCsv: `./data/${folder}/airports.csv`,
-	routesCsv: `./data/${folder}/routes.csv`
-});
-const pathCalculator = ShortestPathCalculator({ store });
-app.get('/route', (req, res) => {
+async function getPathCalculator() {
+	const store = await createStore({
+		airlinesCsv: `./data/${folder}/airlines.csv`,
+		airportsCsv: `./data/${folder}/airports.csv`,
+		routesCsv: `./data/${folder}/routes.csv`
+	});
+	return ShortestPathCalculator({ store });
+}
+
+app.get('/route', async (req, res) => {
+	const pathCalculator = await getPathCalculator();
 	const results = pathCalculator.calculate(req.query);
 	const message = formatResult(results);
 	res.send(message);

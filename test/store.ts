@@ -1,13 +1,13 @@
 import { expect } from 'chai';
-import { IStore, Store } from '../server/store';
+import { IStore, createStore } from '../server/store';
 describe('store', () => {
 	let store: IStore;
-	before(() => {
+	before(async () => {
 		const folder = 'test';
 		// const folder = 'full';
-		store = Store({
+		store = await createStore({
 			airlinesCsv: `./data/${folder}/airlines.csv`,
-			airportsCsv: `./data/${folder}/airports.csv`,
+			airportsCsv: `./data/full/airports.csv`,
 			routesCsv: `./data/${folder}/routes.csv`
 		});
 	});
@@ -24,5 +24,9 @@ describe('store', () => {
 		expect(firstRoute).to.haveOwnProperty('AirlineId');
 		expect(firstRoute).to.haveOwnProperty('Destination');
 		expect(firstRoute).to.haveOwnProperty('Origin');
+	});
+	it('is expected that stores can properly handle " as text qualifiers', () => {
+		const expectedAirport = { Name: 'Baton Rouge Metropolitan, Ryan Field', City: 'Baton Rouge', Country: 'United States', IATA3: 'BTR', Latitude: 30.53319931, Longitude: -91.14959717 };
+		expect(store.airports['BTR']).to.deep.equal(expectedAirport);
 	});
 });

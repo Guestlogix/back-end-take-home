@@ -1,10 +1,10 @@
 import { expect } from 'chai';
 import { ShortestPathCalculator, IShortestPathCalculator, ShortestPathError, isShortestPathNodes } from '../shared/shortest-path';
-import { Store } from '../server/store';
+import { createStore } from '../server/store';
 describe('shortest path', () => {
 	let pathCalculator: IShortestPathCalculator;
-	before(() => {
-		let store = Store({
+	before(async () => {
+		let store = await createStore({
 			airlinesCsv: './data/test/airlines.csv',
 			airportsCsv: './data/test/airports.csv',
 			routesCsv: './data/test/routes.csv'

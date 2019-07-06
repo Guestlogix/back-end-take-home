@@ -1,26 +1,19 @@
 import * as fs from 'fs';
 import * as _ from 'lodash';
-// Assumption: we're trusting the csv is well formatted.
-function readLines(filePath: string): string[] {
-	return fs.readFileSync(filePath, 'utf8').split(/\r?\n/g);
-}
-function recordConstructor<T extends object>(headerLine: string) {
-	const fields = headerLine.split(',');
-	return function (dataLine: string) {
-		const values = dataLine.split(',');
-		return fields.reduce((record, field, index) => {
-			return {
-				[field]: values[index],
-				...record
-			};
-		}, {}) as T;
-	};
-}
-
-function createCollection<T extends object>(filePath: string): T[] {
-	const [header, ...data] = readLines(filePath);
-	const makeRecord = recordConstructor<T>(header);
-	return data.map(makeRecord);
+import * as csv from 'csv-parser';
+// Assumption is broken. Don't want to deal with csv flavors.
+async function createCollection<T extends object>(filePath: string): Promise<T[]> {
+	return new Promise((resolve, reject) => {
+		const results = [];
+		fs.createReadStream(filePath)
+			.pipe(csv())
+			.on('data', data => results.push(data))
+			.on('end', () => {
+				resolve(results);
+			}).on('error', err => {
+				reject(err);
+			});
+	});
 }
 interface IRawRoute {
 	['Airline Id']: string;
@@ -77,11 +70,12 @@ export interface StoreOptions {
 	airportsCsv: string;
 	routesCsv: string;
 }
-export function Store(options: StoreOptions): IStore {
+export async function createStore(options: StoreOptions): Promise<IStore> {
 	const {
 		airlinesCsv, airportsCsv, routesCsv
 	} = options;
-	const airlines: IAirline[] = createCollection<IRawAirline>(airlinesCsv)
+	const rawAirlines = await createCollection<IRawAirline>(airlinesCsv);
+	const airlines: IAirline[] = rawAirlines
 		.map(airline => {
 			const { Name, Country } = airline;
 			return {
@@ -90,7 +84,8 @@ export function Store(options: StoreOptions): IStore {
 				ThreeDigitCode: airline['3 Digit Code']
 			};
 		});
-	const airports: IAirport[] = createCollection<IRawAirport>(airportsCsv)
+	const rawAirports = await createCollection<IRawAirport>(airportsCsv);
+	const airports: IAirport[] = rawAirports
 		.map(airport => {
 			const { Name, City, Country, Latitute, Longitude } = airport;
 			return {
@@ -100,8 +95,8 @@ export function Store(options: StoreOptions): IStore {
 				Longitude: parseFloat(Longitude)
 			};
 		});
-	
-	const routes: IRoute[] = createCollection<IRawRoute>(routesCsv)
+	const rawRoutes = await createCollection<IRawRoute>(routesCsv);
+	const routes: IRoute[] = rawRoutes
 		.map(route => {
 			const { Origin, Destination } = route;
 			return {
@@ -109,6 +104,7 @@ export function Store(options: StoreOptions): IStore {
 				AirlineId: route['Airline Id']
 			};
 		});
+	
 	return {
 		airlines: _.keyBy(airlines, 'TwoDigitCode'), 
 		airports: _.keyBy(airports, 'IATA3'), 

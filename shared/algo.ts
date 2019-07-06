@@ -48,32 +48,7 @@ export function findShortestPath(store: IStore, origin: IAirport, destination: I
 			return [createJourney(from)];
 		}
 
-		// return processEdges(from, newEdges);
-		return processEdgesFaster(from, newEdges);
-	}
-
-	function processEdgesFaster(from: IAirport, newEdges: Edge[]): Journey<string>[] {
-		// two things can happen, either:
-		// - one of the netNew locations is the destination
-		// - or it's not, so continue looking
-
-		// it should be possible to stop early when one of the netNew locations is the destination
-		let i;
-		for (i = 0; i < newEdges.length; ++i) {
-			const edge = newEdges[i];
-			if (isDestination(edge.to)) {
-				// netNew location is the destination.
-				// cap off the journey, and exit early
-				return [createJourney(from, edge.to)];
-			} else {
-				// netNew location is not the destination
-				// keep visiting new locations
-				return visit(edge.to).map(x => {
-					// bubble up this location with additional locations found while visiting
-					return { nodes: [from.IATA3, ...x.nodes] };
-				});
-			}
-		}
+		return processEdges(from, newEdges);
 	}
 
 	function processEdges(from: IAirport, newEdges: Edge[]): Journey<string>[] {
@@ -102,8 +77,11 @@ export function findShortestPath(store: IStore, origin: IAirport, destination: I
 	 * Given an origin, return an array of Edges to process
 	 */
 	function edges(from: IAirport): Edge[] {
-		return routesByOrigin[from.IATA3].map(route => {
+		return (routesByOrigin[from.IATA3] || []).map(route => {
 			const to = airports[route.Destination];
+			if (!from || !to) {
+				console.log(from, to, route.Destination);
+			}
 			const distance = getDistance(coord(from), coord(to));
 			return {
 				to, distance
@@ -129,11 +107,14 @@ export function findShortestPath(store: IStore, origin: IAirport, destination: I
 		return destination.IATA3 === node.IATA3;
 	}
 
-	const validJourneys = visit(origin)
-		.filter(j => _.last(j.nodes) === destination.IATA3);
+	const allJourneys = visit(origin);
+	const validNodes = allJourneys
+		.filter(j => _.last(j.nodes) === destination.IATA3)
+		.map(j => j.nodes);
 
+	const sortedNodes = _.sortBy(validNodes, (j) => j.length);
+	
 	// return nodes from the first journey
-	const nodes: string[] = _.get(validJourneys, '[0].nodes', []);
-	return { nodes };
+	return { nodes: sortedNodes[0] || [] };
 }
 

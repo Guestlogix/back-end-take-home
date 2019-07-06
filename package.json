@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/irysius/back-end-take-home#readme",
   "dependencies": {
+    "csv-parser": "^2.3.0",
     "express": "^4.17.1",
     "geolib": "^3.0.4",
     "lodash": "^4.17.11"
