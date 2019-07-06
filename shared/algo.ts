@@ -55,22 +55,28 @@ export function findShortestPath(store: IStore, origin: IAirport, destination: I
 		// two things can happen, either:
 		// - one of the netNew locations is the destination
 		// - or it's not, so continue looking
-		const branches = newEdges.map(edge => {
+		const nextNodes: IAirport[] = [];
+		let i;
+		for (i = 0; i < newEdges.length; ++i) {
+			const edge = newEdges[i];
 			if (isDestination(edge.to)) {
-				// netNew location is the destination.
-				// cap off the journey.
-				return createJourney(from, edge.to); 
+				// if we hit the destination, we don't need to explore the other branches.
+				return [createJourney(from, edge.to)]; 
 			} else {
-				// netNew location is not the destination
-				// keep visiting new locations
-				return visit(edge.to).map(x => {
-					// bubble up this location with additional locations found while visiting
-					return { nodes: [from.IATA3, ...x.nodes] };
-				});
+				nextNodes.push(edge.to);
 			}
+		}
+
+		const journeys = nextNodes.map(airport => {
+			return visit(airport).map(journey => {
+				// bubble up this location with additional locations found while visiting
+				return { 
+					nodes: [from.IATA3, ...journey.nodes]
+				};
+			})
 		});
 		
-		return _.flatMap(branches);
+		return _.flatMap(journeys);
 	}
 
 	/**
