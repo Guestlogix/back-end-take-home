@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { ShortestPathCalculator, IShortestPathCalculator, ShortestPathError } from '../shared/shortest-path';
+import { ShortestPathCalculator, IShortestPathCalculator, ShortestPathError, isShortestPathNodes } from '../shared/shortest-path';
 import { Store } from '../server/store';
 describe('shortest path', () => {
 	let pathCalculator: IShortestPathCalculator;
@@ -58,7 +58,19 @@ describe('shortest path', () => {
 			expect(result).to.equal(expected, `expected results[${i}] (${result}) to match ShortestPathError.Invalid (${expected})`);
 		}
 	});
-	it.skip('is expected to calculate the route', () => {
-		// TODO: expand the expectations here.
-	});
+	it('is expected to calculate the route', () => {
+		const matrix = [
+			['YYZ', 'JFK', ['YYZ', 'JFK']],
+			['YYZ', 'YVR', ['YYZ', 'JFK', 'LAX', 'YVR']],
+		];
+		const validate = ([origin, destination, expectedNodes]) => {
+			const results = pathCalculator.calculate({ origin, destination });
+			if (!isShortestPathNodes(results)) {
+				throw new Error(`${origin}>${destination} did not produce a route.`);
+			}
+			expect(results.nodes).to.deep.equal(expectedNodes);
+		};
+		matrix.forEach(validate);
+	});	
+	
 });
