@@ -1,5 +1,6 @@
 import * as _ from 'lodash';
 import { IStore, IAirport } from '../server/store';
+import { findShortestPath } from './algo';
 export interface ShortestPathParameters {
 	origin: string;
 	destination: string;
@@ -36,8 +37,6 @@ export function isShortestPathNodes(value): value is ShortestPathNodes {
 export function ShortestPathCalculator(options: ShortestPathCalculatorOptions): IShortestPathCalculator {
 	const { store } = options;
 
-	
-
 	function sanitize(param: ShortestPathParameters) {
 		const { 
 			origin: rawOrigin, 
@@ -65,6 +64,7 @@ export function ShortestPathCalculator(options: ShortestPathCalculatorOptions): 
 			return result; // is an error enum
 		} 
 		const { origin, destination } = result;
+		return findShortestPath(store, origin, destination);
 	}
 
 	return {

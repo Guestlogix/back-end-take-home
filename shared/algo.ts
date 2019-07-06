@@ -1,6 +1,7 @@
 import { IAirport, IStore } from '../server/store';
 import { getDistance } from 'geolib';
 import * as _ from 'lodash';
+import { ShortestPathNodes } from './shortest-path';
 
 function coord(airport: IAirport) {
 	const { Latitude, Longitude } = airport;
@@ -29,7 +30,7 @@ interface Edge {
 	distance: number;
 }
 
-export function execute(store: IStore, origin: IAirport, destination: IAirport) {
+export function findShortestPath(store: IStore, origin: IAirport, destination: IAirport): ShortestPathNodes {
 	const { routes, airports } = store;
 	// notes: quick google search seems to indicate bfs can be applied to graphs that can have cycles.
 	const visitedNodes: Record<string, IAirport> = {
@@ -47,10 +48,35 @@ export function execute(store: IStore, origin: IAirport, destination: IAirport) 
 			return [createJourney(from)];
 		}
 
-		return processEdges(from, newEdges);
+		// return processEdges(from, newEdges);
+		return processEdgesFaster(from, newEdges);
 	}
 
-	function processEdges(from: IAirport, newEdges: Edge[]) {
+	function processEdgesFaster(from: IAirport, newEdges: Edge[]): Journey<string>[] {
+		// two things can happen, either:
+		// - one of the netNew locations is the destination
+		// - or it's not, so continue looking
+
+		// it should be possible to stop early when one of the netNew locations is the destination
+		let i;
+		for (i = 0; i < newEdges.length; ++i) {
+			const edge = newEdges[i];
+			if (isDestination(edge.to)) {
+				// netNew location is the destination.
+				// cap off the journey, and exit early
+				return [createJourney(from, edge.to)];
+			} else {
+				// netNew location is not the destination
+				// keep visiting new locations
+				return visit(edge.to).map(x => {
+					// bubble up this location with additional locations found while visiting
+					return { nodes: [from.IATA3, ...x.nodes] };
+				});
+			}
+		}
+	}
+
+	function processEdges(from: IAirport, newEdges: Edge[]): Journey<string>[] {
 		// two things can happen, either:
 		// - one of the netNew locations is the destination
 		// - or it's not, so continue looking
@@ -103,6 +129,11 @@ export function execute(store: IStore, origin: IAirport, destination: IAirport) 
 		return destination.IATA3 === node.IATA3;
 	}
 
-	return visit(origin);
+	const validJourneys = visit(origin)
+		.filter(j => _.last(j.nodes) === destination.IATA3);
+
+	// return nodes from the first journey
+	const nodes: string[] = _.get(validJourneys, '[0].nodes', []);
+	return { nodes };
 }
 

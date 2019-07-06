@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { execute } from "../shared/algo";
+import { findShortestPath } from "../shared/algo";
 import { IStore, Store, IAirport } from "../server/store";
 
 describe('shortest path algorithms', () => {
@@ -11,7 +11,7 @@ describe('shortest path algorithms', () => {
 			routesCsv: './data/test/routes.csv'
 		});
 	});
-	it.only('should work with the examples in the README', () => {
+	it('should work with the examples in the README', () => {
 		const { airports } = store;
 		const YYZ = airports['YYZ'];
 		const JFK = airports['JFK'];
@@ -22,9 +22,9 @@ describe('shortest path algorithms', () => {
 			[YYZ, YVR, ['YYZ', 'JFK', 'LAX', 'YVR']],
 			[YYZ, ORD, []]
 		];
-		matrix.forEach(([origin, destination, expectedNodes]) => {
-			const results = execute(store, origin, destination);
-			expect(results).to.deep.equal(expectedNodes);
+		matrix.forEach(([origin, destination, expectedNodes], i) => {
+			const results = findShortestPath(store, origin, destination);
+			expect(results).to.deep.equal({ nodes: expectedNodes });
 		});
 	});
 });

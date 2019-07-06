@@ -62,6 +62,7 @@ describe('shortest path', () => {
 		const matrix = [
 			['YYZ', 'JFK', ['YYZ', 'JFK']],
 			['YYZ', 'YVR', ['YYZ', 'JFK', 'LAX', 'YVR']],
+			['YYZ', 'ORD', []],
 		];
 		const validate = ([origin, destination, expectedNodes]) => {
 			const results = pathCalculator.calculate({ origin, destination });
