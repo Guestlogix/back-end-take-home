@@ -79,9 +79,6 @@ export function findShortestPath(store: IStore, origin: IAirport, destination: I
 	function edges(from: IAirport): Edge[] {
 		return (routesByOrigin[from.IATA3] || []).map(route => {
 			const to = airports[route.Destination];
-			if (!from || !to) {
-				console.log(from, to, route.Destination);
-			}
 			const distance = getDistance(coord(from), coord(to));
 			return {
 				to, distance
@@ -112,7 +109,11 @@ export function findShortestPath(store: IStore, origin: IAirport, destination: I
 		.filter(j => _.last(j.nodes) === destination.IATA3)
 		.map(j => j.nodes);
 
+	// shortest route first!
 	const sortedNodes = _.sortBy(validNodes, (j) => j.length);
+
+	// I am curious about longest routes too, for a test case
+	// console.log(_.last(sortedNodes));
 	
 	// return nodes from the first journey
 	return { nodes: sortedNodes[0] || [] };

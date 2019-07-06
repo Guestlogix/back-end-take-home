@@ -14,8 +14,8 @@ app.get('/', (req, res) => {
 });
 
 // Inlining the route calculation endpoint here
-const folder = 'test';
-// const folder = 'full';
+// const folder = 'test';
+const folder = 'full';
 async function getPathCalculator() {
 	const store = await createStore({
 		airlinesCsv: `./data/${folder}/airlines.csv`,

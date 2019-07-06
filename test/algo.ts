@@ -27,7 +27,7 @@ describe('shortest path algorithms', () => {
 			];
 			matrix.forEach(([origin, destination, expectedNodes], i) => {
 				const results = findShortestPath(store, origin, destination);
-				expect(results).to.deep.equal({ nodes: expectedNodes });
+				expect(results.nodes).to.deep.equal(expectedNodes);
 			});
 		});
 	});
@@ -44,18 +44,30 @@ describe('shortest path algorithms', () => {
 		});
 		it('should work with full data', () => {
 			const { airports, routes } = store;
-			const YYZ = airports['YYZ'];
-			const JFK = airports['JFK'];
-			const YVR = airports['YVR'];
-			const ORD = airports['ORD'];
+			const { 
+				YYZ, JFK, LAX, YVR, ORD, GVA, JUB, CGO
+			} = airports;
 			const matrix: [IAirport, IAirport, string[]][] = [
 				[YYZ, JFK, ['YYZ', 'JFK']],
 				[YYZ, YVR, ['YYZ', 'YVR']],
-				[YYZ, ORD, ['YYZ', 'ORD']]
+				[YYZ, ORD, ['YYZ', 'ORD']],
+				[YYZ, GVA, ['YYZ', 'EWR', 'GVA']],
+				[YYZ, JUB, ['YYZ', 'IST', 'CAI', 'JUB']],
+				[LAX, CGO, ['LAX', 'CAN', 'CGO']]
 			];
 			matrix.forEach(([origin, destination, expectedNodes], i) => {
 				const results = findShortestPath(store, origin, destination);
-				expect(results).to.deep.equal({ nodes: expectedNodes });
+				expect(results.nodes).to.deep.equal(expectedNodes);
+			});
+		});
+		it.skip('try to find longest path', () => {
+			const { airports, routes } = store;
+			const LAX = airports['LAX'];
+			const YYZ = airports['YYZ'];
+			const destinations = ['WAW', 'CPH', 'AMS', 'CTU', 'CGO', 'BKK']
+			destinations.forEach(destination => {
+				const airport = airports[destination];
+				console.log(findShortestPath(store, LAX, airport).nodes);
 			});
 		});
 	});
