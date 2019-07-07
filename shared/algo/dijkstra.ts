@@ -3,6 +3,7 @@ import { ShortestPathNodes } from "../shortest-path";
 import _ = require("lodash");
 
 /**
+ * Finds the shortest path based on Dijkstra's algorithm
  * Implementation is based off the pseudocode found in https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm
  */
 export function findShortestPath(store: IStore, origin: IAirport, destination: IAirport): ShortestPathNodes {
@@ -21,7 +22,7 @@ export function findShortestPath(store: IStore, origin: IAirport, destination: I
 	queue.push(origin);
 	const isNotVisited = (airport: IAirport) => !visited[airport.IATA3];
 	while (queue.length > 0) {
-		let source = queue.shift();
+		const source = queue.shift();
 		if (!visited[source.IATA3]) {
 			// airports are marked as visited
 			visited[source.IATA3] = true;
@@ -33,7 +34,7 @@ export function findShortestPath(store: IStore, origin: IAirport, destination: I
 				const next = airports[i];
 
 				if (next.IATA3 === destination.IATA3) {
-					// destination found
+					// if destination is found, just 
 					return { 
 						nodes: [...shortestPath[source.IATA3], next.IATA3]
 					};

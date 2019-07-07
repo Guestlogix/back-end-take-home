@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import { findShortestPath } from "../shared/algo/dijkstra";
 import { IStore, createStore, IAirport } from "../server/store";
 
-describe.only('shortest path algorithms', () => {
+describe('shortest path algorithms', () => {
 	describe('test store', () => {
 		let store: IStore;
 		before(async () => {
@@ -59,7 +59,6 @@ describe.only('shortest path algorithms', () => {
 			];
 			matrix.forEach(([origin, destination, expectedNodes], i) => {
 				const results = findShortestPath(store, origin, destination);
-				console.log(results);
 				expect(results.nodes).to.deep.equal(expectedNodes);
 			});
 		});
