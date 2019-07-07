@@ -1,6 +1,8 @@
 import * as _ from 'lodash';
 import { IStore, IAirport } from '../server/store';
-import { findShortestPath } from './algo';
+import { findShortestPath } from './algo/dijkstra';
+// import { findShortestPath } from './algo/dfs-modified';
+
 export interface ShortestPathParameters {
 	origin: string;
 	destination: string;
@@ -71,4 +73,5 @@ export function ShortestPathCalculator(options: ShortestPathCalculatorOptions): 
 		calculate
 	};
 }
+
 

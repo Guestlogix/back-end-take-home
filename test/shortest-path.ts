@@ -1,5 +1,8 @@
 import { expect } from 'chai';
-import { ShortestPathCalculator, IShortestPathCalculator, ShortestPathError, isShortestPathNodes } from '../shared/shortest-path';
+import { 
+	ShortestPathCalculator, IShortestPathCalculator, 
+	ShortestPathError, isShortestPathNodes 
+} from '../shared/shortest-path';
 import { createStore } from '../server/store';
 describe('shortest path', () => {
 	let pathCalculator: IShortestPathCalculator;

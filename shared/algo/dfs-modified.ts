@@ -1,7 +1,7 @@
-import { IAirport, IStore } from '../server/store';
+import { IAirport, IStore } from '../../server/store';
 import { getDistance } from 'geolib';
 import * as _ from 'lodash';
-import { ShortestPathNodes } from './shortest-path';
+import { ShortestPathNodes } from '../shortest-path';
 
 function coord(airport: IAirport) {
 	const { Latitude, Longitude } = airport;
@@ -32,7 +32,8 @@ interface Edge {
 
 export function findShortestPath(store: IStore, origin: IAirport, destination: IAirport): ShortestPathNodes {
 	const { routes, airports } = store;
-	// notes: quick google search seems to indicate bfs can be applied to graphs that can have cycles.
+	// note: upon introspection and examining my own personal biases, 
+	// I can't help but end up doing variations over depth-first =/.
 	const visitedNodes: Record<string, IAirport> = {
 		[origin.IATA3]: origin // include origin!
 	};
@@ -40,7 +41,7 @@ export function findShortestPath(store: IStore, origin: IAirport, destination: I
 
 	function visit(from: IAirport): Journey<string>[] {
 		// get net new locations to check
-		const newEdges = edges(from)
+		const newEdges = getEdges(from)
 			.filter(edge => isNewLocation(edge.to));
 		if (newEdges.length === 0) {
 			// when no more connections can be made, 
@@ -68,6 +69,7 @@ export function findShortestPath(store: IStore, origin: IAirport, destination: I
 		}
 
 		const journeys = nextNodes.map(airport => {
+			// this is where depth is prioritized over depth.
 			return visit(airport).map(journey => {
 				// bubble up this location with additional locations found while visiting
 				return { 
@@ -82,7 +84,7 @@ export function findShortestPath(store: IStore, origin: IAirport, destination: I
 	/**
 	 * Given an origin, return an array of Edges to process
 	 */
-	function edges(from: IAirport): Edge[] {
+	function getEdges(from: IAirport): Edge[] {
 		return (routesByOrigin[from.IATA3] || []).map(route => {
 			const to = airports[route.Destination];
 			const distance = getDistance(coord(from), coord(to));
