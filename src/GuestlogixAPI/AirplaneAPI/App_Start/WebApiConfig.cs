@@ -16,8 +16,12 @@ namespace AirplaneAPI
 
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
-                routeTemplate: "api/{controller}/{id}",
-                defaults: new { id = RouteParameter.Optional }
+                routeTemplate: "api/{controller}/{origin}/{destin}",
+                defaults: new
+                {
+                    origin = RouteParameter.Optional,
+                    destin = RouteParameter.Optional
+                }
             );
         }
     }

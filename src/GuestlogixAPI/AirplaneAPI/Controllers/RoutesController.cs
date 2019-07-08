@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using AirplaneAPI.Helpers;
 using Business.DTO;
+using Business.Exceptions;
 using Business.Services;
 
 namespace AirplaneAPI.Controllers
@@ -14,18 +17,43 @@ namespace AirplaneAPI.Controllers
         private RouteService _routeService;
         public RoutesController()
         {
-            _routeService = new RouteService();
+            var path = ConfigurationManager.AppSettings["pathRouteCSV"];
+            var serverPath = System.Web.Hosting.HostingEnvironment.MapPath(path);
+            _routeService = new RouteService(serverPath);
         }
-        public List<RouteDTO> Get()
+
+        public string Get()
         {
-            var routes = _routeService.GetAll();
-            return routes;
+            try
+            {
+                var routes = _routeService.GetAll();
+
+                var result = Util.RoutesToString(routes);
+                return result;
+            }
+            catch (Exception)
+            {
+                throw new HttpResponseException(HttpStatusCode.BadRequest);
+            }
         }
-        [Route("api/routes/{origin}/{destin}")]
-        public List<RouteDTO> Get(string origin, string destin)
+
+        public String Get(string origin, string destin)
         {
-            var routes = _routeService.GetShortest(origin, destin);
-            return routes;
+            try
+            {
+                var routes = _routeService.GetShortest(origin, destin);
+
+                var result = Util.RoutesToString(routes);
+                return result;
+            }
+            catch (ValidationException e)
+            {
+                return e.Message;
+            }
+            catch (Exception)
+            {
+                throw new HttpResponseException(HttpStatusCode.BadRequest);
+            }
         }
     }
 }

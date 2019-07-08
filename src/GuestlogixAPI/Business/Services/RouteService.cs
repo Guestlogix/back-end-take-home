@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Business.DTO;
+using Business.Rules;
 using Database.Model;
 using Database.Repositories;
 
@@ -12,14 +13,9 @@ namespace Business.Services
     public class RouteService
     {
         private RouteRepository _routeRepository;
-        public RouteService()
+        public RouteService(string path)
         {
-            _routeRepository = new RouteRepository();
-        }
-
-        public RouteService(RouteRepository _repository)
-        {
-            _routeRepository = _repository;
+            _routeRepository = new RouteRepository(path);
         }
         public List<RouteDTO> GetAll()
         {
@@ -31,12 +27,12 @@ namespace Business.Services
         public List<RouteDTO> GetShortest(string origin, string destin)
         {
             var routes = _routeRepository.GetAll();
+            var routesDTO = routes.Select(RouteDTO.Convert).ToList();
 
             //logic here
+            var result = ShortestRoute.GetRoute(origin, destin, routesDTO);
 
-
-            var routesDTO = routes.Select(RouteDTO.Convert).ToList();
-            return routesDTO;
+            return result;
         }
     }
 }

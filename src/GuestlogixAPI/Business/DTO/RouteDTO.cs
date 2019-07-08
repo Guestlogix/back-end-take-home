@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using Database.Model;
@@ -22,6 +23,11 @@ namespace Business.DTO
             destin.Destin = source.DestinAirport;
 
             return destin;
+        }
+
+        public override string ToString()
+        {
+            return String.Format("{0} -> {1}", Origin, Destin);
         }
     }
 }
