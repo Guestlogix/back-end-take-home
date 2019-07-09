@@ -1,0 +1,11 @@
+C:\Roberto\_Testes\back-end-take-home\Routes\src\3 - Domain\Domain\bin\Debug\Domain.dll
+C:\Roberto\_Testes\back-end-take-home\Routes\src\3 - Domain\Domain\bin\Debug\Domain.pdb
+C:\Roberto\_Testes\back-end-take-home\Routes\src\3 - Domain\Domain\obj\Debug\Routes.Domain.csproj.CoreCompileInputs.cache
+C:\Roberto\_Testes\back-end-take-home\Routes\src\3 - Domain\Domain\obj\Debug\Domain.dll
+C:\Roberto\_Testes\back-end-take-home\Routes\src\3 - Domain\Domain\obj\Debug\Domain.pdb
+C:\Roberto\_Testes\back-end-take-home\Routes\src\2 - Domain\Domain\bin\Debug\Domain.dll
+C:\Roberto\_Testes\back-end-take-home\Routes\src\2 - Domain\Domain\bin\Debug\Domain.pdb
+C:\Roberto\_Testes\back-end-take-home\Routes\src\2 - Domain\Domain\obj\Debug\Routes.Domain.csprojAssemblyReference.cache
+C:\Roberto\_Testes\back-end-take-home\Routes\src\2 - Domain\Domain\obj\Debug\Routes.Domain.csproj.CoreCompileInputs.cache
+C:\Roberto\_Testes\back-end-take-home\Routes\src\2 - Domain\Domain\obj\Debug\Domain.dll
+C:\Roberto\_Testes\back-end-take-home\Routes\src\2 - Domain\Domain\obj\Debug\Domain.pdb

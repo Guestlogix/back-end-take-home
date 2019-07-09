@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Routes.Api</name>
+    </assembly>
+    <members>
+        <member name="M:Routes.Api.SimpleInjectorWebApiInitializer.Initialize">
+            <summary>Initialize the container and register it as Web API Dependency Resolver.</summary>
+        </member>
+        <member name="T:Routes.Api.SwaggerConfig">
+            <summary>
+            SwaggerConfig
+            </summary>
+        </member>
+        <member name="M:Routes.Api.SwaggerConfig.Register">
+            <summary>
+            Register
+            </summary>
+        </member>
+        <member name="T:Routes.Api.Controllers.RoutesController">
+            <summary>
+            Api Routes
+            </summary>
+        </member>
+        <member name="M:Routes.Api.Controllers.RoutesController.#ctor(Domain.Modules.Repositories.IFlightRepository)">
+            <summary>
+                Create a new instance of class <see cref="T:Routes.Api.Controllers.RoutesController" />
+            </summary>
+        </member>
+        <member name="M:Routes.Api.Controllers.RoutesController.GetRouteOriginDestination(System.String,System.String)">
+            <summary>
+                Return the best route between origin and destination.
+            </summary>
+            <param name="origin"></param>
+            <param name="destination"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Routes.Api.Support.ResponseMessage.Request">
+            <summary>
+                <see cref="T:System.Net.Http.HttpRequestMessage" />
+            </summary>
+        </member>
+        <member name="M:Routes.Api.Support.ResponseMessage.#ctor(System.Net.Http.HttpRequestMessage)">
+            <summary>
+            Create a new instance of class <see cref="T:Routes.Api.Support.ResponseMessage"/>
+            </summary>
+            <param name="request"></param>
+        </member>
+        <member name="M:Routes.Api.Support.ResponseMessage.CreateNoAsync(System.Net.HttpStatusCode,System.Object,System.Net.Http.Formatting.JsonMediaTypeFormatter)">
+            <summary>
+            Create a response
+            </summary>
+            <param name="httpStatusCode"></param>
+            <param name="data"></param>
+            <param name="jsonMediaTypeFormatter"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>
