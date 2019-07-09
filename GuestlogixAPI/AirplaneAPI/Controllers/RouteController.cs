@@ -62,7 +62,7 @@ namespace AirplaneAPI.Controllers
             {
                 return e.Message;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 throw new HttpResponseException(HttpStatusCode.BadRequest);
             }

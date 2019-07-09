@@ -11,5 +11,5 @@
 5. To create a request, you can use PostMan. Here is an example: http://localhost:5000/api/route?origin=YYZ&destin=YVR
 
 # Running UnitTest
-1. After building the solution like previous steps, go to Test Explorer
+1. After building the solution like previous steps, go to Test -> Windows -> Test Explorer
 2. Run all tests.
