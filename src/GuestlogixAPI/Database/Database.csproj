@@ -48,6 +48,8 @@
     <Compile Include="Model\Route.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\AirportRepository.cs" />
+    <Compile Include="Repositories\IAirportRepository.cs" />
+    <Compile Include="Repositories\IRouteRepository.cs" />
     <Compile Include="Repositories\RouteRepository.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

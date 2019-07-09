@@ -9,6 +9,16 @@ namespace Database.Model
         public string Name { get; set; }
         public string Iata { get; set; }
 
+        public Airport()
+        {
+            
+        }
+
+        public Airport(string IATA)
+        {
+            Iata = IATA;
+        }
+
         public static List<Airport> ConvertToList(List<string> source, char splitChar)
         {
             source.RemoveAt(0);

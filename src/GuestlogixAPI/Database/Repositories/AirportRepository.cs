@@ -9,7 +9,7 @@ using Database.Model;
 
 namespace Database.Repositories
 {
-    public class AirportRepository
+    public class AirportRepository : IAirportRepository
     {
         private string _path;
         public AirportRepository(string path)

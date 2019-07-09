@@ -9,11 +9,16 @@ namespace Business.Services
 {
     public class AirportService
     {
-        private AirportRepository _airportRepository;
+        private IAirportRepository _airportRepository;
 
         public AirportService(string path)
         {
             _airportRepository = new AirportRepository(path);
+        }
+
+        public AirportService(IAirportRepository airportRepository)
+        {
+            _airportRepository = airportRepository;
         }
 
         public void CheckAirports(string origin, string destin)
@@ -24,7 +29,7 @@ namespace Business.Services
             {
                 throw new ValidationException("Invalid Origin");
             }
-            if (!codes.Contains(origin))
+            if (!codes.Contains(destin))
             {
                 throw new ValidationException("Invalid Destination");
             }

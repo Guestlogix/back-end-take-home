@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
 using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 using AirplaneAPI.Helpers;
 using Business.DTO;
@@ -12,11 +10,12 @@ using Business.Services;
 
 namespace AirplaneAPI.Controllers
 {
-    public class RoutesController : ApiController
+    public class RouteController : ApiController
     {
         private RouteService _routeService;
         private AirportService _airportService;
-        public RoutesController()
+
+        public RouteController()
         {
             var path = ConfigurationManager.AppSettings["pathRouteCSV"];
             var serverPath = System.Web.Hosting.HostingEnvironment.MapPath(path);
@@ -27,13 +26,20 @@ namespace AirplaneAPI.Controllers
             _airportService = new AirportService(serverPathAirport);
         }
 
-        public string Get()
+        public RouteController(RouteService routeService, AirportService airportService)
+        {
+            _routeService = routeService;
+            _airportService = airportService;
+        }
+
+        public String Get()
         {
             try
             {
                 var routes = _routeService.GetAll();
 
                 var result = Util.RoutesToString(routes);
+
                 return result;
             }
             catch (Exception)
@@ -47,6 +53,7 @@ namespace AirplaneAPI.Controllers
             try
             {
                 _airportService.CheckAirports(origin, destin);
+
                 var result = _routeService.GetShortest(origin, destin);
 
                 return result;

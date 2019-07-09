@@ -1,22 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Business.DTO;
 using Business.Rules;
-using Database.Model;
 using Database.Repositories;
 
 namespace Business.Services
 {
     public class RouteService
     {
-        private RouteRepository _routeRepository;
+        private IRouteRepository _routeRepository;
+
         public RouteService(string path)
         {
             _routeRepository = new RouteRepository(path);
         }
+
+        public RouteService(IRouteRepository routeRepository)
+        {
+            _routeRepository = routeRepository;
+        }
+
         public List<RouteDTO> GetAll()
         {
             var routes = _routeRepository.GetAll();

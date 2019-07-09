@@ -9,13 +9,15 @@ using Database.Model;
 
 namespace Database.Repositories
 {
-    public class RouteRepository
+    public class RouteRepository : IRouteRepository
     {
         private string _path;
+
         public RouteRepository(string path)
         {
             _path = path;
         }
+
         public List<Route> GetAll()
         {
             var errorMessage = String.Empty;

@@ -134,7 +134,7 @@
   <ItemGroup>
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="Controllers\RoutesController.cs" />
+    <Compile Include="Controllers\RouteController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -164,6 +164,10 @@
     <ProjectReference Include="..\Business\Business.csproj">
       <Project>{33c3c191-19db-4e50-aabe-01b698a5f9b7}</Project>
       <Name>Business</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Database\Database.csproj">
+      <Project>{D6701A5B-6918-4A08-B70C-05757EFCC4EB}</Project>
+      <Name>Database</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
