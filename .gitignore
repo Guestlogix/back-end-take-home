@@ -21,3 +21,5 @@
 /src/GuestlogixAPI/Database/bin/Debug
 /src/GuestlogixAPI/Database/obj/Debug
 /src/GuestlogixAPI/packages
+/src/GuestlogixAPI/UnitTest/obj/Debug
+/src/GuestlogixAPI/UnitTest/bin/Debug
