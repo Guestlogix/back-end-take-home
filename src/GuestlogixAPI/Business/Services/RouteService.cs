@@ -24,12 +24,11 @@ namespace Business.Services
             return routesDTO;
         }
 
-        public List<RouteDTO> GetShortest(string origin, string destin)
+        public string GetShortest(string origin, string destin)
         {
             var routes = _routeRepository.GetAll();
             var routesDTO = routes.Select(RouteDTO.Convert).ToList();
 
-            //logic here
             var result = ShortestRoute.GetRoute(origin, destin, routesDTO);
 
             return result;
