@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29025.244
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RouteCalculator", "RouteCalculator\RouteCalculator.csproj", "{69ECF765-5F9F-4D1F-B2CA-07A1490E7B00}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{69ECF765-5F9F-4D1F-B2CA-07A1490E7B00}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{69ECF765-5F9F-4D1F-B2CA-07A1490E7B00}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{69ECF765-5F9F-4D1F-B2CA-07A1490E7B00}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{69ECF765-5F9F-4D1F-B2CA-07A1490E7B00}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4C318F7C-EBA6-49D5-BF4C-A48AAAF2546F}
+	EndGlobalSection
+EndGlobal
