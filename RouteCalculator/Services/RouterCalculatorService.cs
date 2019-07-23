@@ -18,7 +18,7 @@ namespace RouteCalculator.Services
             _cache = cache;
             _repository = repo;
             _airports = _cache.GetEntity("allAirports", InitializeAirports().ToList);
-            _cache.GetEntity("allRoutes", InitializeRoutes().ToList);
+            InitializeRoutes();
         }
 
         public IEnumerable<Entities.Dtos.Route> GetShortestRoute(string originAirportCode, string destinationAirportCode,
@@ -27,7 +27,7 @@ namespace RouteCalculator.Services
             errorCode = Error.None;
 
             #region "Validation"
-            if (_airports.All(airport => !airport.Code.Equals(originAirportCode, StringComparison.OrdinalIgnoreCase)))
+            if (_airports == null || _airports.All(airport => !airport.Code.Equals(originAirportCode, StringComparison.OrdinalIgnoreCase)))
             {
                 errorCode = Error.InvalidOriginAirport;
                 return null;
@@ -106,7 +106,7 @@ namespace RouteCalculator.Services
         {
             var routes = new List<Route>();
 
-            foreach (var routeDto in _repository.GetRoutes())
+            foreach (var routeDto in _cache.GetEntity<IEnumerable<Entities.Dtos.Route>>("allRoutes", _repository.GetRoutes().ToList))
             {
                 if (_airports.All(airport =>
                         !airport.Code.Equals(routeDto.OriginAirportCode, StringComparison.OrdinalIgnoreCase)) ||
