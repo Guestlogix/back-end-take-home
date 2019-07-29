@@ -1,13 +1,11 @@
 # bomber
 
 *bomber* is a typical Flask REST API set up to serve flight routes
-from a PostgreSQL database. It runs on localhost:8080/ by default.
+from a PostgreSQL database. It runs on `localhost:8080/` by default.
 
 Ex: `curl "http://localhost:8080/?origin=YYZ&destination=HND"`
 
 ## Getting Started
-
-The API
 
 ### Vagrant
 
@@ -29,12 +27,13 @@ curl "http://localhost:8080/?origin=YYZ&destination=HND"
 Requirements:
 - [docker](https://www.docker.com/) or [podman](https://podman.io/)
 - [Python 3.7](https://github.com/pyenv/pyenv)
-- [poetry](https://github.com/sdispater/poetry) (Python package manager)
+- [poetry](https://github.com/sdispater/poetry) (Python package
+  manager)
 
 Example:
 
 ```shell
-podman run -p 5432:5432 --name bomber-db -e POSTGRES_PASSWORD=foobar -d postgres
+docker run -p 5432:5432 --name bomber-db -e POSTGRES_PASSWORD=foobar -d postgres
 git clone https://github.com/nu11h3r035/back-end-take-home
 cd back-end-take-home
 poetry install
@@ -46,4 +45,5 @@ BOMBER_LISTEN_PORT=8080 poetry run python run.py
 curl "http://localhost:8080/?origin=YYZ&destination=HND"
 ```
 
-Note that you can substitute `podman` with `docker` since the APIs match.
+Note that you can substitute `docker` with `podman` since the APIs
+match.
