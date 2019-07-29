@@ -1,0 +1,84 @@
+---
+- hosts: all
+  become: true  # Privilege escalation (sudo)
+  vars:
+    ansible_python_interpreter: /usr/bin/python
+    deploy_user: 'bomber'
+    deploy_password: '*'
+    deploy_dataset: 'full'  # Use either "full" or "test
+
+  pre_tasks:
+    - name: Run the equivalent of "pacman -Sy" as a separate step
+      pacman:
+        update-cache: yes
+
+    - name: Add deploy user
+      user:
+        name: "{{ deploy_user }}"
+        password: "{{ deploy_password }}"
+
+  tasks:
+    - name: Install base packages
+      pacman:
+        name:
+          - base-devel
+          - docker
+          - python-docker
+          - postgresql
+          - python
+          - python-pip
+          - python-virtualenv
+
+    - name: Start and enable docker.service
+      service:
+        name: docker
+        state: started
+        enabled: yes
+
+    - name: Install bomber into the specified virtualenv
+      become_user: "{{ deploy_user }}"
+      pip:
+        requirements: "/vagrant/requirements.txt"
+        virtualenv: "/home/{{ deploy_user }}/.virtualenvs/bomber"
+
+    - name: Greate a PostgreSQL container
+      docker_container:
+        name: bomber-db
+        image: postgres
+        state: started
+        ports:
+          - "5432:5432"
+        env:
+          POSTGRES_PASSWORD: "foobar"
+      notify: migrate db
+
+    - name: Wait until PostgreSQL is ready to accept connections
+      wait_for:
+        host: "127.0.0.1"
+        port: "5432"
+
+    - name: Set up system service for Superset
+      template:
+        src: bomber.service.j2
+        dest: /etc/systemd/system/bomber.service
+      notify:
+        - restart bomber
+
+  handlers:
+    - name: migrate db
+      become_user: "{{ deploy_user }}"
+      command: "{{ item }}"
+      retries: 3
+      delay: 5
+      register: result
+      until: result.rc == 0
+      args:
+        chdir: "/vagrant"
+      with_items:
+        - "/home/{{ deploy_user }}/.virtualenvs/bomber/bin/alembic upgrade head"
+        - "/home/{{ deploy_user }}/.virtualenvs/bomber/bin/python import_data.py data/{{ deploy_dataset }}/airlines.csv airline"
+        - "/home/{{ deploy_user }}/.virtualenvs/bomber/bin/python import_data.py data/{{ deploy_dataset }}/airports.csv airport"
+        - "/home/{{ deploy_user }}/.virtualenvs/bomber/bin/python import_data.py data/{{ deploy_dataset }}/routes.csv route"
+
+    - name: restart bomber
+      service: name=bomber.service state=restarted enabled=yes daemon_reload=yes

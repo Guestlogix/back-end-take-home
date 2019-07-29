@@ -1,0 +1,16 @@
+[Unit]
+Description=Bomber (Backend Take-Home Assessment)
+After=network.target
+
+[Service]
+User={{ deploy_user }}
+Group={{ deploy_user }}
+WorkingDirectory=/vagrant
+ExecStart=/home/{{ deploy_user }}/.virtualenvs/bomber/bin/gunicorn -w 10 -b 0.0.0.0:8080 run:app
+ExecReload=/bin/kill -s HUP $MAINPID
+ExecStop=/bin/kill -s TERM $MAINPID
+PrivateTmp=true
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
