@@ -26,14 +26,14 @@ public class ResponseUtil {
         if (!originAirport.isPresent()) {
 
             ResponseBean response = new ResponseBean("Invalid Origin");
-            return ResponseEntity.badRequest().body(response);
+            return ResponseEntity.ok(response);
         }
 
 
         if (!destAirport.isPresent()) {
 
             ResponseBean response = new ResponseBean("Invalid Destination");
-            return ResponseEntity.badRequest().body(response);
+            return ResponseEntity.ok(response);
 
         }
 
