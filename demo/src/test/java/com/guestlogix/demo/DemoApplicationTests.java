@@ -29,6 +29,7 @@ import static org.junit.Assert.assertEquals;
 public class DemoApplicationTests {
 
     private final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    public static final String BASE_URL = "http://localhost:8000";
 
     @Test
     public void contextLoads() {
@@ -63,7 +64,7 @@ public class DemoApplicationTests {
 
                     try {
 
-                        String requestUrl = "http://localhost:8000" + url;
+                        String requestUrl = BASE_URL + url;
 
                         HttpHeaders headers = new HttpHeaders();
                         headers.set("Accept", MediaType.APPLICATION_JSON_VALUE);
