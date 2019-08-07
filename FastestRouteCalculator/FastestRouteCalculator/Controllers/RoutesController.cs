@@ -5,7 +5,7 @@ using Process;
 
 namespace FastestRouteCalculator.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("routes")]
     [ApiController]
     public class RoutesController : ControllerBase
     {
@@ -18,7 +18,6 @@ namespace FastestRouteCalculator.Controllers
             _processor = processor;
         }
         
-        // GET api/values/5
         [HttpGet("{origin}/{destination}")]
         public ActionResult<string> Get(string origin, string destination)
         {
