@@ -17,14 +17,7 @@ namespace FastestRouteCalculator.Controllers
             _context = context;
             _processor = processor;
         }
-
-        [Route("init")]
-        public ActionResult<string> Init()
-        {
-            _processor.GenerateGraph();
-            return "Done!";
-        }
-
+        
         // GET api/values/5
         [HttpGet("{origin}/{destination}")]
         public ActionResult<string> Get(string origin, string destination)

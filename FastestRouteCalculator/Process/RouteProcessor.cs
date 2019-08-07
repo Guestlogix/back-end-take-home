@@ -6,7 +6,6 @@ namespace Process
     public interface IRouteProcessor
     {
         string FindShortestRoute(string origin, string destination);
-        void GenerateGraph();
     }
 
     public class RouteProcessor : IRouteProcessor
@@ -22,7 +21,7 @@ namespace Process
             _graph = new double[count, count];
         }
 
-        public void GenerateGraph()
+        private void GenerateGraph()
         {
             if (_isInitiated)
             {
@@ -32,17 +31,20 @@ namespace Process
             var count = _context.Airports.Count;
             for (int i = 0; i < count; i++)
             {
+                var origin = _context.Airports[i];
+                var filteredRoutes = _context.Routes.Where(x => x.Origin.Equals(origin.IATA3, StringComparison.OrdinalIgnoreCase)).ToList();
+
                 for (int j = 0; j < i; j++)
                 {
-                    var route = _context.Routes.FirstOrDefault(x =>
-                        x.Origin.Equals(_context.Airports[i].IATA3, StringComparison.OrdinalIgnoreCase)
-                        && x.Destination.Equals(_context.Airports[j].IATA3, StringComparison.OrdinalIgnoreCase));
-                    
-                    _graph[i, j] = _graph[j, i] = route != null
-                        ? Math.Round(_context.Airports[i].Location.GetDistanceTo(_context.Airports[j].Location) / 1000, 2)
+                    var destination = _context.Airports[j];
+                    var exists = filteredRoutes.Any(x => x.Destination.Equals(destination.IATA3, StringComparison.OrdinalIgnoreCase));
+                    _graph[i, j] = _graph[j, i] = exists
+                        ? Math.Round(origin.Location.GetDistanceTo(destination.Location) / 1000, 2)
                         : 0;
                 }
             }
+
+            _isInitiated = true;
         }
 
         public string FindShortestRoute(string origin, string destination)
