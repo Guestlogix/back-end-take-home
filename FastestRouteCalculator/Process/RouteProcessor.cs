@@ -29,16 +29,17 @@ namespace Process
             }
 
             var count = _context.Airports.Count;
+
             for (int i = 0; i < count; i++)
             {
                 var origin = _context.Airports[i];
                 var filteredRoutes = _context.Routes.Where(x => x.Origin.Equals(origin.IATA3, StringComparison.OrdinalIgnoreCase)).ToList();
 
-                for (int j = 0; j < i; j++)
+                for (int j = 0; j < count; j++)
                 {
                     var destination = _context.Airports[j];
                     var exists = filteredRoutes.Any(x => x.Destination.Equals(destination.IATA3, StringComparison.OrdinalIgnoreCase));
-                    _graph[i, j] = _graph[j, i] = exists
+                    _graph[i, j] = exists
                         ? Math.Round(origin.Location.GetDistanceTo(destination.Location) / 1000, 2)
                         : 0;
                 }
