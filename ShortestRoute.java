@@ -14,38 +14,42 @@ import java.util.HashSet;
 
 public class ShortestRoute {
 	private static Boolean isDestinationFound = true;
-	public static void main(String[] args)  throws java.io.IOException  {
-		String origin = args[0].toUpperCase();
-		String destination = args[1].toUpperCase();
-		isDestinationFound = true;
-		HashMap<String, List<String>> routesMap = readData("data/full/routes.csv", destination) ;
+	public static void main(String[] args) {
+		try{
+			String origin = args[0].toUpperCase();					
+			String destination = args[1].toUpperCase();
+			isDestinationFound = true;
+			HashMap<String, List<String>> routesMap = readData("data/full/routes.csv", destination) ;
+					
+			if (!routesMap.containsKey(origin)){
+				System.out.println("Invalid Origin");
+				return;
 				
-		if (!routesMap.containsKey(origin)){
-			System.out.println("Invalid Origin");
-			return;
-			
-		} else if (!isDestinationFound) {
-			System.out.println("Invalid Destination");
-			return;
-			
-		}
-		List<String> routes = findPath(routesMap, origin, destination);
-		if(routes.size() == 1){
-			System.out.println("No Route");
-			
-		}else{
-			StringBuilder sb = new StringBuilder();
-			for(int i = 0; i<routes.size(); i++){
-				sb = sb.append(routes.get(i));
-				sb.append("->");
+			} else if (!isDestinationFound) {
+				System.out.println("Invalid Destination");
+				return;
+				
+			}
+			List<String> routes = findPath(routesMap, origin, destination);
+			if(routes.size() == 1){
+				System.out.println("No Route");
+				
+			}else{
+				StringBuilder sb = new StringBuilder();
+				for(int i = 0; i<routes.size(); i++){
+					sb = sb.append(routes.get(i));
+					sb.append("->");
+				}
+				
+				sb.deleteCharAt(sb.length()-1);
+				sb.deleteCharAt(sb.length()-1);
+				System.out.print(sb);
+				
 			}
 			
-			sb.deleteCharAt(sb.length()-1);
-			sb.deleteCharAt(sb.length()-1);
-			System.out.print(sb);
-			
+		}catch (Exception E) {
+			System.out.println("Internal error occurred.");
 		}
-		
 		
 	}
 	
