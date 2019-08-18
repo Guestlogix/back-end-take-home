@@ -30,7 +30,7 @@ public class ShortestRoute {
 			
 		}
 		List<String> routes = findPath(routesMap, origin, destination);
-		if(routes.size() == 0){
+		if(routes.size() == 1){
 			System.out.println("No Route");
 			
 		}else{
