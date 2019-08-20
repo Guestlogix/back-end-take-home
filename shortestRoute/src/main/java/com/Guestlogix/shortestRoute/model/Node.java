@@ -1,11 +1,16 @@
 package com.Guestlogix.shortestRoute.model;
 
+/**
+ * 
+ * @author nchopra
+ *
+ */
 import java.util.List;
 
 public class Node {
-	String code;
-	int distance;
-	List<String> neighbours;
+	private String code;
+	private int distance;
+	private List<String> neighbours;
 
 	public Node() {
 	}
