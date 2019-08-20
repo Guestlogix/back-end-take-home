@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache>
+	<diskStore path="java.io.tmpdir" />
+	<cache name="airlines" maxElementsInMemory="10000"
+		eternal="false" timeToIdleSeconds="600" timeToLiveSeconds="3600"
+		overflowToDisk="true" />
+
+	<cache name="airports" maxElementsInMemory="10000"
+		eternal="false" timeToIdleSeconds="600" timeToLiveSeconds="3600"
+		overflowToDisk="true" />
+
+	<cache name="routes" maxElementsInMemory="10000" eternal="false"
+		timeToIdleSeconds="600" timeToLiveSeconds="3600" overflowToDisk="true" />
+</ehcache>

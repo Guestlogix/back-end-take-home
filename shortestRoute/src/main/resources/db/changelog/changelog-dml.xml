@@ -1,0 +1,64 @@
+<databaseChangeLog
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext
+   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd 
+   http://www.liquibase.org/xml/ns/dbchangelog 
+   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+<!-- 
+
+
+LOAD DATA LOCAL INFILE "/home/nehachopra/Downloads/airports.csv"
+INTO TABLE guestlogix.airports
+COLUMNS TERMINATED BY ','
+LINES TERMINATED BY '\n'
+IGNORE 1 LINES(name,city,country,iata3,latitute,longitude);
+
+LOAD DATA LOCAL INFILE "/home/nehachopra/Downloads/airlines.csv"
+INTO TABLE guestlogix.airlines
+COLUMNS TERMINATED BY ','
+LINES TERMINATED BY '\n'
+IGNORE 1 LINES(name,2digit_code,3digit_code,country);
+
+LOAD DATA LOCAL INFILE "/home/nehachopra/Downloads/routes.csv"
+INTO TABLE guestlogix.routes
+COLUMNS TERMINATED BY ','
+LINES TERMINATED BY '\n'
+IGNORE 1 LINES(airline_id,origin,destination);
+
+	<changeSet id="airports dump" author="nchopra">
+		<loadUpdateData encoding="UTF-8"
+			file="/test/airports.csv" primaryKey="id" schemaName="guestlogix"
+			separator="," tableName="airports">
+			<column name="name" type="STRING" />
+			<column name="city" type="STRING" />
+			<column name="country" type="STRING" />
+			<column name="iata3" type="STRING" />
+			<column name="latitute" type="STRING" />
+			<column name="longitude" type="STRING" />
+		</loadUpdateData>
+	</changeSet>
+
+	<changeSet id="airlines dump" author="nchopra">
+		<loadUpdateData encoding="UTF-8"
+			file="/test/airlines.csv" primaryKey="id" schemaName="guestlogix"
+			separator="," tableName="airlines">
+			<column name="name" type="STRING" />
+			<column name="2digit_code" type="STRING" />
+			<column name="3digit_code" type="STRING" />
+			<column name="country" type="STRING" />
+		</loadUpdateData>
+	</changeSet>
+
+	<changeSet id="routes dump" author="nchopra">
+		<loadUpdateData encoding="UTF-8"
+			file="/test/routes.csv" primaryKey="id" schemaName="guestlogix"
+			separator="," tableName="routes">
+			<column name="airline_id" type="STRING" />
+			<column name="origin" type="STRING" />
+			<column name="destination" type="STRING" />
+		</loadUpdateData>
+	</changeSet> -->
+
+</databaseChangeLog>

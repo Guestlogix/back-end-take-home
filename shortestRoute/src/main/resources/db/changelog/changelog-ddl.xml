@@ -1,0 +1,89 @@
+<databaseChangeLog
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext
+   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd 
+   http://www.liquibase.org/xml/ns/dbchangelog 
+   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+	<changeSet id="create_airports_table" author="nchopra">
+		<preConditions onFail="MARK_RAN"
+			onFailMessage="airports Table is already present">
+			<sqlCheck expectedResult="0">
+				SELECT COUNT(*)
+				FROM
+				INFORMATION_SCHEMA.TABLES
+				WHERE TABLE_SCHEMA='guestlogix' and
+				TABLE_NAME ='airports';
+			</sqlCheck>
+		</preConditions>
+		<sql>
+			CREATE TABLE `airports` (
+			`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+			`name` varchar(255) NOT NULL DEFAULT '',
+			`city` varchar(255) NOT NULL DEFAULT '',
+			`country` varchar(255) NOT NULL DEFAULT '',
+			`iata3` varchar(3) NOT NULL DEFAULT '',
+			`latitute` varchar(255) NOT NULL DEFAULT '',
+			`longitude` varchar(255) NOT NULL DEFAULT '',
+			`created_on` timestamp NOT NULL DEFAULT current_timestamp(),
+			`modified_on` timestamp NOT NULL DEFAULT current_timestamp(),
+			PRIMARY KEY (`id`),
+			KEY `iata3_indx` (`iata3`)
+			)
+		</sql>
+	</changeSet>
+
+	<changeSet id="create_airlines_table" author="nchopra">
+		<preConditions onFail="MARK_RAN"
+			onFailMessage="airlines Table is already present">
+			<sqlCheck expectedResult="0">
+				SELECT COUNT(*)
+				FROM
+				INFORMATION_SCHEMA.TABLES
+				WHERE TABLE_SCHEMA='guestlogix' and
+				TABLE_NAME ='airlines';
+			</sqlCheck>
+		</preConditions>
+		<sql>
+			CREATE TABLE `airlines` (
+			`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+			`name` varchar(255) NOT NULL DEFAULT '',
+			`2digit_code` varchar(2) NOT NULL DEFAULT '',
+			`3digit_code` varchar(3) NOT NULL DEFAULT '',
+			`country` varchar(255) NOT NULL DEFAULT '',
+			`created_on` timestamp NOT NULL DEFAULT current_timestamp(),
+			`modified_on` timestamp NOT NULL DEFAULT current_timestamp(),
+			PRIMARY KEY (`id`),
+			KEY `2digit_code_indx` (`2digit_code`),
+			KEY `3digit_code_indx` (`3digit_code`)
+			)
+		</sql>
+	</changeSet>
+
+	<changeSet id="create_routes_table" author="nchopra">
+		<preConditions onFail="MARK_RAN"
+			onFailMessage="routes Table is already present">
+			<sqlCheck expectedResult="0">
+				SELECT COUNT(*)
+				FROM
+				INFORMATION_SCHEMA.TABLES
+				WHERE TABLE_SCHEMA='guestlogix' and
+				TABLE_NAME ='routes';
+			</sqlCheck>
+		</preConditions>
+		<sql>
+			CREATE TABLE `routes` (
+			`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+			`airline_id` varchar(25) NOT NULL DEFAULT '',
+			`origin` varchar(3) NOT NULL DEFAULT '',
+			`destination` varchar(3) NOT NULL DEFAULT '',
+			`created_on` timestamp NOT NULL DEFAULT current_timestamp(),
+			`modified_on` timestamp NOT NULL DEFAULT current_timestamp(),
+			PRIMARY KEY (`id`),
+			KEY `origin_indx` (`origin`),
+			KEY `destination_indx` (`destination`)
+			)
+		</sql>
+	</changeSet>
+</databaseChangeLog>
