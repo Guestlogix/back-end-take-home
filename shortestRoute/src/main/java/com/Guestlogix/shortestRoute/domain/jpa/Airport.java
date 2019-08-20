@@ -14,6 +14,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotBlank;
 
+import org.springframework.cache.annotation.Cacheable;
+
 /**
  * 
  * @author nchopra
@@ -21,6 +23,7 @@ import javax.validation.constraints.NotBlank;
  */
 @Entity
 @Table(name = "airports")
+@Cacheable(value = "airports")
 public class Airport implements Serializable {
 
 	private static final long serialVersionUID = -1763574516474353414L;

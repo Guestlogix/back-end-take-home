@@ -72,24 +72,13 @@
 			<artifactId>commons-lang3</artifactId>
 		</dependency>
 
-		<!-- Starter for using Spring Framework's caching support -->
+		<!-- Integration for using Ehcache 2.x as a Hibernate second-level-cache 
+			provider -->
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-cache</artifactId>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-ehcache</artifactId>
+			<version>5.4.4.Final</version>
 		</dependency>
-
-		<dependency>
-			<groupId>javax.cache</groupId>
-			<artifactId>cache-api</artifactId>
-		</dependency>
-
-		<!-- End-user ehcache3 jar artifact -->
-		<dependency>
-			<groupId>org.ehcache</groupId>
-			<artifactId>ehcache</artifactId>
-			<scope>runtime</scope>
-		</dependency>
-
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
