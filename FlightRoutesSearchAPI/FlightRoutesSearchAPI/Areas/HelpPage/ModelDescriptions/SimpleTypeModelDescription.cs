@@ -1,0 +1,6 @@
+namespace FlightRoutesSearchAPI.Areas.HelpPage.ModelDescriptions
+{
+    public class SimpleTypeModelDescription : ModelDescription
+    {
+    }
+}
