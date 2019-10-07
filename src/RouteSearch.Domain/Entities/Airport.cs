@@ -11,14 +11,7 @@ namespace RouteSearch.Domain.Entities
         public string City { get; private set; }
         public string Country { get; private set; }
         public double Latitude { get; private set; }
-        public double Longitude { get; private set; }
-
-        private Dictionary<Airport, Dictionary<string, Airline>> _connections;
-
-        public IReadOnlyDictionary<Airport, Dictionary<string, Airline>> Connections
-        {
-            get => _connections;
-        }
+        public double Longitude { get; private set; }        
 
         public Airport(string iata)
         {
@@ -35,47 +28,7 @@ namespace RouteSearch.Domain.Entities
             Country = country;
             Latitude = latitude;
             Longitude = longitude;
-        }
-
-        public void AddConnections(List<Route> routes)
-        {
-            if (routes is null || !routes.Any())
-                return;
-
-            foreach (var route in routes)
-            {
-                AddConnection(route.Destination, route.Airline);
-            }        
-        }
-
-        public void AddConnection(Airport airport, Airline airline)
-        {
-            if (_connections is null)
-                _connections = new Dictionary<Airport, Dictionary<string, Airline>>();                                
-
-            _connections[airport] = GetAirlines(airport, airline);
-        }
-
-        private Dictionary<string, Airline> GetAirlines(Airport airport, Airline airline)
-        {
-            Dictionary<string, Airline> airlines = null;
-
-            if (!_connections.ContainsKey(airport))
-            {
-                airlines = new Dictionary<string, Airline>();
-                airlines.Add(airline.TwoDigitCode, airline);
-                
-                return airlines;
-            }
-
-            airlines = _connections[airport];
-
-            if (airlines.ContainsKey(airline.TwoDigitCode))
-                return airlines;
-                
-            airlines.Add(airline.TwoDigitCode, airline);
-            return airlines;
-        }
+        }           
 
         public bool Equals(Airport other)
         {
