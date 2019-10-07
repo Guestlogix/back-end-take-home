@@ -18,5 +18,16 @@ namespace RouteSearch.Infrastructure.Repositories
         {
             return _dataContext.Routes.Where(r => r.Origin == origin).ToList();
         }
+
+        public bool HasConnections(Airport origin, Airport destination)
+        {
+            if (!_dataContext.Routes.Any(route => route.Origin == origin))
+                return false;
+            
+            if (!_dataContext.Routes.Any(route => route.Destination == destination))
+                return false;
+
+            return true;
+        }
     }
 }

@@ -71,15 +71,15 @@ namespace RouteSearch.Domain.Test.Services
         {
             var origin = AirportMockData.Airports.First(x => x.Key == AirportMockData.YYZ).Value;
             var destination = AirportMockData.Airports.First(x => x.Key == AirportMockData.JFK).Value;            
-            _airportRepositoryMock.Setup(x => x.GetByIata(AirportMockData.ORD)).Returns(origin);
+            _airportRepositoryMock.Setup(x => x.GetByIata(AirportMockData.YYZ)).Returns(origin);
             _airportRepositoryMock.Setup(x => x.GetByIata(AirportMockData.JFK)).Returns(destination);
             _routeRepositoryMock.Setup(x => x.GetDestinationConnections(origin)).Returns(RouteMockData.Routes.Where(x => x.Origin == origin).ToList());
             var routeFinderService = new RouteFinderService(_airportRepositoryMock.Object, _routeRepositoryMock.Object);
 
-            var flightRoute = routeFinderService.Find(AirportMockData.ORD, AirportMockData.JFK);
+            var flightRoute = routeFinderService.Find(AirportMockData.YYZ, AirportMockData.JFK);
             
-            flightRoute.Origin.Should().Be(origin.Iata);
-            flightRoute.Destination.Should().Be(destination.Iata);
+            flightRoute.Origin.Should().Be(origin);
+            flightRoute.Destination.Should().Be(destination);
             flightRoute.Connections.Should().HaveCount(1);
         }
 
@@ -97,8 +97,8 @@ namespace RouteSearch.Domain.Test.Services
 
             var flightRoute = routeFinderService.Find(AirportMockData.ORD, AirportMockData.JFK);
             
-            flightRoute.Origin.Should().Be(origin.Iata);
-            flightRoute.Destination.Should().Be(destination.Iata);
+            flightRoute.Origin.Should().Be(origin);
+            flightRoute.Destination.Should().Be(destination);
             flightRoute.Connections.Should().HaveCount(2);
         }
     }

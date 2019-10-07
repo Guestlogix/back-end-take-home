@@ -11,7 +11,7 @@ namespace RouteSearch.Application.EntityMapper
             CreateMap<Airline, AirlineDTO>()
                 .ForMember(d => d.Code, opt => opt.MapFrom(src => src.TwoDigitCode));
                 
-            CreateMap<Connection, ConnectionDTO>();
+            CreateMap<Route, RouteDTO>();
 
             CreateMap<FlightRoute, FlightRouteDTO>();
 

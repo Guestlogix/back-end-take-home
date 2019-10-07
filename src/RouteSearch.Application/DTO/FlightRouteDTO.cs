@@ -4,20 +4,13 @@ namespace RouteSearch.Application.DTO
 {
     public class FlightRouteDTO
     {
-        public string Origin { get; private set; }
-        public string Destination { get; private set; }
+        public AirportDTO Origin { get; private set; }
+        public AirportDTO Destination { get; private set; }
 
-        private List<ConnectionDTO> _connections;
-        public IReadOnlyCollection<ConnectionDTO> Connections
-        {
-            get => _connections;
-        }
+        public List<RouteDTO> Connections { get; private set; }
 
-        public FlightRouteDTO(string origin, string destination, List<ConnectionDTO> connections)
+        public FlightRouteDTO()
         {
-            Origin = origin;
-            Destination = destination;
-            _connections = connections;
         }        
     }
 }
